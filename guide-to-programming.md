@@ -142,6 +142,10 @@ This third method takes the telemetry and sends it to the driver hub. Without th
 
 # **Section 3: The Arm**
 
+# **Section 4: Next Steps**
+
+So, where do you go from here? It's not the Into The Deep season, and you need to create new code for 
+
 # **Section LAST ONE: Full Code Breakdown**
 
 ## **How to use this section**
