@@ -80,35 +80,37 @@ Telemetry is a system for collecting and transmitting data from a remote or inac
 
 Before jumping into looking at code and trying to understand it, there’s one important part of programming to understand.
 
-## **Aside: What are comments?**
-
-Comments are lines of text in your code that are completely ignored by the computer when the program runs. They exist solely for human readers - including your future self! Comments are used to explain what code does, why certain decisions were made, and how complex algorithms work. They're critically important because they make code maintainable and help teams collaborate effectively.
-
-**Why comments matter:**
-- **Documentation**: Explain complex logic that isn't immediately obvious
-- **Collaboration**: Help team members understand your code
-- **Future reference**: Remind yourself what you were thinking one month later
-- **Debugging**: Temporarily disable code without deleting it
-
-In professional software development, well-commented code is often the difference between a maintainable system and a nightmare that nobody wants to touch.
-
-### **Block Comments**
-
-These are used for large portions of text.
-
-```java
-/*
- * This OpMode is an example driver-controlled (TeleOp) mode for the goBILDA 2024-2025 FTC
- * Into The Deep Starter Robot
- * The code is structured as a LinearOpMode
- */
-```
-
-### **Inline comments**
-
-These are used for single lines of text. To quickly comment out a section, select it and press ctrl \+ / .
-
-`//@Disabled`
+>## **Aside: What are comments?**
+> 
+> Comments are lines of text in your code that are completely ignored by the computer when the program runs. They exist solely for human readers - including your future self! Comments are used to explain what code does, why certain decisions were made, and how complex algorithms work. They're critically important because they make code maintainable and help teams collaborate effectively.
+>
+> **Why comments matter:**
+> - **Documentation**: Explain complex logic that isn't immediately obvious
+> - **Collaboration**: Help team members understand your code
+> - **Future reference**: Remind yourself what you were thinking one month later
+> - **Debugging**: Temporarily disable code without deleting it
+>
+> In professional software development, well-commented code is often the difference between a maintainable system and a nightmare that nobody wants to touch.
+>
+>### **Block Comments**
+>
+>These are used for large portions of text.
+>
+>```java
+>/*
+> * This OpMode is an example driver-controlled (TeleOp) mode for the goBILDA 2024-2025 FTC
+> * Into The Deep Starter Robot
+> * The code is structured as a LinearOpMode
+> */
+>```
+>
+>### **Inline comments**
+>
+>These are used for single lines of text. To quickly comment out a section, select it and press ctrl \+ / .
+>
+>```java
+>//@Disabled
+>```
 
 ## **Telemetry in the Code**
 
