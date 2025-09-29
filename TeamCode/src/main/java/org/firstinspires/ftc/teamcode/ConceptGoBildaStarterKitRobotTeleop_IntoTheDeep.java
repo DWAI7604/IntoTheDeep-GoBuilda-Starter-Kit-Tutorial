@@ -88,7 +88,7 @@ public class ConceptGoBildaStarterKitRobotTeleop_IntoTheDeep extends LinearOpMod
     The motor's encoder counts 28 times per rotation. So in total you should see about 7125.16
     counts per rotation of the arm. We divide that by 360 to get the counts per degree. */
     final double ARM_TICKS_PER_DEGREE =
-            28 // number of encoder ticks per rotation of the bare motor
+                    28 // number of encoder ticks per rotation of the bare motor
                     * 250047.0 / 4913.0 // This is the exact gear ratio of the 50.9:1 Yellow Jacket gearbox
                     * 100.0 / 20.0 // This is the external gear reduction, a 20T pinion gear that drives a 100T hub-mount gear
                     * 1/360.0; // we want ticks per degree, not per rotation
@@ -135,8 +135,8 @@ public class ConceptGoBildaStarterKitRobotTeleop_IntoTheDeep extends LinearOpMod
         /*
         These variables are private to the OpMode, and are used to control the drivetrain.
          */
-        double left;
-        double right;
+        double leftPower;
+        double rightPower;
         double forward;
         double rotate;
         double max;
@@ -203,20 +203,20 @@ public class ConceptGoBildaStarterKitRobotTeleop_IntoTheDeep extends LinearOpMod
             the right and left motors need to move in opposite directions. So we will add rotate to
             forward for the left motor, and subtract rotate from forward for the right motor. */
 
-            left  = forward + rotate;
-            right = forward - rotate;
+            leftPower  = forward + rotate;
+            rightPower = forward - rotate;
 
             /* Normalize the values so neither exceed +/- 1.0 */
-            max = Math.max(Math.abs(left), Math.abs(right));
+            max = Math.max(Math.abs(leftPower), Math.abs(rightPower));
             if (max > 1.0)
             {
-                left /= max;
-                right /= max;
+                leftPower /= max;
+                rightPower /= max;
             }
 
             /* Set the motor power to the variables we've mixed and normalized */
-            leftDrive.setPower(left);
-            rightDrive.setPower(right);
+            leftDrive.setPower(leftPower);
+            rightDrive.setPower(rightPower);
 
 
 
