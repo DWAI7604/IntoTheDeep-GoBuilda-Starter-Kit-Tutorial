@@ -78,75 +78,157 @@ Telemetry is a system for collecting and transmitting data from a remote or inac
 
 **In FTC robotics**, telemetry serves as your window into what your robot is thinking and doing. It's your primary debugging tool and performance monitor, displaying real-time information on the Driver Station screen during matches and testing.
 
-Before jumping into looking at code and trying to understand it, there’s one important part of programming to understand.
-
->## **Aside: What are comments?**
-> 
-> Comments are lines of text in your code that are completely ignored by the computer when the program runs. They exist solely for human readers - including your future self! Comments are used to explain what code does, why certain decisions were made, and how complex algorithms work. They're critically important because they make code maintainable and help teams collaborate effectively.
->
-> **Why comments matter:**
-> - **Documentation**: Explain complex logic that isn't immediately obvious
-> - **Collaboration**: Help team members understand your code
-> - **Future reference**: Remind yourself what you were thinking one month later
-> - **Debugging**: Temporarily disable code without deleting it
->
-> In professional software development, well-commented code is often the difference between a maintainable system and a nightmare that nobody wants to touch.
->
->### **Block Comments**
->
->These are used for large portions of text.
->
->```java
->/*
-> * This OpMode is an example driver-controlled (TeleOp) mode for the goBILDA 2024-2025 FTC
-> * Into The Deep Starter Robot
-> * The code is structured as a LinearOpMode
-> */
->```
->
->### **Inline comments**
->
->These are used for single lines of text. To quickly comment out a section, select it and press ctrl \+ / .
->
->```java
->//@Disabled
->```
-
 ## **Telemetry in the Code**
 
-There are three main methods\* that we will be using on the telemetry class\*.
+There are three methods (actions) that we will be using within this guide on the telemetry class.
 
-Aside: What are classes and methods?
+**📚 New to programming?** Learn about [classes and methods](./programming-concepts.md#what-are-classes-and-methods) in the Programming Concepts guide.
+
+The first method is `telemetry.addLine("enter text here")`. This method displays a line of text on your Driver Station screen.
 
 ```java
 telemetry.addLine("Robot Ready.");
 ```
 
-This first method takes the text within the String\* and puts it into the telemetry.
+**📚 New to programming?** Learn about [Strings and text in programming](./programming-concepts.md#what-are-strings) in the Programming Concepts guide.
 
-Aside: what are Strings?
+The second method is `telemetry.addData("label text", data)`. This method shows a label followed by some data (usually a number). The first piece of information you give it is text in quotes, and the second piece is the actual data you want to display.
 
 ```java
 telemetry.addData("armTarget: ", armMotor.getTargetPosition());
 ```
 
-This second method takes the text within the String, just like above, and adds another element after it. This element displays as text, but can be anything from another String to an int to a double.
+**📚 New to programming?** Learn about [variables and data types](./programming-concepts.md#what-are-variables-and-what-are-the-common-types) and [what casting means](./programming-concepts.md#what-does-it-mean-to-cast-as-a-string) in the Programming Concepts guide.
 
-Aside: what are variables and what are the common types?
+The third method is `telemetry.update()`. This method takes nothing in the parentheses, but it is vital to using telemetry. It sends whatever telemetry you have previously added to the Driver Station to be displayed. Without this method, the telemetry will not be visible.
 
 ```java
 telemetry.update();
 ```
 
-This third method takes the telemetry and sends it to the driver hub. Without this method call, all added telemetry will NOT be visible.
+Before moving on to adding our own telemetry, let's observe the telemetry currently in place.
+
+### What Does Telemetry Look Like?
+When you run your robot code, telemetry appears as text on your Driver Hub. It might display something like:
+```
+armTarget: 1500
+arm Encoder: 1487
+```
+This lets you see what your robot is thinking in real-time!
+
+### Observing Code
+
+Open up the file titled Code_Here.java, which you can find in TeamCode\src\main\java\org\firstinspires\ftc\teamcode .
+
+>
+> - The Code_Here file is for you to test out whatever code edits you want
+>
+> - The Blank_Slate_Code file is the original, unaltered code; if your code breaks, or you just want a fresh start, copy everything from this file into the Code_Here file!
+>
+> - The SectionNumber files are essentially keys for each section: they'll contain specific, relevant comments and edits to the original code
+>
+
+**The first set of telemetry** in the file is found around lines 78 and 79 (you can press Ctrl+G to jump to a line number):
+```java
+telemetry.addLine("Robot Ready.");
+telemetry.update();
+```
+
+This first set of telemetry tells the user when the robot has finished initializing and is ready to start. The first line displays the text "Robot Ready." on screen, and the second line actually sends that text to your Driver Hub so you can see it.
+
+**The second set of telemetry** in the file is found around lines 159-161:
+```java
+telemetry.addData("armTarget: ", armMotor.getTargetPosition());
+telemetry.addData("arm Encoder: ", armMotor.getCurrentPosition());
+telemetry.update();
+```
+
+This second set of telemetry continuously shows the arm's position and its target position. The first two lines use the `.addData()` method to display numbers. Looking at the first line, it shows a label "armTarget: " followed by the position the arm is trying to reach. Together, these create a display that looks like this: `armTarget: 1234`
+
+There is also **one additional telemetry statement** around line 156:
+```java
+telemetry.addLine("MOTOR EXCEEDED CURRENT LIMIT!");
+```
+
+Here, this telemetry warns the user when something is going wrong. It's placed inside an if statement, so the warning only appears when the motor draws too much power.
+
+**📚 New to programming?** Learn about [If else statements](./programming-concepts.md#if-else-statements) in the Programming Concepts guide.
+
+## Try It Out! Adding Custom Telemetry
+
+Now that we've seen what telemetry can do, it's time to use it for ourselves!
+
+**1. Changing text**
+
+Go to line 78 of the Code_Here.java file, which should have the following code:
+```java
+telemetry.addLine("Robot Ready.");
+```
+
+*note: if the line numbers don't match up with the instructions, that means that you may have altered the lines some how. If that was intentional, no worries! Press ctrl + f to locate the line you were told to find.*
+
+Change the text from "Robot Ready." to "Initialized," then install the code onto the robot again and test it out.
+
+**2. Logging a specific variable**
+
+Go to line 85 of the Code_Here.java file, which should have the following code:
+```java
+forward = -gamepad1.left_stick_y;
+```
+
+On line 87 (the first empty line after the above code), use the telemetry.addData() method to show the user what the left_stick_y of the gamepad is returning
+
+Your line should look something like this:
+```java
+telemetry.addData("left_stick_y: ", forward);
+```
+
+Now, try to instead return the value of the variable called rotate! Install the code and look at how these variables change with the movement of the joysticks.
+
+**3. Looking at an actively changing variable**
+
+Go to line 90 and 97, which should be empty lines on either side of the following code:
+```java
+max = Math.max(Math.abs(leftPower), Math.abs(rightPower));
+if (max > 1.0)
+{
+    leftPower /= max;
+    rightPower /= max;
+}
+```
+
+On line 90, use telemetry to show the variable of leftPower, then do the same on line 97 (this should make it so that the above section of code is surrounded by these two lines).
+
+Install the code, move the joysticks, and see how this section of code is changing the leftPower variable!
+
+**4. Try out other variables!**
+
+Try logging the armPositionFudgeFactor variable, or the the constants calculated at the top of the class.
+
+A few things to keep in mind:
+- the telemetry.update() method must be called after whatever other telemetry methods are called! if it isn't called then the information will not be sent to the user
+- the code within the while (opModeIsActive()) loop will run constantly, so code within there should be used for anything that should be seen during the match
+
+**📚 New to programming?** Check out our detailed explanation of [while loops](./programming-concepts.md#what-while-loops) in the Programming Concepts guide.
 
 # **Section 2: Drive Train**
 
 # **Section 3: The Arm**
 
-# **Section 4: Next Steps**
+# **Section 4: Encoder Drive**
 
-So, where do you go from here? It's not the Into The Deep season, and you need to create new code for 
+# **Section 5: Next Steps**
+
+Where do you go from here? It's not the Into The Deep season anymore, and you need to figure out what you're doing for the new season.
+
+There are two main options: you can either take what you've learned here and program a robot using what you've seen and experimented with, or you can spend more time learning about more complex systems.
+
+If you're looking for what to learn next, here are my recommendations:
+
+- Specific subsystems that your team will need for the current season, such as cameras or slides
+- Mecanum drive (if you're team is able to use one)
+- Pathfinding with RoadRunner or PedroPathing
+- The theory behind PIDs
 
 # **Section LAST ONE: Full Code Breakdown**
 

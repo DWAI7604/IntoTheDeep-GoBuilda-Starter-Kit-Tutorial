@@ -9,8 +9,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 
-@TeleOp(name="FTC Starter Kit Example Robot (INTO THE DEEP) (no comments)", group="Robot")
-public class ConceptGoBildaStarterKitRobotTeleop_IntoTheDeep_NoComments extends LinearOpMode {
+@TeleOp(name="Your Code", group="Robot")
+public class Blank_Slate_Code extends LinearOpMode {
 
     public DcMotor  leftDrive   = null;
     public DcMotor  rightDrive  = null;
@@ -52,7 +52,6 @@ public class ConceptGoBildaStarterKitRobotTeleop_IntoTheDeep_NoComments extends 
         double rotate;
         double max;
 
-        // ===== initiate motors =====
         leftDrive  = hardwareMap.get(DcMotor.class, "left_front_drive");
         rightDrive = hardwareMap.get(DcMotor.class, "right_front_drive");
         armMotor   = hardwareMap.get(DcMotor.class, "left_arm");
@@ -70,14 +69,12 @@ public class ConceptGoBildaStarterKitRobotTeleop_IntoTheDeep_NoComments extends 
         armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        // ===== initiate servos =====
         intake = hardwareMap.get(CRServo.class, "intake");
         wrist  = hardwareMap.get(Servo.class, "wrist");
 
         intake.setPower(INTAKE_OFF);
         wrist.setPosition(WRIST_FOLDED_IN);
 
-        // ===== wait for start =====
         telemetry.addLine("Robot Ready.");
         telemetry.update();
 
