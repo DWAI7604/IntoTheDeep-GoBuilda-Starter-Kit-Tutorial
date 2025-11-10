@@ -636,7 +636,778 @@ Test different combinations until the robot moves correctly!
 
 # **Section 3: The Arm**
 
+## **What is Arm Control?**
+
+The GoBuilda Starter Kit includes a sophisticated arm system that can pick up, move, and place game pieces with precision. The arm system combines motor-controlled positioning with servo-controlled mechanisms to create a versatile manipulation system.
+
+**In the real world**, robotic arm systems are everywhere:
+- **Manufacturing**: Industrial robots assemble cars, electronics, and machinery with incredible precision
+- **Medical devices**: Surgical robots assist doctors in delicate operations
+- **Space exploration**: Mars rovers use robotic arms to collect samples and operate scientific instruments
+- **Logistics**: Warehouse robots pick and place packages for automated fulfillment
+- **Food service**: Some restaurants use robotic arms for food preparation and serving
+
+**In FTC robotics**, arm control is essential for manipulating game pieces during both TeleOp and Autonomous modes. It's the key to scoring points and completing game-specific tasks.
+
+### What Does Arm Control Look Like?
+When you operate the arm system, your robot will respond to specific gamepad inputs:
+```
+Driver presses RIGHT BUMPER button
+→ Robot: Arm rotates to collection angle + wrist extends + intake activates
+→ Result: Robot is ready to pick up game pieces from the ground
+
+Driver presses Y button  
+→ Robot: Arm rotates to scoring angle + wrist positions for release + stops intake
+→ Result: Robot is positioned to score game pieces in the high goal
+```
+
+**Key point:** With just a single button press on your gamepad controller, the robot automatically coordinates multiple components (arm motor, wrist servo, and intake servo) to achieve complex positioning. This makes driving much easier since you don't have to manually control each component separately!
+
+This gives you precise, repeatable positioning for consistent game piece manipulation!
+
+## **Understanding the Arm System**
+
+Before we can control the arm effectively, we need to understand the different components and how they work together.
+
+### **What are the Arm Components?**
+
+The GoBuilda Starter Kit arm system consists of three main components:
+
+**1. Arm Motor (Rotational Joint)**
+- A motor that rotates the entire arm up and down
+- Uses encoders for precise angle positioning
+- Controlled with target positions rather than continuous power
+
+**2. Wrist Servo (Positioning Servo)**  
+- A servo that positions the wrist/end effector
+- Moves to specific angles between 0° and 180°
+- Used to orient the intake for different tasks
+
+**3. Intake Servo (Continuous Rotation Servo)**
+- A servo that spins continuously to collect or eject game pieces
+- Can spin forward, backward, or stop completely
+- Controlled with power values like a motor
+
+### **What Does Arm Data Look Like?**
+When you run your robot and check arm values, you might see:
+```
+Arm Target: 1,250 ticks (about 45 degrees up)
+Arm Current: 1,247 ticks (almost at target)
+Wrist Position: 0.5 (middle position)
+Intake Power: -1.0 (collecting at full speed)
+```
+Each value represents the current state of that arm component!
+
+### **Converting Between Angles and Encoder Ticks**
+
+The key to arm control is understanding how motor encoder ticks relate to arm angles. For the GoBuilda arm motor:
+
+**Arm Motor Calculation:**
+- **Motor**: GoBuilda 5203 Series with gearing
+- **Total gear ratio**: Complex chain and gear reduction
+- **Ticks per degree**: Approximately 19.7 ticks per degree of arm rotation
+
+**The math:**
+```
+ARM_TICKS_PER_DEGREE = 28 * 250047.0/4913.0 * 100.0/20.0 * 1/360.0
+This equals approximately 19.7 ticks per degree
+
+To move arm to 45 degrees:
+Required ticks = 45 degrees × 19.7 ticks/degree = 887 ticks
+```
+
+💡 **New concept: Servo positions** - Unlike motors that use encoder ticks, servos use position values from 0.0 to 1.0, where 0.0 is one extreme, 1.0 is the other extreme, and 0.5 is the middle position.
+
+## **Arm Control in the Code**
+
+Let's explore how the code controls each component of the arm system to create coordinated movement.
+
+### **What Does Arm Code Look Like?**
+When you run your robot code and look at the arm control sections, you'll see patterns like this:
+```java
+if (gamepad1.right_bumper) {
+    armPosition = ARM_COLLECT;              // Set arm angle
+    wrist.setPosition(WRIST_FOLDED_OUT);    // Position wrist  
+    intake.setPower(INTAKE_COLLECT);        // Start intake
+}
+```
+This is your robot coordinating multiple mechanisms with a single button press!
+
+### **Step 1: Connecting to the Arm Hardware**
+
+First, the code connects to the physical arm components:
+
+```java
+armMotor = hardwareMap.get(DcMotor.class, "left_arm");
+intake = hardwareMap.get(CRServo.class, "intake");
+wrist = hardwareMap.get(Servo.class, "wrist");
+```
+
+These lines create "remote controls" for your arm components. The text names must exactly match your Driver Hub configuration.
+
+💡 **Important distinction: Different hardware types** - Notice we use `DcMotor` for the arm (precise positioning), `CRServo` for the intake (continuous rotation), and `Servo` for the wrist (precise angles). Each hardware type has different capabilities and control methods, so choosing the right type for each component is crucial for proper robot control.
+
+### **Step 2: Setting Up Arm Constants**
+
+The code defines specific positions for different arm tasks:
+
+```java
+final double ARM_COLLAPSED_INTO_ROBOT  = 0;
+final double ARM_COLLECT               = 250 * ARM_TICKS_PER_DEGREE;
+final double ARM_CLEAR_BARRIER         = 230 * ARM_TICKS_PER_DEGREE;
+final double ARM_SCORE_SPECIMEN        = 160 * ARM_TICKS_PER_DEGREE;
+final double ARM_SCORE_SAMPLE_IN_LOW   = 160 * ARM_TICKS_PER_DEGREE;
+final double ARM_ATTACH_HANGING_HOOK   = 120 * ARM_TICKS_PER_DEGREE;
+final double ARM_WINCH_ROBOT           = 15  * ARM_TICKS_PER_DEGREE;
+```
+
+💡 **Why use named positions?** - Instead of remembering that "4930 ticks means collection position," we can write `ARM_COLLECT` and the computer knows exactly what we mean. This makes the code much easier to read and modify.
+
+**What each position does:**
+- **ARM_COLLAPSED_INTO_ROBOT**: Arm folded completely inside the robot's frame
+- **ARM_COLLECT**: Arm positioned to collect game pieces from the ground  
+- **ARM_CLEAR_BARRIER**: Arm high enough to drive over field barriers
+- **ARM_SCORE_SPECIMEN**: Arm positioned to hang specimens on the submersible
+- **ARM_SCORE_SAMPLE_IN_LOW**: Arm angled to score samples in the low basket
+- **ARM_ATTACH_HANGING_HOOK**: Arm positioned to attach the hanging hook
+- **ARM_WINCH_ROBOT**: Arm positioned for end-game hanging
+
+### **Step 3: Configuring the Arm Motor**
+
+The arm motor uses special settings for precise control:
+
+```java
+armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+armMotor.setTargetPosition(0);
+armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+```
+
+**What these do:**
+- **BRAKE**: Motor actively holds position when power is zero (prevents arm from falling)
+- **setTargetPosition(0)**: Initially target the starting position  
+- **RUN_TO_POSITION**: Motor automatically moves to target positions
+- **STOP_AND_RESET_ENCODER**: Set the current position as the zero reference point
+
+### **Step 4: Servo Control**
+
+The wrist and intake servos are controlled differently:
+
+```java
+// Wrist servo positions (0.0 to 1.0)
+final double WRIST_FOLDED_IN   = 0.8333;  // Wrist folded into robot
+final double WRIST_FOLDED_OUT  = 0.5;     // Wrist extended for collection
+
+// Intake servo powers (-1.0 to 1.0)  
+final double INTAKE_COLLECT    = -1.0;    // Full speed inward
+final double INTAKE_OFF        =  0.0;    // Stopped
+final double INTAKE_DEPOSIT    =  0.5;    // Half speed outward
+```
+
+💡 **New concept: Servo vs Motor control** - Servos use `.setPosition()` for angles and `.setPower()` for continuous rotation, while motors use `.setTargetPosition()` and `.setPower()` for precise positioning.
+
+### **Step 5: Coordinated Arm Control**
+
+The magic happens when multiple arm components work together:
+
+```java
+if (gamepad1.right_bumper) {
+    armPosition = ARM_COLLECT;
+    wrist.setPosition(WRIST_FOLDED_OUT);
+    intake.setPower(INTAKE_COLLECT);
+}
+```
+
+**What this accomplishes:**
+- **Sets arm angle** to collection position
+- **Extends wrist** to reach game pieces on the ground
+- **Starts intake** to pull in game pieces
+- **All with one button press!**
+
+### **Step 6: Fine Adjustment Control**
+
+The triggers provide manual fine-tuning:
+
+```java
+armPositionFudgeFactor = FUDGE_FACTOR * (gamepad1.right_trigger + (-gamepad1.left_trigger));
+armMotor.setTargetPosition((int) (armPosition + armPositionFudgeFactor));
+```
+
+💡 **New concept: Fine adjustment** - Sometimes preset positions aren't perfect for every situation. The triggers let drivers make small adjustments (+/- 15 degrees) to dial in the exact position needed.
+
+**📚 New to programming?** Learn about [math operations and trigger controls](./programming-concepts.md#gamepad-inputs) in the Programming Concepts guide.
+
+## **Try It Out! Experimenting with Arm Control**
+
+Now let's modify the arm code to better understand how each component works!
+
+**1. Adding Arm Telemetry**
+
+Add these lines inside your `while (opModeIsActive())` loop to monitor arm status:
+
+```java
+telemetry.addData("Arm Target", armMotor.getTargetPosition());
+telemetry.addData("Arm Current", armMotor.getCurrentPosition());
+telemetry.addData("Wrist Position", wrist.getPosition());
+telemetry.addData("Intake Power", intake.getPower());
+telemetry.addData("Arm at Target", !armMotor.isBusy());
+```
+
+Install the code and operate the arm while watching the Driver Hub screen. You'll see exactly how each component responds to your inputs!
+
+**2. Test Individual Components**
+
+Try controlling each arm component separately to understand their behavior:
+
+**Test the arm motor only:**
+```java
+if (gamepad1.dpad_up) {
+    armPosition = ARM_CLEAR_BARRIER;  // Just move the arm
+}
+else if (gamepad1.dpad_down) {
+    armPosition = ARM_COLLAPSED_INTO_ROBOT;  // Just move the arm
+}
+```
+
+**Test the wrist servo only:**
+```java
+if (gamepad1.x) {
+    wrist.setPosition(WRIST_FOLDED_OUT);  // Just move the wrist
+}
+else if (gamepad1.y) {
+    wrist.setPosition(WRIST_FOLDED_IN);   // Just move the wrist  
+}
+```
+
+**Test the intake servo only:**
+```java
+if (gamepad1.left_bumper) {
+    intake.setPower(INTAKE_COLLECT);      // Just run the intake
+}
+else if (gamepad1.right_bumper) {
+    intake.setPower(INTAKE_OFF);          // Just stop the intake
+}
+```
+
+**3. Create Custom Arm Positions**
+
+Try defining your own arm positions for specific tasks:
+
+```java
+// Add these with the other arm constants
+final double ARM_CUSTOM_LOW    = 100 * ARM_TICKS_PER_DEGREE;  // Custom low position
+final double ARM_CUSTOM_HIGH   = 200 * ARM_TICKS_PER_DEGREE;  // Custom high position
+
+// Add this in your control section
+if (gamepad1.left_stick_button) {
+    armPosition = ARM_CUSTOM_LOW;
+    wrist.setPosition(0.3);  // Custom wrist angle
+}
+else if (gamepad1.right_stick_button) {
+    armPosition = ARM_CUSTOM_HIGH;
+    wrist.setPosition(0.7);  // Different custom wrist angle
+}
+```
+
+**4. Experiment with Intake Speeds**
+
+Try different intake speeds for different tasks:
+
+```java
+if (gamepad1.a) {
+    intake.setPower(-0.5);    // Gentle collection
+}
+else if (gamepad1.b) {
+    intake.setPower(-1.0);    // Aggressive collection
+}
+else if (gamepad1.x) {
+    intake.setPower(0.3);     // Gentle ejection
+}
+else if (gamepad1.y) {
+    intake.setPower(1.0);     // Aggressive ejection
+}
+```
+
+**5. Understanding Arm Safety**
+
+The arm motor includes current limiting for safety:
+
+```java
+if (((DcMotorEx) armMotor).isOverCurrent()) {
+    telemetry.addLine("MOTOR EXCEEDED CURRENT LIMIT!");
+}
+```
+
+This protects the motor if the arm gets stuck or encounters unexpected resistance.
+
+**Why this matters:**
+- **Hardware protection**: Prevents motor damage from excessive load
+- **Competition reliability**: Avoids robot failures during matches
+- **Safety**: Stops dangerous situations if something goes wrong
+
+**📚 New to programming?** Learn about [conditional statements and robot safety](./programming-concepts.md#if-else-statements) in the Programming Concepts guide.
+
+## **Understanding Coordinated Motion**
+
+One of the most powerful aspects of the arm system is how multiple components work together seamlessly. Let's examine how the preset positions create coordinated behaviors.
+
+### **Collection Sequence (Right Bumper)**
+```java
+if (gamepad1.right_bumper) {
+    armPosition = ARM_COLLECT;
+    wrist.setPosition(WRIST_FOLDED_OUT);
+    intake.setPower(INTAKE_COLLECT);
+}
+```
+
+**What happens:**
+1. **Arm rotates down** to collection angle (near the ground)
+2. **Wrist extends** to position intake over game pieces  
+3. **Intake starts spinning** to pull in game pieces
+4. **Driver can now drive** around to collect items
+
+### **Stowing Sequence (D-Pad Left)**
+```java
+else if (gamepad1.dpad_left) {
+    armPosition = ARM_COLLAPSED_INTO_ROBOT;
+    intake.setPower(INTAKE_OFF);
+    wrist.setPosition(WRIST_FOLDED_IN);
+}
+```
+
+**What happens:**
+1. **Arm folds completely** into the robot frame
+2. **Intake stops** to conserve power and avoid accidents
+3. **Wrist retracts** to fit within robot dimensions
+4. **Robot becomes compact** for driving and maneuvering
+
+### **Scoring Sequence (Y Button)**
+```java
+else if (gamepad1.y) {
+    armPosition = ARM_SCORE_SAMPLE_IN_LOW;
+}
+```
+
+**What happens:**
+1. **Arm rotates up** to the correct angle for the low basket
+2. **Wrist stays** in its current position (usually extended)
+3. **Intake can be activated** later to eject the game piece
+4. **Driver positions robot** and then activates intake to score
+
+💡 **Why coordinate multiple components?** - Real-world tasks require multiple actions happening together. Instead of making the driver control each component separately (which is slow and error-prone), coordinated sequences make complex operations simple and consistent.
+
+## **Understanding the Bigger Picture**
+
+Congratulations! You've learned the fundamentals of robotic arm control. Here's what you've accomplished:
+
+**Core Concepts Mastered:**
+- **Motor positioning**: Using encoders for precise arm angles
+- **Servo control**: Positioning wrists and controlling continuous rotation
+- **Coordinated motion**: Making multiple components work together
+- **Preset positions**: Creating reliable, repeatable arm configurations
+- **Fine adjustment**: Manual tweaking for perfect positioning
+
+**This opens the door to:**
+- **Autonomous arm control**: Moving the arm to precise positions without driver input
+- **Complex sequences**: Chaining multiple arm movements together
+- **Game-specific strategies**: Optimizing arm positions for scoring and collection
+- **Advanced control**: Learning about feedback systems and motion profiles
+
+**Next steps you could explore:**
+- **Autonomous arm sequences**: Move the arm to specific positions during autonomous
+- **Vision-guided control**: Use cameras to automatically position the arm over targets
+- **Multi-step operations**: Create sequences that combine driving and arm movement
+- **Advanced sensors**: Add limit switches or force sensors for more sophisticated control
+
+You now understand the same principles that power industrial robots, medical devices, and space exploration equipment!
+
 # **Section 4: Encoder Drive**
+
+## **What is Encoder Drive?**
+
+Encoder drive is a method of making your robot move precise distances automatically. Instead of just saying "drive forward for 2 seconds and hope for the best," encoder drive lets you say "drive forward exactly 12 inches" with remarkable accuracy.
+
+**In the real world**, encoder-based movement is everywhere:
+- **Elevators**: Know exactly which floor they're on and stop precisely at each level
+- **3D Printers**: Move the print head to exact positions to create detailed objects
+- **Factory robots**: Position parts with millimeter precision for assembly
+- **Self-driving cars**: Track exactly how far they've traveled for navigation
+- **Medical equipment**: MRI machines position patients with extreme accuracy
+
+**In FTC robotics**, encoder drive is essential for autonomous programs where your robot must complete tasks without human control. It's the foundation for precise, repeatable robot movement.
+
+### What Does Encoder Drive Look Like?
+When you use encoder drive, your robot will:
+```
+Command: "Drive forward 12 inches"
+Robot: Calculates that 12 inches = 1,000 encoder ticks
+Robot: Drives forward, counting ticks: 100... 500... 900... 1,000 - STOP!
+Result: Robot has moved exactly 12 inches forward
+```
+This gives you the precision needed for autonomous challenges!
+
+## **Understanding Encoders**
+
+Before we can make the robot drive precise distances, we need to understand what encoders are and how they work.
+
+### **What is an Encoder?**
+
+An encoder is like a digital odometer for your motors. Just like your car's odometer (the gauge that shows how many miles your car has driven) counts distance, an encoder counts how many times your motor shaft has rotated.
+
+**How encoders work:**
+- Inside each motor, there's a sensor that detects rotation
+- Every time the motor shaft turns a tiny amount, the encoder adds 1 to its count
+- These individual counts are called "ticks" or "counts"
+- By counting ticks, we can calculate exactly how far the robot has moved
+
+### **What Does Encoder Data Look Like?**
+When you run your robot and check encoder values, you might see:
+```
+Left Drive Encoder: 1,247 ticks
+Right Drive Encoder: 1,251 ticks
+Arm Encoder: 892 ticks
+```
+Each number represents how far that motor has rotated since the robot started!
+
+### **Converting Ticks to Distance**
+
+The key to encoder drive is converting between encoder ticks and real-world distances. For the GoBuilda motors in your starter kit:
+
+**Drive Motor Calculation:**
+- **Motor**: GoBuilda 5202 Series (312 RPM)
+- **Ticks per rotation**: 537.7 ticks
+- **Wheel diameter**: 96mm (about 3.78 inches)
+- **Wheel circumference**: 96mm × π = 301.6mm (about 11.87 inches)
+
+**The math:**
+```
+Distance per tick = Wheel circumference ÷ Ticks per rotation
+Distance per tick = 11.87 inches ÷ 537.7 ticks = 0.022 inches per tick
+
+To drive 12 inches:
+Required ticks = 12 inches ÷ 0.022 inches per tick = 545 ticks
+```
+
+💡 **New concept: Constants in programming** - We'll store these calculations as constants (fixed numbers) at the top of our code so we can reuse them easily.
+
+**📚 New to programming?** Learn about [constants and calculations](./programming-concepts.md#constants-and-math) in the Programming Concepts guide.
+
+## **Understanding Autonomous Mode**
+
+So far, we've only worked with TeleOp (Teleoperated) mode where a human driver controls the robot. Now we're going to learn about Autonomous mode, where the robot operates completely on its own.
+
+### **What is Autonomous Mode?**
+
+Autonomous mode is a 30-second period at the start of FTC matches where robots must complete tasks without any human input. Your robot follows a pre-programmed sequence of movements and actions.
+
+**In the real world**, autonomous systems are everywhere:
+- **Roomba vacuum cleaners**: Navigate and clean rooms without human control
+- **Autopilot systems**: Keep airplanes on course during long flights
+- **Manufacturing robots**: Assemble products following precise sequences
+- **Space missions**: Mars rovers operate autonomously due to communication delays with Earth
+- **Warehouse robots**: Amazon's robots move inventory without human guidance
+
+**In FTC competitions**, autonomous mode is crucial:
+- **30 seconds**: Your robot has half a minute to complete its programmed tasks
+- **No driver input**: Once you press START, you can only watch (though you can press STOP to end early if needed)
+- **High scoring**: Autonomous tasks often award more points than TeleOp
+- **Consistency**: A good autonomous program works the same way every time
+
+### **Autonomous vs TeleOp Programming**
+
+The code structure is different between the two modes:
+
+**TeleOp structure:**
+```java
+while (opModeIsActive()) {
+    // Read gamepad input
+    // Update motor powers based on joysticks
+    // This loop runs continuously during the match
+}
+```
+
+**Autonomous structure:**
+```java
+// Step 1: Drive forward 12 inches
+// Step 2: Turn left 90 degrees  
+// Step 3: Drive forward 6 inches
+// Step 4: Lower arm and score
+// Code runs once, then stops
+```
+
+💡 **Sequential vs Continuous** - TeleOp runs in a continuous loop responding to driver input, while Autonomous follows a step-by-step sequence that runs once.
+
+## **Encoder Drive in the Code**
+
+Let's build an autonomous program that drives the robot forward exactly 12 inches. We'll add this code to create a simple but effective autonomous program.
+
+### **Step 1: Setting Up Constants**
+
+First, we'll add the encoder calculations to our code. These go at the top with the other constants:
+
+```java
+// Encoder drive constants
+final double TICKS_PER_INCH = 537.7 / (3.78 * Math.PI);  // About 45.3 ticks per inch
+final double DRIVE_SPEED = 0.5;  // Motor power for autonomous driving
+```
+
+💡 **Why use constants?** - Instead of remembering that "45.3 ticks equals one inch," we can just write `TICKS_PER_INCH` and the computer remembers for us! Plus, if we need to adjust this value later, we only change it in one place and it updates everywhere in our code.
+
+### **Step 2: Creating Encoder Drive Methods**
+
+We'll create a special method (function) that handles driving specific distances:
+
+```java
+public void driveForward(double inches) {
+    // Calculate how many ticks we need to travel
+    int targetTicks = (int)(inches * TICKS_PER_INCH);
+    
+    // Reset encoder counts to zero
+    leftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    rightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    
+    // Set target positions
+    leftDrive.setTargetPosition(targetTicks);
+    rightDrive.setTargetPosition(targetTicks);
+    
+    // Switch to RUN_TO_POSITION mode
+    leftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    rightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    
+    // Start driving
+    leftDrive.setPower(DRIVE_SPEED);
+    rightDrive.setPower(DRIVE_SPEED);
+    
+    // Wait until we reach the target
+    while (opModeIsActive() && 
+           (leftDrive.isBusy() || rightDrive.isBusy())) {
+        
+        // Display progress
+        telemetry.addData("Target", targetTicks);
+        telemetry.addData("Left Position", leftDrive.getCurrentPosition());
+        telemetry.addData("Right Position", rightDrive.getCurrentPosition());
+        telemetry.update();
+    }
+    
+    // Stop driving
+    leftDrive.setPower(0);
+    rightDrive.setPower(0);
+}
+```
+
+**💡 Where does this method go in your code?**
+
+The `driveForward` method should be placed **inside your class but outside the `runOpMode()` method**. Here's the correct structure:
+
+```java
+@Autonomous(name="My First Autonomous", group="Robot")
+public class MyFirstAutonomous extends LinearOpMode {
+    
+    // Hardware declarations
+    public DcMotor leftDrive = null;
+    public DcMotor rightDrive = null;
+    
+    // Constants
+    final double TICKS_PER_INCH = 537.7 / (3.78 * Math.PI);
+    final double DRIVE_SPEED = 0.3;
+    
+    // PUT THE driveForward METHOD HERE
+    public void driveForward(double inches) {
+        // ... method code goes here
+    }
+    
+    @Override
+    public void runOpMode() {
+        // ... your autonomous program goes here
+    }
+}
+```
+
+**Key placement rules:**
+- **Inside the class** (between the opening `{` after the class name and the closing `}` at the end)
+- **Outside the runOpMode() method** (before the `@Override` line)
+- **After your hardware declarations and constants** (keeps your code organized)
+
+💡 **New concept: Custom methods** - This is our first time creating our own method! Think of `driveForward()` as a new command we're teaching the robot. Once we define it, we can use `driveForward(12)` to drive 12 inches anytime we want.
+
+**📚 New to programming?** Learn about [creating your own methods](./programming-concepts.md#creating-methods) in the Programming Concepts guide.
+
+### **Step 3: Understanding Motor Modes**
+
+The code above uses special motor modes that make encoder drive possible:
+
+```java
+// STOP_AND_RESET_ENCODER: Sets the encoder count back to zero
+leftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+// RUN_TO_POSITION: Motor automatically drives to a target position
+leftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+// Set where we want the motor to go
+leftDrive.setTargetPosition(targetTicks);
+```
+
+**What these modes do:**
+- **STOP_AND_RESET_ENCODER**: Like pressing "trip reset" on your car's odometer - sets the count back to 0
+- **RUN_TO_POSITION**: Motor becomes smart - it automatically adjusts power to reach the target position
+- **setTargetPosition()**: Tells the motor "go to this encoder position"
+- **isBusy()**: Returns true if the motor is still moving toward its target
+
+### **Step 4: The Complete Autonomous Program**
+
+Here's how your autonomous program would look:
+
+```java
+@Override
+public void runOpMode() {
+    // Initialize hardware (same as TeleOp)
+    leftDrive  = hardwareMap.get(DcMotor.class, "left_front_drive");
+    rightDrive = hardwareMap.get(DcMotor.class, "right_front_drive");
+    
+    leftDrive.setDirection(DcMotor.Direction.FORWARD);
+    rightDrive.setDirection(DcMotor.Direction.REVERSE);
+    
+    leftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+    rightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+    
+    // Tell driver we're ready
+    telemetry.addLine("Autonomous Ready - Robot will drive 12 inches forward");
+    telemetry.update();
+    
+    waitForStart();
+    
+    // THE AUTONOMOUS SEQUENCE
+    if (opModeIsActive()) {
+        driveForward(12);  // Drive forward exactly 12 inches
+        
+        telemetry.addLine("Autonomous Complete!");
+        telemetry.update();
+    }
+}
+```
+
+💡 **Sequential execution** - Notice how different this is from TeleOp! There's no `while` loop. The robot executes each command once in order, then stops.
+
+## **Try It Out! Building Your First Autonomous**
+
+Now let's create and test your autonomous program!
+
+**1. Creating an Autonomous OpMode**
+
+Create a new file called `MyFirstAutonomous.java` in your TeamCode folder. Here's the basic structure:
+
+```java
+package org.firstinspires.ftc.teamcode;
+
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+
+@Autonomous(name="My First Autonomous", group="Robot")
+public class MyFirstAutonomous extends LinearOpMode {
+    
+    // Hardware
+    public DcMotor leftDrive   = null;
+    public DcMotor rightDrive  = null;
+    
+    // Constants
+    final double TICKS_PER_INCH = 537.7 / (3.78 * Math.PI);
+    final double DRIVE_SPEED = 0.3;  // Start with slow, safe speed
+    
+    // Your driveForward method goes here
+    // Your runOpMode method goes here
+}
+```
+
+**2. Test with Telemetry First**
+
+Before making the robot move, let's verify our encoder readings:
+
+```java
+// Add this to your autonomous program after waitForStart()
+while (opModeIsActive()) {
+    telemetry.addData("Left Encoder", leftDrive.getCurrentPosition());
+    telemetry.addData("Right Encoder", rightDrive.getCurrentPosition());
+    telemetry.addData("Push robot to see encoder changes", "");
+    telemetry.update();
+    sleep(100);  // Update 10 times per second
+}
+```
+
+**Install this code and manually push your robot around while watching the Driver Hub. You should see the encoder numbers change as the wheels rotate!**
+
+**3. Test Short Distances**
+
+Start with a very short distance to make sure everything works:
+
+```java
+driveForward(3);  // Just 3 inches to start
+```
+
+**4. Measure and Verify**
+
+Use a ruler or measuring tape to check if your robot actually moved 3 inches. If it's off, you might need to adjust your `TICKS_PER_INCH` constant.
+
+**5. Scale Up**
+
+Once 3 inches works correctly, try your 12-inch target:
+
+```java
+driveForward(12);  // Full 12 inches
+```
+
+**6. Add More Movements**
+
+Try creating a simple autonomous routine:
+
+```java
+if (opModeIsActive()) {
+    driveForward(12);    // Go forward 12 inches
+    sleep(1000);         // Wait 1 second
+    driveForward(-6);    // Back up 6 inches
+    
+    telemetry.addLine("Autonomous sequence complete!");
+    telemetry.update();
+}
+```
+
+💡 **New concept: sleep() method** - The `sleep(1000)` command tells the robot to pause and do nothing for a specified amount of time. The number in parentheses is in milliseconds, so `sleep(1000)` means "wait for 1,000 milliseconds" or "wait for 1 second." This is useful in autonomous programs when you want to add pauses between actions, like waiting for a mechanism to settle or creating a timed delay.
+
+⚠️ **Important safety note:** The `sleep()` command pauses ALL code execution, meaning your robot cannot respond to anything during the sleep period - not even emergency stops or safety checks. Use sleep sparingly and only for short periods in autonomous mode. Never use long sleep commands, and avoid sleep entirely in TeleOp programs where the driver needs continuous control.
+
+**Troubleshooting Tips:**
+- **Robot doesn't move**: Check that your motor directions are correct
+- **Wrong distance**: Adjust the `TICKS_PER_INCH` value up or down
+- **Veering left/right**: Your motors might have slightly different speeds, or your robot may have weight imbalances, wheel differences, or mechanical variations - this is completely normal for basic encoder drive and happens even with professional robots
+
+💡 **Why start slow?** - Using `DRIVE_SPEED = 0.3` gives you more control and makes it easier to see what's happening. You can increase speed once everything works correctly.
+
+**📚 New to programming?** Learn about [program flow and debugging](./programming-concepts.md#debugging-and-testing) in the Programming Concepts guide.
+
+## **Understanding the Bigger Picture**
+
+Congratulations! You've just learned the foundation of autonomous robot programming. Here's what you've accomplished:
+
+**Core Concepts Mastered:**
+- **Encoder counting**: Understanding how motors track their position
+- **Distance calculation**: Converting between real distances and encoder ticks  
+- **Motor modes**: Using RUN_TO_POSITION for automatic control
+- **Sequential programming**: Writing step-by-step autonomous routines
+- **Custom methods**: Creating reusable functions for common tasks
+
+**This opens the door to:**
+- **Complex autonomous routines**: Multi-step sequences with turns, arm movements, and scoring
+- **Competition autonomous**: Scoring points automatically during the first 30 seconds
+- **Precision control**: Exact positioning for delicate tasks
+- **Repeatable performance**: Your autonomous works the same way every time
+
+**Next steps you could explore:**
+- **Turning**: Use encoders to make precise turns
+- **Arm positioning**: Move your arm to exact angles using its encoder
+- **Sensor integration**: Combine encoder drive with color sensors, distance sensors, or cameras
+- **Advanced control**: Learn about PID controllers for even smoother movement
+
+You now have the fundamental building blocks that professional robotics teams use to create sophisticated autonomous programs!
 
 # **Section 5: Next Steps**
 
