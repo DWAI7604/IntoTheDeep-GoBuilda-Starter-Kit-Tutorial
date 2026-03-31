@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 
 @TeleOp(name="Your Code", group="Robot")
-public class Blank_Slate_Code extends LinearOpMode {
+public class Code_Here extends LinearOpMode {
 
     public DcMotor  leftDrive   = null;
     public DcMotor  rightDrive  = null;
@@ -37,7 +37,7 @@ public class Blank_Slate_Code extends LinearOpMode {
     final double INTAKE_DEPOSIT    =  0.5;
 
     final double WRIST_FOLDED_IN   = 0.8333;
-    final double WRIST_FOLDED_OUT  = 0.5;
+    final double WRIST_FOLDED_OUT  = 0.15;
 
     final double FUDGE_FACTOR = 15 * ARM_TICKS_PER_DEGREE;
 
@@ -65,8 +65,8 @@ public class Blank_Slate_Code extends LinearOpMode {
 
         ((DcMotorEx) armMotor).setCurrentAlert(5,CurrentUnit.AMPS);
 
-        armMotor.setTargetPosition(0);
-        armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        //armMotor.setTargetPosition(0);
+        //armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         intake = hardwareMap.get(CRServo.class, "intake");

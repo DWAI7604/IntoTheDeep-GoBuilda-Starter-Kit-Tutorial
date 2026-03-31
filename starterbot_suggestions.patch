@@ -1,0 +1,152 @@
+From 46e05d468da37ba445479576a33543d113c19b14 Mon Sep 17 00:00:00 2001
+From: Adam McQueen <amcqueen@pps.net>
+Date: Fri, 9 Jan 2026 12:18:01 -0800
+Subject: [PATCH] Suggestions from Will/Drew
+
+Added a bunch of notes to the markdown drew and I came up with as we worked our way through it. Starting with wiring (McQueen and I started the process before)
+
+Drew also made some changes to the code itself.
+---
+ .../firstinspires/ftc/teamcode/Code_Here.java |  8 +++---
+ guide-to-programming.md                       | 28 ++++++++++++++++++-
+ 2 files changed, 31 insertions(+), 5 deletions(-)
+
+diff --git a/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Code_Here.java b/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Code_Here.java
+index 06650fd..ca177ee 100644
+--- a/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Code_Here.java
++++ b/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Code_Here.java
+@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.hardware.Servo;
+ import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
+ 
+ @TeleOp(name="Your Code", group="Robot")
+-public class Blank_Slate_Code extends LinearOpMode {
++public class Code_Here extends LinearOpMode {
+ 
+     public DcMotor  leftDrive   = null;
+     public DcMotor  rightDrive  = null;
+@@ -37,7 +37,7 @@ public class Blank_Slate_Code extends LinearOpMode {
+     final double INTAKE_DEPOSIT    =  0.5;
+ 
+     final double WRIST_FOLDED_IN   = 0.8333;
+-    final double WRIST_FOLDED_OUT  = 0.5;
++    final double WRIST_FOLDED_OUT  = 0.15;
+ 
+     final double FUDGE_FACTOR = 15 * ARM_TICKS_PER_DEGREE;
+ 
+@@ -65,8 +65,8 @@ public class Blank_Slate_Code extends LinearOpMode {
+ 
+         ((DcMotorEx) armMotor).setCurrentAlert(5,CurrentUnit.AMPS);
+ 
+-        armMotor.setTargetPosition(0);
+-        armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
++        //armMotor.setTargetPosition(0);
++        //armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+         armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+ 
+         intake = hardwareMap.get(CRServo.class, "intake");
+diff --git a/guide-to-programming.md b/guide-to-programming.md
+index df1b522..9398877 100644
+--- a/guide-to-programming.md
++++ b/guide-to-programming.md
+@@ -41,6 +41,8 @@ Thank you to the following
+ - [Section LAST ONE: Full Code Breakdown](#section-last-one-full-code-breakdown)
+ - [Resources](#resources)
+ 
++NOTE FROM WILL: Probably shouldn't have fake links
++
+ # **Prerequisites**
+ 
+ - A fully assembled GoBuilda Starter Kit from the 2024-2025 Into The Deep season, found at [https://www.gobilda.com/ftc-starter-kit-2024-2025-season/](https://www.gobilda.com/ftc-starter-kit-2024-2025-season/)  
+@@ -106,6 +108,8 @@ Ensure your GoBuilda Starter Kit is fully assembled according to the official as
+ - **Wrist servo** → Control Hub servo port
+ 
+ NOTE TO SELF: here there should be discussion of the different types of ports on the control hub AND the names of cords and such
++NOTE FROM DREW: Wiring instruction should be made. Should mention configuring servos.
++NOTE FROM WILL: Probably should mention to retighten any loose screws.
+ 
+ **Power:**
+ - **12V Battery** → Control Hub power port
+@@ -126,6 +130,8 @@ NOTE TO SELF: here there should be discussion of the different types of ports on
+    - Select your Control Hub's WiFi network (usually named something like "FTC-XXXX" where XXXX are numbers)
+    - Wait for the connection status to show green
+ 
++NOTE FROM DREW: Should mention that the password is always "password"
++
+ **✅ Verification:** If connected successfully, you should see the robot's name displayed in red text on the WiFi Settings page.
+ 
+ ### **4.2 Configure Hardware**
+@@ -138,7 +144,7 @@ NOTE TO SELF: here there should be discussion of the different types of ports on
+    - Touch "Control Hub"
+ 
+ NOTE TO SELF: i thought you named it at the end of the process?
+-
++NOTE FROM WILL: This feels weirdly discontinuous. Might want to rethink the partition in this secion.
+ ### **4.3 Configure Motors**
+ 1. **Access Motors**: Touch "Motors" to access the motor configuration screen
+ 2. **Configure Drive Motors**:
+@@ -153,7 +159,9 @@ NOTE TO SELF: i thought you named it at the end of the process?
+    - Name it exactly `left_arm`
+    - Touch "Done"
+ 
++NOTE FROM WILL: IMO these names are cumbersome.
+ NOTE TO SELF: i don't think it's "DC Motor" in the list? I think it's dependant on the motor type: same goes for the servo section below
++NOTE FROM WILL: Starterbots are built with 5203 Motors
+ 
+ ### **4.4 Configure Servos**
+ 1. **Access Servos**: Touch "Servos" to access the servo configuration screen
+@@ -188,6 +196,11 @@ NOTE TO SELF: i don't think it's "DC Motor" in the list? I think it's dependant
+ 3. **Wait for connection**: The robot should appear as a connected device at the top of Android Studio
+    - Look for the device name in the device dropdown (usually shows as something like "Control Hub")
+ 
++NOTE FROM DREW: Will not work with any other usb combination. People using macbooks need an adapter.
++NOTE FROM WILL: Probably should describe the device once it plugs in. It shows up as a file, but has a little phone icon. 
++NOTE FROM WILL: Another weird discontinuity imo. 
++NOTE FROM WILL: Photos/gifs would work great here this is not intuitive.
++
+ ### **5.2 Deploy the Code**
+ 1. **Click the green "Run" button** (play icon) in Android Studio
+ 2. **Wait for the build process**:
+@@ -197,6 +210,10 @@ NOTE TO SELF: i don't think it's "DC Motor" in the list? I think it's dependant
+ 3. **Disconnect the USB cable** once installation is complete
+ 4. **Verify success**: If no error messages appeared, the code installed correctly!
+ 
++NOTE FROM WILL: Should mention that it might be a replay icon.
++NOTE FROM WILL: Should mention that it might disconnect and if it does, unplug it and plug it back in. And turn the motor controller on and off again. 
++NOTE FROM WILL: Mention that this build should take ~15 seconds, if it takes longer you should restart it.
++
+ **💡 Troubleshooting**: If you get errors, check that the Control Hub is powered and properly connected via USB.
+ 
+ ## **Step 6: Test Drive**
+@@ -208,6 +225,10 @@ NOTE TO SELF: i don't think it's "DC Motor" in the list? I think it's dependant
+    - The Driver Hub should automatically detect and connect to the Control Hub
+    - Look for a green connection indicator
+ 
++NOTE FROM DREW: Look for a green connection indicator *on control hub*
++NOTE FROM WILL: Another wierd discontinuity. Also The app would've been open this whole time. I got a little confused when it asked me to open it again
++NOTE FROM WILL: Never tell me to plug in a controller
++
+ ### **6.2 Select and Run Your Program**
+ 1. **Select your TeleOp program**:
+    - On the left side of Driver Station, find two dropdown arrows
+@@ -217,6 +238,9 @@ NOTE TO SELF: i don't think it's "DC Motor" in the list? I think it's dependant
+ 2. **Initialize**: Press the **"INIT"** button
+ 3. **Start**: Press the **"▶ START"** button when ready
+ 
++NOTE FROM WILL: Should probably mention that people will get the config wrong and to double check in the case of those errors.
++NOTE FROM DREW: Should init the controllers (start + a) before init the program.
++
+ ### **6.3 Test Robot Controls**
+ 
+ #### **Drive Controls (Joysticks)**
+@@ -252,6 +276,8 @@ NOTE TO SELF: i don't think it's "DC Motor" in the list? I think it's dependant
+ - **Arm positions**: Arm should move to distinct positions when buttons are pressed
+ - **Intake operation**: Listen for intake motor spinning when activated
+ 
++NOTE FROM WILL: Note that because the wrist servo snaps into position on boot, people should be careful around the robot. Also in general be careful around the robot (especially for people used to lego).
++
+ # **Section 1: Telemetry**
+ 
+ ## **What is telemetry?**
+-- 
+2.52.0.windows.1
+

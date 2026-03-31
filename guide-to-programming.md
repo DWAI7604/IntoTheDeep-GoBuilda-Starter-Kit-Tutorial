@@ -16,29 +16,58 @@ Disclaimer: I have heavily utilized copilot in the process of making this docume
 
 However, I am proof reading and editing everything created, and my lovely editors also helped to double check everything.
 
-Thank you to the following
-- Trask Stalnaker, my lovely dad, for helping make this easily understandable
-- add other proof readers and such
-
 # **Table of Contents**
 
 - [Prerequisites](#prerequisites)
 - [Section 0: Set Up](#section-0-set-up)
   - [Step 1: Install Required Software](#step-1-install-required-software)
+    - [1.1 Install GitHub Desktop](#11-install-github-desktop)
+    - [1.2 Install Android Studio](#12-install-android-studio)
   - [Step 2: Get the Custom FTC Robot Controller Code](#step-2-get-the-custom-ftc-robot-controller-code)
+    - [2.1 Clone the Repository with GitHub Desktop](#21-clone-the-repository-with-github-desktop)
+    - [2.2 Open the Project in Android Studio](#22-open-the-project-in-android-studio)
   - [Step 3: Wiring the Robot](#step-3-wiring-the-robot)
+    - [3.1 Physical Assembly](#31-physical-assembly)
   - [Step 4: Configuring the Driver Hub](#step-4-configuring-the-driver-hub)
+    - [4.1 Connect Driver Hub to Robot](#41-connect-driver-hub-to-robot)
+    - [4.2 Configure Hardware](#42-configure-hardware)
+    - [4.3 Configure Motors](#43-configure-motors)
+    - [4.4 Configure Servos](#44-configure-servos)
+    - [4.5 Save Configuration](#45-save-configuration)
   - [Step 5: Installing the Code on the Control Hub](#step-5-installing-the-code-on-the-control-hub)
+    - [5.1 Power and Connect the Robot](#51-power-and-connect-the-robot)
+    - [5.2 Deploy the Code](#52-deploy-the-code)
   - [Step 6: Test Drive](#step-6-test-drive)
+    - [6.1 Initial Setup](#61-initial-setup)
+    - [6.2 Select and Run Your Program](#62-select-and-run-your-program)
+    - [6.3 Test Robot Controls](#63-test-robot-controls)
+    - [6.4 What to Observe](#64-what-to-observe)
 - [Section 1: Telemetry](#section-1-telemetry)
-  - [What is Telemetry?](#what-is-telemetry)
+  - [What is telemetry?](#what-is-telemetry)
   - [Telemetry in the Code](#telemetry-in-the-code)
   - [Try It Out! Adding Custom Telemetry](#try-it-out-adding-custom-telemetry)
-- [Section 2: Drive Train](#section-2-drive-train)
+- [Section 2: The Drive Train](#section-2-the-drive-train)
+  - [What is Arcade Drive?](#what-is-arcade-drive)
+  - [Drive Train in the Code](#drive-train-in-the-code)
+  - [Try It Out! Experimenting with Drive Controls](#try-it-out-experimenting-with-drive-controls)
 - [Section 3: The Arm](#section-3-the-arm)
+  - [What is Arm Control?](#what-is-arm-control)
+  - [Understanding the Arm System](#understanding-the-arm-system)
+  - [Arm Control in the Code](#arm-control-in-the-code)
+  - [Try It Out! Experimenting with Arm Control](#try-it-out-experimenting-with-arm-control)
+  - [Understanding Coordinated Motion](#understanding-coordinated-motion)
+  - [Understanding the Bigger Picture](#understanding-the-bigger-picture)
 - [Section 4: Encoder Drive](#section-4-encoder-drive)
+  - [What is Encoder Drive?](#what-is-encoder-drive)
+  - [Understanding Encoders](#understanding-encoders)
+  - [Understanding Autonomous Mode](#understanding-autonomous-mode)
+  - [Encoder Drive in the Code](#encoder-drive-in-the-code)
+  - [Try It Out! Building Your First Autonomous](#try-it-out-building-your-first-autonomous)
+  - [Understanding the Bigger Picture](#understanding-the-bigger-picture-1)
 - [Section 5: Next Steps](#section-5-next-steps)
 - [Section LAST ONE: Full Code Breakdown](#section-last-one-full-code-breakdown)
+  - [How to use this section](#how-to-use-this-section)
+  - [Breakdown](#breakdown)
 - [Resources](#resources)
 
 # **Prerequisites**
@@ -93,23 +122,7 @@ Thank you to the following
 
 ## **Step 3: Wiring the Robot**
 
-### **3.1 Physical Assembly**
-Ensure your GoBuilda Starter Kit is fully assembled according to the official assembly instructions. The basic wiring connections should include:
-
-**Drive Motors:**
-- **Left drive motor** → Control Hub motor port (note which port number)
-- **Right drive motor** → Control Hub motor port (note which port number)
-
-**Arm System:**
-- **Arm motor** → Control Hub motor port
-- **Intake servo** → Control Hub servo port
-- **Wrist servo** → Control Hub servo port
-
-NOTE TO SELF: here there should be discussion of the different types of ports on the control hub AND the names of cords and such
-
-**Power:**
-- **12V Battery** → Control Hub power port
-- Ensure all connections are secure and the battery is charged
+Note to others: i'm not writing wiring instructions when i never did wiring
 
 **💡 Important:** Take note of which port numbers your motors and servos are connected to - you'll need this information for configuration!
 
@@ -124,38 +137,40 @@ NOTE TO SELF: here there should be discussion of the different types of ports on
    - Tap **Pair With Robot Controller**
    - Tap **WiFi Settings**
    - Select your Control Hub's WiFi network (usually named something like "FTC-XXXX" where XXXX are numbers)
+   - Enter the password, "password", which is the default for the WiFi
    - Wait for the connection status to show green
 
 **✅ Verification:** If connected successfully, you should see the robot's name displayed in red text on the WiFi Settings page.
 
-### **4.2 Configure Hardware**
+### **4.2 Configure Hardware and Motors**
 1. **Access Robot Controller**: On the Driver Hub, open the "FTC Robot Controller" app
 2. **Start Configuration**:
    - Touch the three dots (⋮) in the upper right corner
    - Select "Configure Robot"
-   - If no configuration exists, touch "New" and give it a name (e.g., "GoBuilda Starter Kit")
+   - If no configuration exists, touch "New"
    - Touch "Control Hub Portal"
    - Touch "Control Hub"
-
-NOTE TO SELF: i thought you named it at the end of the process?
-
-### **4.3 Configure Motors**
-1. **Access Motors**: Touch "Motors" to access the motor configuration screen
-2. **Configure Drive Motors**:
+3. **Access Motors**: Touch "Motors" to access the motor configuration screen
+4. **Configure Drive Motors**:
    - Touch the port number where your left drive motor is connected
    - Select "DC Motor" from the list
    - Name it exactly `left_front_drive` (this must match the code)
    - Touch "Done"
    - Repeat for the right drive motor, naming it exactly `right_front_drive`
-3. **Configure Arm Motor**:
+5. **Configure Arm Motor**:
    - Touch the port number where your arm motor is connected
    - Select "DC Motor" from the list  
    - Name it exactly `left_arm`
    - Touch "Done"
 
-NOTE TO SELF: i don't think it's "DC Motor" in the list? I think it's dependant on the motor type: same goes for the servo section below
+### **4.3 Configure Servos**
 
-### **4.4 Configure Servos**
+NOTE FROM WILL: IMO these names are cumbersome.
+NOTE TO WILL: which names u gotta be specific
+
+NOTE TO SELF: i don't think it's "DC Motor" in the list? I think it's dependant on the motor type: same goes for the servo section below
+NOTE FROM WILL: Starterbots are built with 5203 Motors
+
 1. **Access Servos**: Touch "Servos" to access the servo configuration screen
 2. **Configure Intake**:
    - Touch the port number where your intake servo is connected
@@ -168,8 +183,8 @@ NOTE TO SELF: i don't think it's "DC Motor" in the list? I think it's dependant 
    - Name it exactly `wrist`
    - Touch "Done"
 
-### **4.5 Save Configuration**
-1. **Save**: Touch "Save" to save your configuration
+### **4.4 Save Configuration**
+1. **Save**: Touch "Save" to save your configuration and name your config (e.g., "GoBuilda Starter Kit")
 2. **Activate**: Make sure your new configuration is selected as the active configuration
 
 **⚠️ Critical:** In the future when you're coding, the device names in your configuration MUST exactly match the names in your code (this is preset in the given code):
@@ -185,19 +200,37 @@ NOTE TO SELF: i don't think it's "DC Motor" in the list? I think it's dependant 
 2. **Connect via USB cable**: 
    - Plug USB-C end into the Control Hub on the robot
    - Plug USB-A end into your laptop/computer
+   - If using a macbook, an adaptor is needed as this cable must go from USB-C to USB-A
 3. **Wait for connection**: The robot should appear as a connected device at the top of Android Studio
    - Look for the device name in the device dropdown (usually shows as something like "Control Hub")
 
+NOTE FROM WILL: Probably should describe the device once it plugs in. It shows up as a file, but has a little phone icon. 
+NOTE TO WILL: this doesn't happen on my windows laptop so idk what u want me to say
+
+NOTE FROM WILL: Another weird discontinuity imo. 
+
+NOTE FROM WILL: Photos/gifs would work great here this is not intuitive.
+
 ### **5.2 Deploy the Code**
-1. **Click the green "Run" button** (play icon) in Android Studio
-2. **Wait for the build process**:
+1. **Click the green "Run" button** in Android Studio
+   - This is typically a play icon (▶) but may appear as a replay icon (↻) depending on your Android Studio version
+2. **Wait for the build process** (should take approximately 15 seconds):
    - First notification: "Build finished" 
    - Second notification: "Install finished"
    - ⚠️ **Important**: Wait for BOTH notifications before proceeding
-3. **Disconnect the USB cable** once installation is complete
-4. **Verify success**: If no error messages appeared, the code installed correctly!
+   - If the build takes  longer than 60 seconds, consider restarting the process
+3. **Handle connection issues** (if applicable):
+   - If the connection drops during installation, unplug the USB cable and plug it back in
+   - Retry the deployment process
+4. **Disconnect the USB cable** once installation is complete
+   - ⚠️ **Important**: Wait for "Install finished" message, not "Build finished" message, to unplug
+5. **Verify success**: If no error messages appeared, the code installed correctly!
 
-**💡 Troubleshooting**: If you get errors, check that the Control Hub is powered and properly connected via USB.
+**💡 Troubleshooting**: If you get errors, verify that:
+- The Control Hub is powered on and connected
+- The USB cable is properly seated at both ends
+- You waited for both "Build finished" and "Install finished" notifications
+- If problems persist, restart Android Studio and try again
 
 ## **Step 6: Test Drive**
 
@@ -208,6 +241,10 @@ NOTE TO SELF: i don't think it's "DC Motor" in the list? I think it's dependant 
    - The Driver Hub should automatically detect and connect to the Control Hub
    - Look for a green connection indicator
 
+NOTE FROM DREW: Look for a green connection indicator *on control hub*
+NOTE FROM WILL: Another wierd discontinuity. Also The app would've been open this whole time. I got a little confused when it asked me to open it again
+NOTE FROM WILL: Never tell me to plug in a controller
+
 ### **6.2 Select and Run Your Program**
 1. **Select your TeleOp program**:
    - On the left side of Driver Station, find two dropdown arrows
@@ -216,6 +253,9 @@ NOTE TO SELF: i don't think it's "DC Motor" in the list? I think it's dependant 
    - Click the **right arrow** and select **"Your Code"**
 2. **Initialize**: Press the **"INIT"** button
 3. **Start**: Press the **"▶ START"** button when ready
+
+NOTE FROM WILL: Should probably mention that people will get the config wrong and to double check in the case of those errors.
+NOTE FROM DREW: Should init the controllers (start + a) before init the program.
 
 ### **6.3 Test Robot Controls**
 
@@ -251,6 +291,8 @@ NOTE TO SELF: i don't think it's "DC Motor" in the list? I think it's dependant 
 - **Telemetry data**: Watch the Driver Station screen for real-time data display
 - **Arm positions**: Arm should move to distinct positions when buttons are pressed
 - **Intake operation**: Listen for intake motor spinning when activated
+
+NOTE FROM WILL: Note that because the wrist servo snaps into position on boot, people should be careful around the robot. Also in general be careful around the robot (especially for people used to lego).
 
 # **Section 1: Telemetry**
 
