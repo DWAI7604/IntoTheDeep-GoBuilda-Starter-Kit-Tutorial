@@ -1,7 +1,5 @@
 # **Into The Deep: a guide to programming**
 
-## By Zoe Stalnaker
-
 # **Introduction**
 
 Hello! I'm the coder for 7604 for the 2025-2026 season, Decode. This instructional document was created for two purposes: to train future coders and to give builders basic programming knowledge.
