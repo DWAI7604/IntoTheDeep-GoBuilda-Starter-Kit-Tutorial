@@ -1,1605 +1,1623 @@
-## NOTICE
+# **Into The Deep: a guide to programming**
 
-This repository contains the public FTC SDK for the INTO THE DEEP (2024-2025) competition season.
+## By Zoe Stalnaker
 
-## Welcome!
-This is a fork of the offical FTC SDK for the 24-25 season. It includes the source code for the FTC SDK, as well as the example code for the 2024-2025 FTC goBILDA Starter Kit Robot: [https://www.gobilda.com/ftc-starter-bot-resource-guide-into-the-deep/](https://www.gobilda.com/ftc-starter-bot-resource-guide-into-the-deep/)
+# **Introduction**
 
-This repo includes the Java File for the example teleop opmode for the Starter Kit Robot.
+Hello! I'm the coder for 7604 for the 2025-2026 season, Decode. This instructional document was created for two purposes: to train future coders and to give builders basic programming knowledge.
 
-## How to use? 
-If you are already an Android Studio team, and are using git, you can add this repo as a git remote, and this will allow you to easily pull just the example file which this repo adds to the SDK. ConceptGoBildaStarterKitRobotTeleop_IntoTheDeep. You can add a remote to Android Studio by going to Git, then Manage Remotes in the navigation bar. Once you've added this Remote, click on the branch icon near the name of your curent project and find the new remote. There should be a branch called "Add-Starter-Robot-Code", select that, and select "Pull into (yourbranch) using merge". There may be a conflict with the readme file, just accept yours. And you'll be off to the races!
+This guide is intended to be readable for anyone, but is written with people who have vry basic programming knowledge. For those who know nothing about programming, there is an additional guide, programming-concepts, that will be linked to at the relevant points in order to learn the new concepts covered or gain a deeper knowledge!
 
-If you do not already have a github project for your team/season, you can clone this repository. Just make sure to note that only the branch titled "Add-Starter-Robot-Code" has the example file.
+Disclaimer: I have heavily utilized copilot in the process of making this document.
 
-If you would like to just download the driver files and example code, you can find them here: just click the download button in the top right and put this file in your teamcode folder.
+## Table of Contents
 
-### Direct link to example code:
-https://github.com/goBILDA-Official/FtcRobotController-Add-Starter-Kit-Code/blob/Add-Starer-Kit-Code/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/ConceptGoBildaStarterKitRobotTeleop_IntoTheDeep.java
+- [Prerequisites](#prerequisites)
+- [Section 0: Set Up](#section-0-set-up)
+- [Section 1: Telemetry](#section-1-telemetry)
+- [Section 2: The Drive Train](#section-2-the-drive-train)
+- [Section 3: The Arm](#section-3-the-arm)
+- [Section 4: Encoder Drive](#section-4-encoder-drive)
+- [Section 5: Next Steps](#section-5-next-steps)
+- [Resources](#resources)
 
-## Welcome!
-This GitHub repository contains the source code that is used to build an Android app to control a *FIRST* Tech Challenge competition robot.  To use this SDK, download/clone the entire project to your local computer.
+# **Prerequisites**
 
-## Requirements
-To use this Android Studio project, you will need Android Studio Ladybug (2024.2) or later.
+- A fully assembled GoBuilda Starter Kit from the 2024-2025 Into The Deep season, found at [https://www.gobilda.com/ftc-starter-kit-2024-2025-season/](https://www.gobilda.com/ftc-starter-kit-2024-2025-season/)  
+  - Assembly instructions: [https://www.gobilda.com/content/user\_manuals/starter-bot-assembly-instructions.min.pdf](https://www.gobilda.com/content/user_manuals/starter-bot-assembly-instructions.min.pdf)	  
 
-To program your robot in Blocks or OnBot Java, you do not need Android Studio.
 
-## Getting Started
-If you are new to robotics or new to the *FIRST* Tech Challenge, then you should consider reviewing the [FTC Blocks Tutorial](https://ftc-docs.firstinspires.org/programming_resources/blocks/Blocks-Tutorial.html) to get familiar with how to use the control system:
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[FTC Blocks Online Tutorial](https://ftc-docs.firstinspires.org/programming_resources/blocks/Blocks-Tutorial.html)
+# **Section 0: Set Up**
 
-Even if you are an advanced Java programmer, it is helpful to start with the [FTC Blocks tutorial](https://ftc-docs.firstinspires.org/programming_resources/blocks/Blocks-Tutorial.html), and then migrate to the [OnBot Java Tool](https://ftc-docs.firstinspires.org/programming_resources/onbot_java/OnBot-Java-Tutorial.html) or to [Android Studio](https://ftc-docs.firstinspires.org/programming_resources/android_studio_java/Android-Studio-Tutorial.html) afterwards.
+## **Step 1: Install Required Software**
 
-## Downloading the Project
-If you are an Android Studio programmer, there are several ways to download this repo.  Note that if you use the Blocks or OnBot Java Tool to program your robot, then you do not need to download this repository.
+### **1.1 Install Git**
 
-* If you are a git user, you can clone the most current version of the repository:
+1. Go to [https://git-scm.com/](https://git-scm.com/)  
+2. Download the installer for your operating system (Windows, Mac, or Linux)
+3. Run the installer and follow the setup wizard
+4. For most users, the default settings are fine
+5. Complete the installation
 
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;git clone https://github.com/FIRST-Tech-Challenge/FtcRobotController.git</p>
+**Note:** Git is the version control system that GitHub Desktop uses under the hood. You need this installed before GitHub Desktop will work properly.
 
-* Or, if you prefer, you can use the "Download Zip" button available through the main repository page.  Downloading the project as a .ZIP file will keep the size of the download manageable.
+### **1.2 Install GitHub Desktop**
 
-* You can also download the project folder (as a .zip or .tar.gz archive file) from the Downloads subsection of the [Releases](https://github.com/FIRST-Tech-Challenge/FtcRobotController/releases) page for this repository.
+1. Go to [https://desktop.github.com/](https://desktop.github.com/)  
+2. Download and install GitHub Desktop  
+3. When GitHub Desktop opens and asks you to sign in, click **"Skip this step"** or **"Continue without signing in"**  
+4. You can still clone public repositories without an account\!
 
-* The Releases page also contains prebuilt APKs.
+**Note:** You can always sign in later if you want to contribute back to the community or create your own repositories.
 
-Once you have downloaded and uncompressed (if needed) your folder, you can use Android Studio to import the folder  ("Import project (Eclipse ADT, Gradle, etc.)").
+### **1.3 Install Android Studio**
 
-## Getting Help
-### User Documentation and Tutorials
-*FIRST* maintains online documentation with information and tutorials on how to use the *FIRST* Tech Challenge software and robot control system.  You can access this documentation using the following link:
+1. Go to [https://developer.android.com/studio](https://developer.android.com/studio)  
+2. Download Android Studio  
+3. Run the installer and follow the setup wizard  
+4. When prompted, install the Android SDK and additional components
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[FIRST Tech Challenge Documentation](https://ftc-docs.firstinspires.org/index.html)
+---
 
-Note that the online documentation is an "evergreen" document that is constantly being updated and edited.  It contains the most current information about the *FIRST* Tech Challenge software and control system.
+## **Step 2: Get the Custom FTC Robot Controller Code**
 
-### Javadoc Reference Material
-The Javadoc reference documentation for the FTC SDK is now available online.  Click on the following link to view the FTC SDK Javadoc documentation as a live website:
+### **2.1 Clone the Repository with GitHub Desktop**
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[FTC Javadoc Documentation](https://javadoc.io/doc/org.firstinspires.ftc)
+1. Open GitHub Desktop  
+2. Click "Clone a repository from the Internet"  
+3. In the URL tab, paste: `https://github.com/fiverattack/FtcRobotController-IntoTheDeep-GoBuilda-Starter-Kit.git`  
+4. Choose where to save it on your computer (remember this location\!)  
+5. Click "Clone"
 
-### Online User Forum
-For technical questions regarding the Control System or the FTC SDK, please visit the FIRST Tech Challenge Community site:
+**Note:** Even without signing in, you can clone any public repository (like this FTC one). GitHub Desktop will download all the code to your computer.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[FIRST Tech Challenge Community](https://ftc-community.firstinspires.org/)
+### **2.2 Open the Project in Android Studio**
 
-### Sample OpModes
-This project contains a large selection of Sample OpModes (robot code examples) which can be cut and pasted into your /teamcode folder to be used as-is, or modified to suit your team's needs.
+1. Open Android Studio  
+2. Click "Open an Existing Project"  
+3. Navigate to where you cloned the repository  
+4. Select the `FtcRobotController-IntoTheDeep-GoBuilda-Starter-Kit` folder  
+5. Click "OK"  
+6. Android Studio will take a few minutes to load and sync the project
 
-Samples Folder: &nbsp;&nbsp; [/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples](FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples)
+## **Step 3: Wiring the Robot**
 
-The readme.md file located in the [/TeamCode/src/main/java/org/firstinspires/ftc/teamcode](TeamCode/src/main/java/org/firstinspires/ftc/teamcode) folder contains an explanation of the sample naming convention, and instructions on how to copy them to your own project space.
+### **3.1 Physical Assembly**
 
-# Release Information
+Before wiring, ensure your GoBuilda Starter Kit is fully assembled according to the official assembly instructions at [https://www.gobilda.com/ftc-starter-bot-resource-guide-into-the-deep/](https://www.gobilda.com/ftc-starter-bot-resource-guide-into-the-deep/). This section covers the electrical wiring connections.
 
-## Version 10.1.1 (20241102-092223)
+### **3.2 Understanding the REV Control Hub**
 
-### Breaking Changes
+Your robot's brain is the **REV Control Hub**, which has the following ports:
 
-* Support for Android Studio Ladybug.  Requires Android Studio Ladybug.  
+**Motor/Encoder Ports (0-3):** Four labeled ports for DC motors
+- Each port accepts motor power (2-position JST VH connector) and encoder data (4-position JST XH connector)
+- Labeled 0, 1, 2, and 3
 
-### Known Issues
+**Servo Ports (0-5):** Six labeled ports for servo controls
+- Each port accepts a 3-position servo connector (signal, power, ground)
+- Labeled 0, 1, 2, 3, 4, and 5
 
-* Android Studio Ladybug's bundled JDK is version 21.  JDK 21 has deprecated support for Java 1.8, and Ladybug will warn on this deprecation.
-  OnBotJava only supports Java 1.8, therefore, in order to ensure that software developed using Android Studio will 
-  run within the OnBotJava environment, the targetCompatibility and sourceCompatibility versions for the SDK have been left at VERSION_1_8.
-  FIRST has decided that until it can devote the resources to migrating OnBotJava to a newer version of Java, the deprecation is the 
-  lesser of two non-optimal situations.
+**Power Port:** One large connector for battery input
 
-### Enhancements
+**USB Port:** For code deployment and debugging
 
-* Added `toString()` method to Pose2D
-* Added `toString()` method to SparkFunOTOS.Pose2D
+### **3.3 Motor Wiring**
 
-## Version 10.1 (20240919-122750)
+The GoBuilda Starter Kit includes **4 motors total**:
+- **3x Drive Motors** (19.2:1 ratio, 312 RPM) - control the wheels
+- **1x Arm Motor** (50.9:1 ratio, 117 RPM) - controls the arm
 
-### Enhancements
-* Adds new OpenCV-based `VisionProcessor`s (which may be attached to a VisionPortal in either Java or Blocks) to help teams implement color processing via computer vision in the INTO THE DEEP game
-  * `ColorBlobLocatorProcessor` implements OpenCV color "blob" detection. A new sample program `ConceptVisionColorLocator` demonstrates its use.
-    * A choice is offered between pre-defined color ranges, or creating a custom one in RGB, HSV, or YCrCb color space
-    * The ability is provided to restrict detection to a specified Region of Interest on the screen
-    * Functions for applying erosion / dilation morphing to the threshold mask are provided
-    * Functions for sorting and filtering the returned data are provided
-  * `PredominantColorProcessor` allows using a region of the camera as a "long range color sensor" to determine the predominant color of that region. A new sample program `ConceptVisionColorSensor` demonstrates its use.
-    * The determined predominant color is selected from a discrete set of color "swatches", similar to the MINDSTORMS NXT color sensor
-  * Documentation on this Color Processing feature can be found here: https://ftc-docs.firstinspires.org/color-processing
-* Added Blocks sample programs for color sensors: RobotAutoDriveToLine and SensorColor.
-* Updated Self-Inspect to identify mismatched RC/DS software versions as a "caution" rather than a "failure."
-
-### Bug Fixes
-* Fixes [AngularVelocity conversion regression](https://github.com/FIRST-Tech-Challenge/FtcRobotController/issues/1070)
-
-## Version 10.0  (20240828-111152)
-
-### Breaking Changes
-* Java classes and Blocks for TensorFlow Object Detection have been removed.
-* `AngularVelocity.unit` which was of type `AngleUnit` has been renamed `AngularVelocity.angleUnit` of type `UnnormalizedAngleUnit`
-
-### Enhancements
-* Sample for REV Digital Indicator has been added - ConceptRevLED
-* Adds support for the [Sparkfun QWIIC LED Stick](https://www.sparkfun.com/products/18354)
-  * To connect it directly, you need this [cable](https://www.sparkfun.com/products/25596)
-* Adds ConceptLEDStick OpMode
-* Adds Blocks for colors black, blue, cyan, dkgray, gray, green, ltgray, magenta, red, white, and yellow.
-* Adds an "evaluate but ignore result" Block that executes the connected block and ignores the result. Allows you to call a function and ignore the return value.
-* Adds I2C driver for Maxbotix Maxsonar I2CXL sonar rangefinder
-* Adds Blocks for setPwmEnable, setPwmDisable, and isPwmEnabled for servos and CR servos.
-* In the Blocks editor: a \n in the ExportToBlocks annotation's comment field is displayed as a line break.
-* Telemetry has new method setNumDecimalPlaces
-* Telemetry now formats doubles and floats (not inside objects, just by themselves)
-* Adds support for the Limelight 3A.
-* Adds initial support for the REV Servo Hub
-  * Both the Robot Controller and Driver Station need to be updated to version 10.0 in order for Servo Hubs to be
-    configurable as Servo Hubs. If the app on either device is outdated, the Servo Hub will show up as an Expansion Hub,
-    and some functionality will not work as expected. You should wait to create a configuration that includes a Servo Hub
-    until both the Driver Station and Robot Controller apps have been updated to version 10.0.
-  * Updating the Servo Hub's firmware and changing its address can only be done using the REV Hardware Client at this time
-* Adds support for the REV 9-Axis IMU (REV-31-3332)
-  * The REV 9-Axis IMU is only supported by the [Universal IMU interface](https://ftc-docs.firstinspires.org/en/latest/programming_resources/imu/imu.html)
-  * Adds `Rev9AxisImuOrientationOnRobot` Java class.
-  * If you mentally substitute this IMU's I2C port for the Control Hub's USB ports, `RevHubOrientationOnRobot` is also compatible with this sensor
-  * Adds Blocks for Rev9AxisImuOrientationOnRobot, including RevHubImuOrientationOnRobot.xyzOrientation and  RevHubImuOrientationOnRobot.zyxOrientation.
-  * Adds Blocks samples SensorRev9AxisIMUOrthogonal and SensorRev9AxisIMUNonOrthogonal.
-* Improves Blocks support for RevHubImuOrientationOnRobot.
-  * Adds Blocks for RevHubImuOrientationOnRobot.xyzOrientation and  RevHubImuOrientationOnRobot.zyxOrientation.
-  * Adds Blocks samples SensorHubIMUOrthogonal (replaces SensorIMU) and SensorHubIMUNonOrthogonal.
-* Updates EasyOpenCV, AprilTag, OpenCV, and `libjpeg-turbo` versions
-* Adds Blocks for max and min that take two numbers.
-* Adds Blocks OpModes ConceptRevSPARKMini, RobotAutoDriveByEncoder, RobotAutoDriveByGyro, RobotAutoDriveByTime, RobotAutoDriveToAprilTagOmni, and RobotAutoDriveToAprilTagTank.
-* Two OpModes with the same name now automatically get renamed with the name followed by a "-" and the class name allowing them to both be on the device.
-* Shows the name of the active configuration on the Manage page of the Robot Controller Console
-* Updated AprilTag Library for INTO THE DEEP. Notably, `getCurrentGameTagLibrary()` now returns INTO THE DEEP tags.
-* Adds Blocks for Telemetry.setMsTransmissionInterval and Telemetry.getMsTransmissionInterval.
-* Adds Blocks sample SensorOctoQuad.
-
-### Bug Fixes
-* Fixes a bug where the RevBlinkinLedDriver Blocks were under Actuators in the Blocks editor toolbox. They are now Other Devices.
-* Fixes a bug where `Exception`s thrown in user code after a stop was requested by the Driver Station would be silently eaten
-* Fixed a bug where if you asked for `AngularVelocity` in a unit different than the device reported it in, it would normalize it between -PI and PI for radians, and -180 and 180 for degrees.
-
-## Version 9.2 (20240701-085519)
-
-### Important Notes
-* Java classes and Blocks for TensorFlow Object Detection have been deprecated and will be removed in Version 10.0.
-* The samples that use TensorFlow Object Detection have been removed.
-
-### Enhancements
-* Adds explanatory text to failed items on the inspection activities.  To view the explanatory text tap the red warning icon for a failed item.
-* In the Blocks editor: added a new kind of variable set block that sets the variable and also returns the new value.
-* Changes the way that camera controls behave for a SwitchableCamera. Now, each method (such as getExposure, getMinExposure, getMaxExposure, setExposure for ExposureControl) acts on the currently active camera.
-* Adds support for the REV USB PS4 Compatible Gamepad (REV-31-2983)
-* Adds ConceptAprilTagMultiPortal OpMode
-* Adds support for OctoQuad Quadrature Encoder & Pulse Width Interface Module
-* Adds the ExportAprilTagLibraryToBlocks annotation that indicates that a static method that returns an AprilTagLibrary is exported to the Blocks programming environment. The corresponding block will appear in the Blocks toolbox along with the built-in tag libraries.
-* Adds Blocks OpMode ConceptAprilTagOptimizeExposure.
-* Adds support for the SparkFun Optical Tracking Odometry sensor.
-
-### Bug Fixes
-* Fixes https://github.com/FIRST-Tech-Challenge/FtcRobotController/issues/942 where visionPortal.close() can cause an IndexOutOfBoundsError.
-* Fixes a bug in the blocks editor where collapsed function blocks show a warning "Collapsed blocks contain warnings." when the Blocks OpMode is reopened.
-* Fixes a bug where the blocks editor wouldn't warn you that you have unsaved changes when you try to leave. This bug was introduced due to a behavior change in Chrome 119.
-* [Issue #764](https://github.com/FIRST-Tech-Challenge/FtcRobotController/issues/764) - Get gain control returns a null pointer for a switchable camera
-* Fixes a bug where the correct deadzone for certain gamepads was not applied when Advanced Gamepad Features was enabled
-
-## Version 9.1 (20240215-115542)
-
-### Enhancements
-* Fixes a problem with Blocks: if the user closes a Block's warning balloon, it will still be closed next time the project is opened in the Blocks editor.
-* In the Blocks editor, an alert concerning missing hardware devices is not shown if all the Blocks that use the missing hardware devices are disabled.
-* Adds Blocks to support comparing property values CRServo.Direction, DCMotor.Direction, DCMotor.Mode, DCMotor.ZeroPowerBehavior, DigitalChannel.Mode, GyroSensor.HeadingMode, IrSeekerSensor.Mode, and Servo.Direction, to the corresponding enum Block.
-* Improves OnBotJava auto-import to correctly import classes when used in certain situations.
-* Improves OnBotJava autocomplete to provide better completion options in most cases.
-  * This fixes an issue where autocomplete would fail if a method with two or more formal parameters was defined.
-* In OnBotJava, code folding support was added to expand and collapse code sections
-* In OnBotJava, the copyright header is now automatically collapsed loading new files
-* For all Blocks OpMode samples, intro comments have been moved to the RunOpMode comment balloon.
-* The Clean up Blocks command in the Blocks editor now positions function Blocks so their comment balloons don't overlap other function Blocks.
-* Added Blocks OpMode sample SensorTouch.
-* Added Java OpMode sample SensorDigitalTouch.
-* Several improvements to VisionPortal
-  * Adds option to control whether the stream is automatically started following a `.build()` call on a VisionPortal Builder
-  * Adds option to control whether the vision processing statistics overlay is rendered or not
-  * VisionPortals now implement the `CameraStreamSource` interface, allowing multiportal users to select which portal is routed to the DS in INIT by calling CameraStreamServer.getInstance().setSource(visionPortal). Can be selected via gamepad, between Camera Stream sessions.
-  * Add option to `AprilTagProcessor` to suppress calibration warnings
-  * Improves camera calibration warnings
-    * If a calibration is scaled, the resolution it was scaled from will be listed
-    * If calibrations exist with the wrong aspect ratio, the calibrated resolutions will be listed
-  * Fixes race condition which caused app crash when calling `stopStreaming()` immediately followed by `close()` on a VisionPortal
-  * Fixes IllegalStateException when calling `stopStreaming()` immediately after building a VisionPortal
-  * Added FTC Blocks counterparts to new Java methods:
-    * VisionPortal.Builder.setAutoStartStreamOnBuild
-    * VisionPortal.Builder.setShowStatsOverlay
-    * AprilTagProcessor.Builder.setSuppressCalibrationWarnings
-    * CameraStreamServer.setSource​
-
-### Bug Fixes
-* Fixes a problem where OnBotJava does not apply font size settings to the editor.
-* Updates EasyOpenCV dependency to v1.7.1
-  * Fixes inability to use EasyOpenCV CameraFactory in OnBotJava
-  * Fixes entire RC app crash when user pipeline throws an exception
-  * Fixes entire RC app crash when user user canvas annotator throws an exception
-  * Use the modern stacktrace display when handling user exceptions instead of the legacy ESTOP telemetry message
-
-## Version 9.0.1 (20230929-083754)
-
-### Enhancements
-* Updates AprilTag samples to include Decimation and additional Comments.  Also corrects misleading tag ID warnings
-* Increases maximum size of Blocks inline comments to 140 characters
-* Adds Blocks sample BasicOmniOpMode.
-* Updated CENTERSTAGE library AprilTag orientation quaternions
-    * Thanks [@FromenActual](https://github.com/FromenActual)
-* Updated Java Sample ConceptTensorFlowObjectDetection.java to include missing elements needed for custom model support.
-
-### Bug Fixes
-* Fixes a problem where after October 1 the Driver Station will report as obsolete on v9.0 and prompt the user to update.
-
-## Version 9.0 (20230830-154348)
-
-### Breaking Changes
-* Removes Vuforia
-* Fields in `AprilTagDetection` and `AprilTagPose(ftc/raw)` objects are now `final`
-* VisionPortal builder method `setCameraMonitorViewId()` has been renamed to `setLiveViewContainerId()` and `enableCameraMonitoring()` has been renamed to `enableLiveView()`
-
-### Enhancements
-* Adds support for the DFRobot HuskyLens Vision Sensor.
-* Blocks teams can now perform webcam calibration.
-    * Added a Block for System.currentTimeMillis (under Utilities/Time)
-    * Added a Block for VisionPortal.saveNextFrameRaw (under Vision/VisionPortal)
-    * Added a new sample Blocks OpMode called UtilityCameraFrameCapture.
-* The RobotDriveByGyro sample has been updated to use the new universal IMU interface.  It now supports both IMU types.
-* Removed some error-prone ElapsedTime Blocks from the Blocks editor's toolbox. This is not a
-  breaking change: old Blocks OpModes that use these Blocks will still function, both in the
-  Blocks editor and at runtime.
-* Standardizes on the form "OpMode" for the term OpMode.
-    * The preferred way to refer to OpModes that specifically extend `LinearOpMode` (including Blocks OpModes) is "linear OpMode".
-    * The preferred way to refer to OpModes that specifically extend `OpMode` directly is "iterative OpMode".
-* Overhauls `OpMode` and `LinearOpMode` Javadoc comments to be easier to read and include more detail.
-* Makes minor enhancements to Java samples
-    * Javadoc comments in samples that could be rendered badly in Android Studio have been converted to standard multi-line comments
-    * Consistency between samples has been improved
-    * The SensorDigitalTouch sample has been replaced with a new SensorTouch sample that uses the `TouchSensor` interface instead of `DigitalChannel`.
-    * The ConceptCompassCalibration, SensorMRCompass, and SensorMRIRSeeker samples have been deleted, as they are not useful for modern FTC competitions.
-
-### Bug Fixes
-* Fixes a bug which prevented PlayStation gamepads from being used in bluetooth mode. Bluetooth is NOT legal for competition but may be useful to allow a DS device to be used while charging, or at an outreach event.
-* Fixes a bug where a Blocks OpMode's Date Modified value can change to December 31, 1969, if the Control Hub is rebooted while the Blocks OpMode is being edited.
-* Fixes the automatic TeleOp preselection feature (was broken in 8.2)
-* Fixes a bug where passing an integer number such as 123 to the Telemetry.addData block that takes a number shows up as 123.0 in the telemetry.
-* Fixes OnBotJava autocomplete issues:
-  * Autocomplete would incorrectly provide values for the current class when autocompleting a local variable
-  * `hardwareMap` autocomplete would incorrectly include lambda class entries
-* Fixes OnBotJava not automatically importing classes.
-* Fixes OnBotJava tabs failing to close when their file is deleted.
-* Fixes a project view refresh not happening when a file is renamed in OnBotJava.
-* Fixes the "Download" context menu item for external libraries in the OnBotJava interface.
-* Fixes issue where Driver Station telemetry would intermittently freeze when set to Monospace mode.
-* Fixes performance regression for certain REV Hub operations that was introduced in version 8.2.
-* Fixes TagID comparison logic in DriveToTag samples.
-
-## Version 8.2 (20230707-131020)
-
-### Breaking Changes
-* Non-linear (iterative) OpModes are no longer allowed to manipulate actuators in their `stop()` method. Attempts to do so will be ignored and logged.
-  * When an OpMode attempts to illegally manipulate an actuator, the Robot Controller will print a log message
-    including the text `CANCELLED_FOR_SAFETY`.
-  * Additionally, LinearOpModes are no longer able to regain the ability to manipulate actuators by removing their
-    thread's interrupt or using another thread.
-* Removes support for Android version 6.0 (Marshmallow). The minSdkVersion is now 24.
-* Increases the Robocol version.
-  * This means an 8.2 or later Robot Controller or Driver Station will not be able to communicate with an 8.1 or earlier Driver Station or Robot Controller.
-  * If you forget to update both apps at the same time, an error message will be shown explaining which app is older and should be updated.
-* FTC_FieldCoordinateSystemDefinition.pdf has been moved.  It is still in the git history, but has been removed from the git snapshot corresponding with the 8.2 tag.  The official version now lives at [Field Coordinate System](https://ftc-docs.firstinspires.org/field-coordinate-system).
-* `LynxUsbDevice.addConfiguredModule()` and `LynxUsbDevice.getConfiguredModule()` have been replaced with `LynxUsbDevice.getOrAddModule()`.
-* Old Blocks for Vuforia and TensorFlow Object Detection are obsolete and have been removed from the
-  Blocks editor's toolbox. Existing Blocks OpModes that contain the old Blocks for Vuforia or
-  TensorFlow Object Detection can be opened in the Blocks editor, but running them will not work.
-
-### New features
-* Adds new `VisionPortal` API for computer vision
-    * **This API may be subject to change for final kickoff release!**
-    * Several new samples added.
-    * Adds support for detecting AprilTags.
-    * `VisionPortal` is the new entry point for both AprilTag and TFOD processing.
-    * Vuforia will be removed in a future release.
-    * Updated TensorFlow dependencies.
-    * Added support for webcam camera controls to blocks.
-    * The Blocks editor's toolbox now has a Vision category, directly above the Utilities category.
-* Related documentation for associated technologies can be found at
-    * [AprilTag Introduction](https://ftc-docs.firstinspires.org/apriltag-intro)
-    * [AprilTag SDK Guide](https://ftc-docs.firstinspires.org/apriltag-sdk)
-    * [AprilTag Detection Values](https://ftc-docs.firstinspires.org/apriltag-detection-values)
-    * [AprilTag Test Images](https://ftc-docs.firstinspires.org/apriltag-test-images)
-    * [Camera Calibration](https://ftc-docs.firstinspires.org/camera-calibration)
-* Adds Driver Station support for Logitech Dual Action and Sony PS5 DualSense gamepads.
-    * This **does not** include support for the Sony PS5 DualSense Edge gamepad.
-    * Always refer to Game Manual 1 to determine gamepad legality in competition.
-* Adds support for MJPEG payload streaming to UVC driver (external JPEG decompression routine required for use).
-* Shows a hint on the Driver Station UI about how to bind a gamepad when buttons are pressed or the sticks are moved on an unbound gamepad.
-* Adds option for fullscreening "Camera Stream" on Driver Station.
-* OnBotJava source code is automatically saved as a ZIP file on every build with a rolling window of the last 30 builds kept; allows recovering source code from previous builds if code is accidentally deleted or corrupted.
-* Adds support for changing the addresses of Expansion Hubs that are not connected directly via USB.
-  * The Expansion Hub Address Change screen now has an Apply button that changes the addresses without leaving the screen.
-  * Addresses that are assigned to other hubs connected to the same USB connection or Control Hub are no longer able to be selected.
-* Increases maximum size of Blocks inline comments to 100 characters
-* Saves position of open Blocks comment balloons
-* Adds new AprilTag Driving samples:  RobotDriveToAprilTagTank & RobotDriveToAprilTagOmni
-* Adds Sample to illustrate optimizing camera exposure for AprilTags: ConceptAprilTagOptimizeExposure
-
-### Bug Fixes
-* Corrects inspection screen to report app version using the SDK version defined in the libraries instead of the version specified in `AndroidManifest.xml`. This corrects the case where the app could show matching versions numbers to the user but still state that the versions did not match.
-  * If the version specified in `AndroidManifest.xml` does not match the SDK version, an SDK version entry will be displayed on the Manage webpage.
-* Fixes no error being displayed when saving a configuration file with duplicate names from the Driver Station.
-* Fixes a deadlock in the UVC driver which manifested in https://github.com/OpenFTC/EasyOpenCV/issues/57.
-* Fixes a deadlock in the UVC driver that could occur when hot-plugging cameras.
-* Fixes UVC driver compatibility with Arducam OV9281 global shutter camera.
-* Fixes Emergency Stop condition when an OnBotJava build with duplicate OpMode names occurs.
-* Fixes known causes of "Attempted use of a closed LynxModule instance" logspam.
-* Fixes the visual identification LED pattern when configuring Expansion Hubs connected via RS-485.
-
-## Version 8.1.1 (20221201-150726)
-
-This is a bug fix only release to address the following four issues.
-
-* [Issue #492](https://github.com/FIRST-Tech-Challenge/FtcRobotController/issues/492) - Can't create new blocks opmodes.
-* [Issue #495](https://github.com/FIRST-Tech-Challenge/FtcRobotController/issues/495) - Remove the final modifier from the OpMode's Telemetry object.
-* [Issue #500](https://github.com/FIRST-Tech-Challenge/FtcRobotController/issues/500) - Some devices cannot be configured when the Driver Station app has been updated to 8.1
-  * Updating either the Robot Controller app or the Driver Station app to 8.1.1 or later will fix this issue.
-* The Modern Robotics touch sensor was configurable as a  Digital Device. It can only be used as an Analog Device.
-
-## Version 8.1 (20221121-115119)
-
-### Breaking Changes
-* Deprecates the `OpMode` fields `msStuckDetectInit`, `msStuckDetectInitLoop`, `msStuckDetectStart`, `msStuckDetectLoop`, and `msStuckDetectStop`.
-    * OpModes no longer have a time limit for `init()`, `init_loop()`, `start()` or `loop()`, so the fields corresponding to those methods are no longer used.
-    * `stop()` still has a time limit, but it is now hardcoded to be 1 second, and cannot be changed using `msStuckDetectStop`.
-* Deprecates the `OpMode` methods `internalPreInit()`, `internalPostInitLoop()`, and `internalPostLoop()`.
-    * Iterative `OpMode`s will continue to call these methods in case they were overridden.
-    * These methods will not be called at all for `LinearOpMode`s.
-* Deprecates (and stops respecting) `DeviceProperties.xmlTagAliases`.
-
-### Enhancements
-* Adds a new `IMU` interface to Blocks and Java that can be used with both the original BNO055 IMU
-  included in all older Control Hubs and Expansion Hubs, and the new alternative BHI260AP IMU.
-  * You can determine which type of IMU is in your Control Hub by navigating to the Manage page of the web interface.
-  * To learn how to use the new `IMU` interface, see https://ftc-docs.firstinspires.org/programming_resources/imu/imu.html. The `SensorIMU` Blocks sample was also updated to use the new `IMU` interface, and the following Java samples were added:
-    * `SensorIMUOrthogonal`
-      * Use this sample if your REV Hub is mounted so that it is parallel or perpendicular to the
-        bottom of your robot.
-    * `SensorIMUNonOrthogonal`
-      * Use this sample if your REV Hub is mounted to your robot in any other orientation
-    * `ConceptExploringIMUOrientations`
-      * This OpMode is a tool to help you understand how the orthogonal orientations work, and
-        which one applies to your robot.
-  * The BHI260AP IMU can only be accessed via the new `IMU` interface. The BNO055 IMU can be
-    programmed using the new `IMU` interface, or you can continue to program it using the old `BNO055IMU`
-    interface. If you want to be able to quickly switch to a new Control Hub that may contain the
-    BHI260AP IMU, you should migrate your code to use the new `IMU` interface.
-  * Unlike the old `BNO055IMU` interface, which only worked correctly when the REV Hub was mounted flat
-    on your robot, the `IMU` interface allows you to specify the orientation of the REV Hub on your
-    robot. It will account for this, and give you your orientation in a Robot Coordinate System,
-    instead of a special coordinate system for the REV Hub. As a result, your pitch and yaw will be
-    0 when your *robot* is level, instead of when the REV Hub is level, which will result in much
-    more reliable orientation angle values for most mounting orientations.
-  * Because of the new robot-centric coordinate system, the pitch and roll angles returned by the
-    `IMU` interface will be different from the ones returned by the `BNO055IMU` interface. When you are
-    migrating your code, pay careful attention to the documentation.
-  * If you have calibrated your BNO055, you can provide that calibration data to the new `IMU`
-    interface by passing a `BNO055IMUNew.Parameters` instance to `IMU.initialize()`.
-  * The `IMU` interface is also suitable for implementation by third-party vendors for IMUs that
-    support providing the orientation in the form of a quaternion.
-* Iterative `OpMode`s (as opposed to `LinearOpMode`s) now run on a dedicated thread.
-    * Cycle times should not be as impacted by everything else going on in the system.
-    * Slow `OpMode`s can no longer increase the amount of time it takes to process network commands, and vice versa.
-    * The `init()`, `init_loop()`, `start()` and `loop()` methods no longer need to return within a certain time frame.
-* BNO055 IMU legacy driver: restores the ability to initialize in one OpMode, and then have another OpMode re-use that
-  initialization. This allows you to maintain the 0-yaw position between OpModes, if desired.
-* Allows customized versions of device drivers in the FTC SDK to use the same XML tag.
-  * Before, if you wanted to customize a device driver, you had to copy it to a new class _and_ give
-    it a new XML tag. Giving it a new XML tag meant that to switch which driver was being used, you
-    had to modify your configuration file.
-  * Now, to use your custom driver, all you have to do is specify your custom driver's class when
-    calling `hardwareMap.get()`. To go back to the original driver, specify the original driver
-    class. If you specify an interface that is implemented by both the original driver and the
-    custom driver, there is no guarantee about which implementation will be returned.
-
-### Bug Fixes
-* Fixes accessing the "Manage TensorFlow Lite Models" and "Manage Sounds" links and performing
-  Blocks and OnBotJava OpMode downloads from the REV Hardware Client.
-* Fixes issue where an I2C device driver would be auto-initialized using the parameters assigned in
-  a previous OpMode run.
-* Improves Driver Station popup menu placement in the landscape layout.
-* Fixes NullPointerException when attempting to get a non-configured BNO055 IMU in a Blocks OpMode on an RC phone.
-* Fixes problem with Blocks if a variable is named `orientation`.
-
-## Version 8.0 (20220907-131644)
-
-### Breaking Changes
-* Increases the Robocol version.
-  * This means an 8.0 or later Robot Controller or Driver Station will not be able to communicate with a 7.2 or earlier Driver Station or Robot Controller.
-  * If you forget to update both apps at the same time, an error message will be shown explaining which app is older and should be updated.
-* Initializing I2C devices now happens when you retrieve them from the `HardwareMap` for the first time.
-  * Previously, all I2C devices would be initialized before the OpMode even began executing,
-    whether you were actually going to use them or not. This could result in reduced performance and
-    unnecessary warnings.
-  * With this change, it is very important for Java users to retrieve all needed devices from the
-    `HardwareMap` **during the Init phase of the OpMode**. Namely, declare a variable for each hardware
-    device the OpMode will use, and assign a value to each. Do not do this during the Run phase, or your
-    OpMode may briefly hang while the devices you are retrieving get initialized.
-  * OpModes that do not use all of the I2C devices specified in the configuration file should take
-    less time to initialize. OpModes that do use all of the specified I2C devices should take the
-    same amount of time as previously.
-* Fixes [issue #251](https://github.com/FIRST-Tech-Challenge/FtcRobotController/issues/251) by changing the order in which axis rotation rates are read from the angular velocity vector in the BNO055 IMU driver.
-* Deprecates `pitchMode` in `BNO055IMU.Parameters`.
-  * Setting `pitchMode` to `PitchMode.WINDOWS` would break the coordinate conventions used by the driver.
-* Moves `OpModeManagerImpl` to the `com.qualcomm.robotcore.eventloop.opmode` package.
-  * This breaks third party libraries EasyOpenCV (version 1.5.1 and earlier) and FTC Dashboard (version 0.4.4 and earlier).
-* Deletes the deprecated `OpMode` method `resetStartTime()` (use `resetRuntime()` instead).
-* Deletes the protected `LinearOpMode.LinearOpModeHelper` class (which was not meant for use by OpModes).
-* Removes I2C Device (Synchronous) config type (deprecated since 2018)
-
-### Enhancements
-* Uncaught exceptions in OpModes no longer require a Restart Robot
-  * A blue screen popping up with a stacktrace is not an SDK error; this replaces the red text in the telemetry area.
-  * Since the very first SDK release, OpMode crashes have put the robot into "EMERGENCY STOP" state, only showing the first line of the exception, and requiring the user to press "Restart Robot" to continue
-  * Exceptions during an OpMode now open a popup window with the same color scheme as the log viewer, containing 15 lines of the exception stacktrace to allow easily tracing down the offending line without needing to connect to view logs over ADB or scroll through large amounts of logs in the log viewer.
-  * The exception text in the popup window is both zoomable and scrollable just like a webpage.
-  * Pressing the "OK" button in the popup window will return to the main screen of the Driver Station and allow an OpMode to be run again immediately, without the need to perform a "Restart Robot"
-* Adds new Java sample to demonstrate using a hardware class to abstract robot actuators, and share them across multiple OpModes.
-  * Sample OpMode is [ConceptExternalHardwareClass.java](FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/ConceptExternalHardwareClass.java)
-  * Abstracted hardware class is [RobotHardware.java](FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/RobotHardware.java)
-* Updates RobotAutoDriveByGyro_Linear Java sample to use REV Control/Expansion hub IMU.
-* Updates Vuforia samples to reference PowerPlay assets and have correct names and field locations of image targets.
-* Updates TensorFlow samples to reference PowerPlay assets.
-* Adds opt-in support for Java 8 language features to the OnBotJava editor.
-  * To opt in, open the OnBotJava Settings, and check `Enable beta Java 8 support`.
-  * Note that Java 8 code will only compile when the Robot Controller runs Android 7.0 Nougat or later.
-  * Please report issues [here](https://github.com/FIRST-Tech-Challenge/FtcRobotController/issues).
-* In OnBotJava, clicking on build errors now correctly jumps to the correct location.
-* Improves OnBotJava autocomplete behavior, to provide better completion options in most cases.
-* Adds a QR code to the Robot Controller Inspection Report when viewed from the Driver Station for scanning by inspectors at competition.
-* Improves I2C performance and reliability in some scenarios.
-
-## Version 7.2 (20220723-130006)
-
-### Breaking Changes
-* Updates the build tooling.  For Android Studio users, this change requires Android Studio Chipmunk 2021.2.1.
-* Removes support for devices that are not competition legal, including Modern Robotics Core Control Modules, the Matrix Controller, and HiTechnic/NXT controllers and sensors.  Support remains for Modern Robotics I2C sensors.
-
-### Enhancements
-* Increases the height of the 3-dots Landscape menu touch area on the Driver Station, making it much easier to select.
-* Adds `terminateOpModeNow()` method to allow OpModes to cleanly self-exit immediately.
-* Adds `opModeInInit()` method to `LinearOpMode` to facilitate init-loops. Similar to `opModeIsActive()` but for the init phase.
-* Warns user if they have a Logitech F310 gamepad connected that is set to DirectInput mode.
-* Allows SPARKmini motor controllers to react more quickly to speed changes.
-* Hides the version number of incorrectly installed sister app (i.e. DS installed on RC device or vice-versa) on inspection screen.
-* Adds support for allowing the user to edit the comment for the runOpMode block.
-* Adds parameterDefaultValues field to @ExportToBlocks. This provides the ability for a java method with an @ExportToBlocks annotation to specify default values for method parameters when it is shown in the block editor.
-* Make LinearOpMode blocks more readable. The opmode name is displayed on the runOpMode block, but not on the other LinearOpMode blocks.
-* Added support to TensorFlow Object Detection for using a different frame generator, instead of Vuforia.
-  Using Vuforia to pass the camera frame to TFOD is still supported.
-* Removes usage of Renderscript.
-* Fixes logspam on app startup of repeated stacktraces relating to `"Failed resolution of: Landroid/net/wifi/p2p/WifiP2pManager$DeviceInfoListener"`
-* Allows disabling bluetooth radio from inspection screen
-* Improves warning messages when I2C devices are not responding
-* Adds support for controlling the RGB LED present on PS4/Etpark gamepads from OpModes
-* Removes legacy Pushbot references from OpMode samples.  Renames "Pushbot" samples to "Robot".  Motor directions reversed to be compatible with "direct Drive" drive train.
-
-
-### Bug fixes
-* Fixes [issue #316](https://github.com/FIRST-Tech-Challenge/FtcRobotController/issues/316) (MatrixF.inverted() returned an incorrectly-sized matrix for 1x1 and 2x2 matrixes).
-* Self inspect now allows for Driver Station and Robot Controller compatibility between point releases.
-* Fixes bug where if the same `RumbleEffect` object instance was queued for multiple gamepads, it
-  could happen that both rumble commands would be sent to just one gamepad.
-* Fixes bug in Driver Station where on the Driver Hub, if Advanced Gamepad Features was disabled and
-  an officially supported gamepad was connected, then opening the Advanced Gamepad Features or
-  Gamepad Type Overrides screens would cause the gamepad to be rebound by the custom USB driver even
-  though advanced gamepad features was disabled.
-* Protects against (unlikely) null pointer exception in Vuforia Localizer.
-* Harden OnBotJava and Blocks saves to protect against save issues when disconnecting from Program and Manage
-* Fixes issue where the RC app would hang if a REV Hub I2C write failed because the previous I2C
-  operation was still in progress. This hang most commonly occurred during REV 2M Distance Sensor initialization
-* Removes ConceptWebcam.java sample program.  This sample is not compatible with OnBotJava.
-* Fixes bug where using html tags in an @ExportToBlocks comment field prevented the blocks editor from loading.
-* Fixes blocks editor so it doesn't ask you to save when you haven't modified anything.
-* Fixes uploading a very large blocks project to offline blocks editor.
-* Fixes bug that caused blocks for DcMotorEx to be omitted from the blocks editor toolbox.
-* Fixes [Blocks Programs Stripped of Blocks (due to using TensorFlow Label block)](https://ftcforum.firstinspires.org/forum/ftc-technology/blocks-programming/87035-blocks-programs-stripped-of-blocks)
-
-## Version 7.1 (20211223-120805)
-
-* Fixes crash when calling `isPwmEnabled()` ([issue #223](https://github.com/FIRST-Tech-Challenge/FtcRobotController/issues/233)).
-* Fixes lint error ([issue #4](https://github.com/FIRST-Tech-Challenge/FtcRobotController/issues/4)).
-* Fixes Driver Station crash when attempting to use DualShock4 v1 gamepad with Advanced Gamepad Features enabled ([issue #173](https://github.com/FIRST-Tech-Challenge/FtcRobotController/issues/173)).
-* Fixes possible (but unlikely) Driver Station crash when connecting gamepads of any type.
-* Fixes bug where Driver Station would use generic 20% deadzone for Xbox360 and Logitech F310 gamepads when Advanced Gamepad Features was disabled.
-* Added SimpleOmniDrive sample OpMode.
-* Adds UVC white balance control API.
-* Fixes [issue #259](https://github.com/FIRST-Tech-Challenge/FtcRobotController/issues/259) Most blocks samples for TensorFlow can't be used for a different model.
-    * The blocks previously labeled TensorFlowObjectDetectionFreightFrenzy (from the subcategory named "Optimized for Freight Frenzy") and TensorFlowObjectDetectionCustomModel (from the subcategory named "Custom Model") have been replaced with blocks labeled TensorFlowObjectDetection. Blocks in existing opmodes will be automatically updated to the new blocks when opened in the blocks editor.
-* Fixes [issue #260](https://github.com/FIRST-Tech-Challenge/FtcRobotController/issues/260) Blocks can't call java method that has a VuforiaLocalizer parameter.
-    * Blocks now has a block labeled VuforiaFreightFrenzy.getVuforiaLocalizer for this.
-* Added a page to manage the TensorFlow Lite models in /sdcard/FIRST/tflitemodels. To get to the TFLite Models page:
-    * You can click on the link at the bottom of the Manage page.
-    * You can click on the link at the upper-right the Blocks project page.
-* Fixes logspam when `isBusy()` is called on a motor not in RTP mode.
-* Hides the "RC Password" item on the inspection screen for phone-based Robot Controllers. (It is only applicable for Control Hubs).
-* Adds channel 165 to Wi-Fi Direct channel selection menu in the settings screen. (165 was previously available through the web UI, but not locally in the app).
-
-## Version 7.0 (20210915-141025)
-
-### Enhancements and New Features
-* Adds support for external libraries to OnBotJava and Blocks.
-    * Upload .jar and .aar files in OnBotJava.
-      * Known limitation - RobotController device must be running Android 7.0 or greater.
-      * Known limitation - .aar files with assets are not supported.
-    * External libraries can provide support for hardware devices by using the annotation in the
-      com.qualcomm.robotcore.hardware.configuration.annotations package.
-    * External libraries can include .so files for native code.
-    * External libraries can be used from OnBotJava OpModes.
-    * External libraries that use the following annotations can be used from Blocks OpModes.
-      * org.firstinspires.ftc.robotcore.external.ExportClassToBlocks
-      * org.firstinspires.ftc.robotcore.external.ExportToBlocks
-    * External libraries that use the following annotations can add new hardware devices:
-      * com.qualcomm.robotcore.hardware.configuration.annotations.AnalogSensorType
-      * com.qualcomm.robotcore.hardware.configuration.annotations.DeviceProperties
-      * com.qualcomm.robotcore.hardware.configuration.annotations.DigitalIoDeviceType
-      * com.qualcomm.robotcore.hardware.configuration.annotations.I2cDeviceType
-      * com.qualcomm.robotcore.hardware.configuration.annotations.MotorType
-      * com.qualcomm.robotcore.hardware.configuration.annotations.ServoType
-    * External libraries that use the following annotations can add new functionality to the Robot Controller:
-      * org.firstinspires.ftc.ftccommon.external.OnCreate
-      * org.firstinspires.ftc.ftccommon.external.OnCreateEventLoop
-      * org.firstinspires.ftc.ftccommon.external.OnCreateMenu
-      * org.firstinspires.ftc.ftccommon.external.OnDestroy
-      * org.firstinspires.ftc.ftccommon.external.WebHandlerRegistrar
-* Adds support for REV Robotics Driver Hub.
-* Adds fully custom userspace USB gamepad driver to Driver Station (see "Advanced Gamepad Features" menu in DS settings).
-    * Allows gamepads to work on devices without native Linux kernel support (e.g. some Romanian Motorola devices).
-    * Allows the DS to read the unique serial number of each gamepad, enabling auto-recovery of dropped gamepads even if two gamepads of the same model drop. *(NOTE: unfortunately this does not apply to Etpark gamepads, because they do not have a unique serial)*.
-    * Reading the unique serial number also provides the ability to configure the DS to assign gamepads to a certain position by default (so no need to do start+a/b at all).
-    * The LED ring on the Xbox360 gamepad and the RGB LED bar on the PS4 gamepad is used to indicate the driver position the gamepad is bound to.
-    * The rumble motors on the Xbox360, PS4, and Etpark gamepads can be controlled from OpModes.
-    * The 2-point touchpad on the PS4 gamepad can be read from OpModes.
-    * The "back" and "guide" buttons on the gamepad can now be safely bound to robot controls (Previously, on many devices, Android would intercept these buttons as home button presses and close the app).
-    * Advanced Gamepad features are enabled by default, but may be disabled through the settings menu in order to revert to gamepad support provided natively by Android.
-* Improves accuracy of ping measurement.
-    * Fixes issue where the ping time showed as being higher than reality when initially connecting to or restarting the robot.
-    * To see the full improvement, you must update both the Robot Controller and Driver Station apps.
-* Updates samples located at [/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples](FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples).
-    * Added ConceptGamepadRumble and ConceptGamepadTouchpad samples to illustrate the use of these new gampad capabilities.
-    * Condensed existing Vuforia samples into just 2 samples (ConceptVuforiaFieldNavigation & ConceptVuforiaFieldNavigationWebcam) showing how to determine the robot's location on the field using Vuforia. These both use the current season's Target images.
-    * Added ConceptVuforiaDriveToTargetWebcam to illustrate an easy way to drive directly to any visible Vuforia target.
-* Makes many improvements to the warning system and individual warnings.
-    * Warnings are now much more spaced out, so that they are easier to read.
-    * New warnings were added for conditions that should be resolved before competing.
-    * The mismatched apps warning now uses the major and minor app versions, not the version code.
-    * The warnings are automatically re-enabled when a Robot Controller app from a new FTC season is installed.
-* Adds support for I2C transactions on the Expansion Hub / Control Hub without specifying a register address.
-    * See section 3 of the [TI I2C spec](https://www.ti.com/lit/an/slva704/slva704.pdf).
-    * Calling these new methods when using Modern Robotics hardware will result in an UnsupportedOperationException.
-* Changes VuforiaLocalizer `close()` method to be public.
-* Adds support for TensorFlow v2 object detection models.
-* Reduces ambiguity of the Self Inspect language and graphics.
-* OnBotJava now warns about potentially unintended file overwrites.
-* Improves behavior of the Wi-Fi band and channel selector on the Manage webpage.
-
-### Bug fixes
- * Fixes Robot Controller app crash on Android 9+ when a Driver Station connects.
- * Fixes issue where an OpMode was responsible for calling shutdown on the
-   TensorFlow TFObjectDetector. Now this is done automatically.
- * Fixes Vuforia initialization blocks to allow user to chose AxesOrder. Updated
-   relevant blocks sample opmodes.
- * Fixes [FtcRobotController issue #114](https://github.com/FIRST-Tech-Challenge/FtcRobotController/issues/114)
-   LED blocks and Java class do not work.
- * Fixes match logging for OpModes that contain special characters in their names.
- * Fixes Driver Station OpMode controls becoming unresponsive if the Driver Station was set to the landscape layout and an OnBotJava build was triggered while an OpMode was running.
- * Fixes the Driver Station app closing itself when it is switched away from, or the screen is turned off.
- * Fixes "black swirl of doom" (Infinite "configuring Wi-Fi Direct" message) on older devices.
- * Updates the wiki comment on the OnBotJava intro page.
-
-## Version 6.2 (20210218-074821)
-
-### Enhancements
-* Attempts to automatically fix the condition where a Control Hub's internal Expansion Hub is not
-  working by re-flashing its firmware
-* Makes various improvements to the Wi-Fi Direct pairing screen, especially in landscape mode
-* Makes the Robot Controller service no longer be categorically restarted when the main activity is brought to foreground
-    * (e.g. the service is no longer restarted simply by viewing the Self Inspect screen and pressing the back button)
-    * It is still restarted if the Settings menu or Configure Robot menu is opened
-
-
-### Bug fixes
-* Fixes [FtcRobotController issue #71](https://github.com/FIRST-Tech-Challenge/FtcRobotController/issues/71)
-  Cannot open OpModes in v6.1 Blocks offline editor
-* Fixes [FtcRobotController issue #79](https://github.com/FIRST-Tech-Challenge/FtcRobotController/issues/79)
-  6.1 causes a soft reboot on the Motorola E5 Play
-* Fixes issue where the Control Hub OS's watchdog would restart the Robot Controller app if
-  the Control Hub was not able to communicate with its internal Expansion Hub
-* Fixes certain I2C devices not showing up in the appropriate `HardwareMap` fields (such as `hardwareMap.colorSensor`)
-* Fixes issue where performing a Wi-Fi factory reset on the Control Hub would not set the Wi-Fi band to 2.4 GHz
-* Fixes issue where OnBotJava might fail to create a new file if the option to "Setup Code for Configured Hardware" was selected
-* Fixes issue where performing certain operations after an OpMode crashes would temporarily break Control/Expansion Hub communication
-* Fixes issue where a Control Hub with a configured USB-connected Expansion Hub would not work if the Expansion Hub was missing at startup
-* Fixes potential issues caused by having mismatched Control/Expansion Hub firmware versions
-* Fixes [ftc_app issue 673](https://github.com/ftctechnh/ftc_app/issues/673) Latest matchlog is being deleted instead of old ones by RobotLog
-* Fixes ConceptVuforiaUltimateGoalNavigationWebcam sample opmode by correctly orienting camera on robot.
-* Fixes issue where logcat would be spammed with InterruptedExceptions when stop is requested from the Driver Station (this behavior was accidentally introduced in v5.3). This change has no impact on functionality.
-* Fixes issue where the blocks editor fails to load if the name of any TeleOp opmode contains an apostrophe.
-
-## Version 6.1 (20201209-113742)
-* Makes the scan button on the configuration screen update the list of Expansion Hubs connected via RS-485
-    * Fixes [SkyStone issue #143](https://github.com/FIRST-Tech-Challenge/SkyStone/issues/143)
-* Improves web interface compatibility with older browser and Android System WebView versions.
-* Fixes issue in UVC driver where some cameras (e.g. certain MS Lifecams) which reported frame intervals as rounded rather than truncated values (e.g. `666667*100ns` instead of `666666*100ns` for 15FPS) would fail to start streaming.
-* Adds support in UVC driver for virtual PTZ control
-* Adds support in UVC driver for gain (ISO) control
-* Adds support in UVC driver for enabling/disable AE priority. This setting provides a means to tell the camera firmware either
-    * A) It can undershoot the requested frame rate in order to provide a theoretically better image (i.e. with a longer exposure than the inter-frame period of the selected frame rate allows)
-    * B) It *must* meet the inter-frame deadline for the selected frame rate, even if the image may be underexposed as a result
-* Adds support for the Control Hub OS 1.1.2 Robot Controller watchdog
-    * The Robot Controller app will be restarted if it stops responding for more than 10 seconds
-* Adds support for using the Driver Station app on Android 10+
-* Introduces an automatic TeleOp preselection feature
-    * For details and usage guide, please see [this wiki entry](https://github.com/FIRST-Tech-Challenge/FtcRobotController/wiki/Automatically-Loading-a-Driver-Controlled-Op-Mode)
-* Shows icon next to OpMode name in the OpMode list dropdown on the Driver Station to indicate the source of the OpMode (i.e. the programming tool used to create it)
-* Fixes issue where the Driver Station app would exit after displaying the Configuring Wi-Fi Direct screen
-* Fixes Blocks and OnBotJava prompts when accessed via the REV Hardware Client
-
-## Version 6.0 (20200921-085816)
-
-### Important Notes
-* Version 6.0 is the version for the Ultimate Goal season.
-* Requires Android Studio 4.0.
-* Android Studio users need to be connected to the Internet the first time they build the app (in order to download needed packages for the build).
-* Version 5.5 was a moderately large off-season, August 2020, drop.  It's worth reviewing those release notes below also.
-* Version 5.5 and greater will not work on older Android 4.x and 5.x phones.  Users must upgrade to an approved Android 6.x device or newer.
-* The default PIDF values for REV motors have been reverted to the default PID values that were used in the 2018-2019 season
-    * This change was made because the 2018-2019 values turned out to work better for many mechanisms
-    * This brings the behavior of the REV motors in line with the behavior of all other motors
-    * If you prefer the 2019-2020 season's behavior for REV motors, here are the PIDF values that were in place, so that you can manually set them in your OpModes:
-      <br>
-      **HD Hex motors (all gearboxes):**
-      Velocity PIDF values: `P = 1.17`, `I = 0.117`, `F = 11.7`
-      Position PIDF values: `P = 5.0`
-      **Core Hex motor:**
-      Velocity PIDF values: `P = 4.96`, `I = 0.496`, `F = 49.6`
-      Position PIDF values: `P = 5.0`
-
-### New features
-* Includes TensorFlow inference model and sample OpModes to detect Ultimate Goal Starter Stacks (four rings vs single ring stack).
-* Includes Vuforia Ultimate Goal vision targets and sample OpModes.
-* Introduces a digital zoom feature for TensorFlow object detection (to detect objects more accurately at greater distances).
-* Adds configuration entry for the REV UltraPlanetary HD Hex motor
-
-### Enhancements
-* Adds setGain() and getGain() methods to the NormalizedColorSensor interface
-    * By setting the gain of a color sensor, you can adjust for different lighting conditions.
-      For example, if you detect lower color values than expected, you can increase the gain.
-    * The gain value is only applied to the argb() and getNormalizedColors() methods, not to the raw color methods.
-      The getNormalizedColors() method is recommended for ease-of-use and clarity, since argb() has to be converted.
-    * Updates SensorColor Java sample to demonstrate gain usage
-* Merges SensorREVColorDistance Java sample into SensorColor Java sample, which showcases best practices for all color sensors
-* Improves retrieving values from the REV Color Sensor V3
-    * Updates the normalization calculation of the RGB channels
-    * Improves the calculation of the alpha channel (can be used as an overall brightness indicator)
-    * Fixes the default sensor resolution, which caused issues with bright environments
-    * Adds support for changing the resolution and measuring rate of the Broadcom sensor chip
-    * Removes IR readings and calculations not meant for the Broadcom sensor chip
-
-### Bug fixes
-* Improves reliability of BNO055IMU IMU initialization to prevent random initialization failures (which manifested as `Problem with 'imu'`).
-
-## Version 5.5 (20200824-090813)
-
-Version 5.5 requires Android Studio 4.0 or later.
-
-### New features
-* Adds support for calling custom Java classes from Blocks OpModes (fixes [SkyStone issue #161](https://github.com/FIRST-Tech-Challenge/SkyStone/issues/161)).
-    * Classes must be in the org.firstinspires.ftc.teamcode package.
-    * To have easy access to the opMode, hardwareMap, telemetry, gamepad1, and gamepad2, classes can
-      extends org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.
-    * Methods must be public static and have no more than 21 parameters.
-    * Methods must be annotated with org.firstinspires.ftc.robotcore.external.ExportToBlocks.
-    * Parameters declared as OpMode, LinearOpMode, Telemetry, and HardwareMap are supported and the
-      argument is provided automatically, regardless of the order of the parameters. On the block,
-      the sockets for those parameters are automatically filled in.
-    * Parameters declared as char or java.lang.Character will accept any block that returns text
-      and will only use the first character in the text.
-    * Parameters declared as boolean or java.lang.Boolean will accept any block that returns boolean.
-    * Parameters declared as byte, java.lang.Byte, short, java.lang.Short, int, java.lang.Integer,
-      long, or java.lang.Long,  will accept any block that returns a number and will round that
-      value to the nearest whole number.
-    * Parameters declared as float, java.lang.Float, double, java.lang.Double will accept any
-      block that returns a number.
-* Adds telemetry API method for setting display format
-    * Classic
-    * Monospace
-    * HTML (certain tags only)
-* Adds blocks support for switching cameras.
-* Adds Blocks support for TensorFlow Object Detection with a custom model.
-* Adds support for uploading a custom TensorFlow Object Detection model in the Manage page, which
-  is especially useful for Blocks and OnBotJava users.
-* Shows new Control Hub blink codes when the Wi-Fi band is switched using the Control Hub's button (only possible on Control Hub OS 1.1.2)
-* Adds new warnings which can be disabled in the Advanced RC Settings
-    * Mismatched app versions warning
-    * Unnecessary 2.4 GHz Wi-Fi usage warning
-    * REV Hub is running outdated firmware (older than version 1.8.2)
-* Adds support for Sony PS4 gamepad, and reworks how gamepads work on the Driver Station
-    * Removes preference which sets gamepad type based on driver position. Replaced with menu which allows specifying type for gamepads with unknown VID and PID
-	* Attempts to auto-detect gamepad type based on USB VID and PID
-	* If gamepad VID and PID is not known, use type specified by user for that VID and PID
-	* If gamepad VID and PID is not known AND the user has not specified a type for that VID and PID, an educated guess is made about how to map the gamepad
-* Driver Station will now attempt to automatically recover from a gamepad disconnecting, and re-assign it to the position it was assigned to when it dropped
-    * If only one gamepad is assigned and it drops: it can be recovered
-    * If two gamepads are assigned, and have **different** VID/PID signatures, and only one drops: it will be recovered
-    * If two gamepads are assigned, and have **different** VID/PID signatures, and BOTH drop: both will be recovered
-    * If two gamepads are assigned, and have **the same** VID/PID signatures, and only one drops: it will be recovered
-    * If two gamepads are assigned, and have **the same** VID/PID signatures, and BOTH drop: **neither** will be recovered, because of the ambiguity of the gamepads when they re-appear on the USB bus.
-    * There is currently one known edge case: if there are **two** gamepads with **the same** VID/PID signature plugged in, **but only one is assigned**, and they BOTH drop, it's a 50-50 chance of which one will be chosen for automatic recovery to the assigned position: it is determined by whichever one is re-enumerated first by the USB bus controller.
-* Adds landscape user interface to Driver Station
-    * New feature: practice timer with audio cues
-    * New feature (Control Hub only): wireless network connection strength indicator (0-5 bars)
-    * New feature (Control Hub only): tapping on the ping/channel display will switch to an alternate display showing radio RX dBm and link speed (tap again to switch back)
-    * The layout will NOT autorotate. You can switch the layout from the Driver Station's settings menu.
-### Breaking changes
-* Removes support for Android versions 4.4 through 5.1 (KitKat and Lollipop). The minSdkVersion is now 23.
-* Removes the deprecated `LinearOpMode` methods `waitOneFullHardwareCycle()` and `waitForNextHardwareCycle()`
-### Enhancements
-* Handles RS485 address of Control Hub automatically
-    * The Control Hub is automatically given a reserved address
-    * Existing configuration files will continue to work
-    * All addresses in the range of 1-10 are still available for Expansion Hubs
-    * The Control Hub light will now normally be solid green, without blinking to indicate the address
-    * The Control Hub will not be shown on the Expansion Hub Address Change settings page
-* Improves REV Hub firmware updater
-    * The user can now choose between all available firmware update files
-    * Version 1.8.2 of the REV Hub firmware is bundled into the Robot Controller app.
-    * Text was added to clarify that Expansion Hubs can only be updated via USB.
-    * Firmware update speed was reduced to improve reliability
-    * Allows REV Hub firmware to be updated directly from the Manage webpage
-* Improves log viewer on Robot Controller
-    * Horizontal scrolling support (no longer word wrapped)
-    * Supports pinch-to-zoom
-    * Uses a monospaced font
-    * Error messages are highlighted
-    * New color scheme
-* Attempts to force-stop a runaway/stuck OpMode without restarting the entire app
-    * Not all types of runaway conditions are stoppable, but if the user code attempts to talk to hardware during the runaway, the system should be able to capture it.
-* Makes various tweaks to the Self Inspect screen
-    * Renames "OS version" entry to "Android version"
-    * Renames "Wi-Fi Direct Name" to "Wi-Fi Name"
-    * Adds Control Hub OS version, when viewing the report of a Control Hub
-    * Hides the airplane mode entry, when viewing the report of a Control Hub
-    * Removes check for ZTE Speed Channel Changer
-    * Shows firmware version for **all** Expansion and Control Hubs
-* Reworks network settings portion of Manage page
-    * All network settings are now applied with a single click
-    * The Wi-Fi Direct channel of phone-based Robot Controllers can now be changed from the Manage page
-    * Wi-Fi channels are filtered by band (2.4 vs 5 GHz) and whether they overlap with other channels
-    * The current Wi-Fi channel is pre-selected on phone-based Robot Controllers, and Control Hubs running OS 1.1.2 or later.
-    * On Control Hubs running OS 1.1.2 or later, you can choose to have the system automatically select a channel on the 5 GHz band
-* Improves OnBotJava
-    * New light and dark themes replace the old themes (chaos, github, chrome,...)
-        * the new default theme is `light` and will be used when you first update to this version
-    * OnBotJava now has a tabbed editor
-    * Read-only offline mode
-* Improves function of "exit" menu item on Robot Controller and Driver Station
-    * Now guaranteed to be fully stopped and unloaded from memory
-* Shows a warning message if a LinearOpMode exists prematurely due to failure to monitor for the start condition
-* Improves error message shown when the Driver Station and Robot Controller are incompatible with each other
-* Driver Station OpMode Control Panel now disabled while a Restart Robot is in progress
-* Disables advanced settings related to Wi-Fi Direct when the Robot Controller is a Control Hub.
-* Tint phone battery icons on Driver Station when low/critical.
-* Uses names "Control Hub Portal" and "Control Hub" (when appropriate) in new configuration files
-* Improve I2C read performance
-    * Very large improvement on Control Hub; up to ~2x faster with small (e.g. 6 byte) reads
-    * Not as apparent on Expansion Hubs connected to a phone
-* Update/refresh build infrastructure
-    * Update to 'androidx' support library from 'com.android.support:appcompat', which is end-of-life
-    * Update targetSdkVersion and compileSdkVersion to 28
-    * Update Android Studio's Android plugin to latest
-    * Fix reported build timestamp in 'About' screen
-* Add sample illustrating manual webcam use: ConceptWebcam
-
-
-### Bug fixes
-* Fixes [SkyStone issue #248](https://github.com/FIRST-Tech-Challenge/SkyStone/issues/248)
-* Fixes [SkyStone issue #232](https://github.com/FIRST-Tech-Challenge/SkyStone/issues/232) and
-  modifies bulk caching semantics to allow for cache-preserving MANUAL/AUTO transitions.
-* Improves performance when REV 2M distance sensor is unplugged
-* Improves readability of Toast messages on certain devices
-* Allows a Driver Station to connect to a Robot Controller after another has disconnected
-* Improves generation of fake serial numbers for UVC cameras which do not provide a real serial number
-    * Previously some devices would assign such cameras a serial of `0:0` and fail to open and start streaming
-	* Fixes [ftc_app issue #638](https://github.com/ftctechnh/ftc_app/issues/638).
-* Fixes a slew of bugs with the Vuforia camera monitor including:
-    * Fixes bug where preview could be displayed with a wonky aspect ratio
-    * Fixes bug where preview could be cut off in landscape
-    * Fixes bug where preview got totally messed up when rotating phone
-    * Fixes bug where crosshair could drift off target when using webcams
-* Fixes issue in UVC driver on some devices ([ftc_app 681](https://github.com/ftctechnh/ftc_app/issues/681)) if streaming was started/stopped multiple times in a row
-    * Issue manifested as kernel panic on devices which do not have [this kernel patch](https://lore.kernel.org/patchwork/patch/352400/).
-    * On affected devices which **do** have the patch, the issue was manifest as simply a failure to start streaming.
-    * The Tech Team believes that the root cause of the issue is a bug in the Linux kernel XHCI driver. A workaround was implemented in the SDK UVC driver.
-* Fixes bug in UVC driver where often half the frames from the camera would be dropped (e.g. only 15FPS delivered during a streaming session configured for 30FPS).
-* Fixes issue where TensorFlow Object Detection would show results whose confidence was lower than
-  the minimum confidence parameter.
-* Fixes a potential exploitation issue of [CVE-2019-11358](https://www.cvedetails.com/cve/CVE-2019-11358/) in OnBotJava
-* Fixes changing the address of an Expansion Hub with additional Expansion Hubs connected to it
-* Preserves the Control Hub's network connection when "Restart Robot" is selected
-* Fixes issue where device scans would fail while the Robot was restarting
-* Fix RenderScript usage
-    * Use androidx.renderscript variant: increased compatibility
-    * Use RenderScript in Java mode, not native: simplifies build
-* Fixes webcam-frame-to-bitmap conversion problem: alpha channel wasn't being initialized, only R, G, & B
-* Fixes possible arithmetic overflow in Deadline
-* Fixes deadlock in Vuforia webcam support which could cause 5-second delays when stopping OpMode
-
-## Version 5.4 (20200108-101156)
-* Fixes [SkyStone issue #88](https://github.com/FIRST-Tech-Challenge/SkyStone/issues/88)
-* Adds an inspection item that notes when a robot controller (Control Hub) is using the factory default password.
-* Fixes [SkyStone issue #61](https://github.com/FIRST-Tech-Challenge/SkyStone/issues/61)
-* Fixes [SkyStone issue #142](https://github.com/FIRST-Tech-Challenge/SkyStone/issues/142)
-* Fixes [ftc_app issue #417](https://github.com/ftctechnh/ftc_app/issues/417) by adding more current and voltage monitoring capabilities for REV Hubs.
-* Fixes [a crash sometimes caused by OnBotJava activity](https://ftcforum.firstinspires.org/forum/ftc-technology/76217-onbotjava-crashes-robot-controller)
-* Improves OnBotJava autosave functionality [ftc_app #738](https://github.com/ftctechnh/ftc_app/issues/738)
-* Fixes system responsiveness issue when an Expansion Hub is disconnected
-* Fixes issue where IMU initialization could prevent OpModes from stopping
-* Fixes issue where AndroidTextToSpeech.speak() would fail if it was called too early
-* Adds telemetry.speak() methods and blocks, which cause the Driver Station (if also updated) to speak text
-* Adds and improves Expansion Hub-related warnings
-    * Improves Expansion Hub low battery warning
-        * Displays the warning immediately after the hub reports it
-        * Specifies whether the condition is current or occurred temporarily during an OpMode run
-        * Displays which hubs reported low battery
-    * Displays warning when hub loses and regains power during an OpMode run
-        * Fixes the hub's LED pattern after this condition
-    * Displays warning when Expansion Hub is not responding to commands
-        * Specifies whether the condition is current or occurred temporarily during an OpMode run
-    * Clarifies warning when Expansion Hub is not present at startup
-        * Specifies that this condition requires a Robot Restart before the hub can be used.
-        * The hub light will now accurately reflect this state
-    * Improves logging and reduces log spam during these conditions
-* Syncs the Control Hub time and timezone to a connected web browser programming the robot, if a Driver Station is not available.
-* Adds bulk read functionality for REV Hubs
-  * A bulk caching mode must be set at the Hub level with `LynxModule#setBulkCachingMode()`. This applies to all relevant SDK hardware classes that reference that Hub.
-  * The following following Hub bulk caching modes are available:
-    * `BulkCachingMode.OFF` (default): All hardware calls operate as usual. Bulk data can read through `LynxModule#getBulkData()` and processed manually.
-    * `BulkCachingMode.AUTO`: Applicable hardware calls are served from a bulk read cache that is cleared/refreshed automatically to ensure identical commands don't hit the same cache. The cache can also be cleared manually with `LynxModule#clearBulkCache()`, although this is not recommended.
-    * (advanced users) `BulkCachingMode.MANUAL`: Same as `BulkCachingMode.AUTO` except the cache is never cleared automatically. To avoid getting stale data, the cache must be manually cleared at the beginning of each loop body or as the user deems appropriate.
-* Removes PIDF Annotation values added in Rev 5.3 (to AndyMark, goBILDA and TETRIX motor configurations).
-  * The new motor types will still be available but their Default control behavior will revert back to Rev 5.2
-* Adds new `ConceptMotorBulkRead` sample Opmode to demonstrate and compare Motor Bulk-Read modes for reducing I/O latencies.
-
-## Version 5.3 (20191004-112306)
-* Fixes external USB/UVC webcam support
-* Makes various bugfixes and improvements to Blocks page, including but not limited to:
-    * Many visual tweaks
-    * Browser zoom and window resize behave better
-    * Resizing the Java preview pane works better and more consistently across browsers
-    * The Java preview pane consistently gets scrollbars when needed
-    * The Java preview pane is hidden by default on phones
-    * Internet Explorer 11 should work
-    * Large dropdown lists display properly on lower res screens
-    * Disabled buttons are now visually identifiable as disabled
-    * A warning is shown if a user selects a TFOD sample, but their device is not compatible
-    * Warning messages in a Blocks OpMode are now visible by default.
-* Adds goBILDA 5201 and 5202 motors to Robot Configurator
-* Adds PIDF Annotation values to AndyMark, goBILDA and TETRIX motor configurations.
-    This has the effect of causing the RUN_USING_ENCODERS and RUN_TO_POSITION modes to use
-    PIDF vs PID closed loop control on these motors.  This should provide more responsive, yet stable, speed control.
-    PIDF adds Feedforward control to the basic PID control loop.
-    Feedforward is useful when controlling a motor's speed because it "anticipates" how much the control voltage
-    must change to achieve a new speed set-point, rather than requiring the integrated error to change sufficiently.
-    The PIDF values were chosen to provide responsive, yet stable, speed control on a lightly loaded motor.
-    The more heavily a motor is loaded (drag or friction), the more noticable the PIDF improvement will be.
-* Fixes startup crash on Android 10
-* Fixes [ftc_app issue #712](https://github.com/ftctechnh/ftc_app/issues/712) (thanks to FROGbots-4634)
-* Fixes [ftc_app issue #542](https://github.com/ftctechnh/ftc_app/issues/542)
-* Allows "A" and lowercase letters when naming device through RC and DS apps.
-
-## Version 5.2 (20190905-083277)
-* Fixes extra-wide margins on settings activities, and placement of the new configuration button
-* Adds Skystone Vuforia image target data.
-   * Includes sample Skystone Vuforia Navigation OpModes (Java).
-   * Includes sample Skystone Vuforia Navigation OpModes (Blocks).
-* Adds TensorFlow inference model (.tflite) for Skystone game elements.
-   * Includes sample Skystone TensorFlow OpModes (Java).
-   * Includes sample Skystone TensorFlow OpModes (Blocks).
-* Removes older (season-specific) sample OpModes.
-* Includes 64-bit support (to comply with [Google Play requirements](https://android-developers.googleblog.com/2019/01/get-your-apps-ready-for-64-bit.html)).
-* Protects against Stuck OpModes when a Restart Robot is requested. (Thanks to FROGbots-4634) ([ftc_app issue #709](https://github.com/ftctechnh/ftc_app/issues/709))
-* Blocks related changes:
-   * Fixes bug with blocks generated code when hardware device name is a java or javascript reserved word.
-   * Shows generated java code for blocks, even when hardware items are missing from the active configuration.
-   * Displays warning icon when outdated Vuforia and TensorFlow blocks are used ([SkyStone issue #27](https://github.com/FIRST-Tech-Challenge/SkyStone/issues/27))
-
-## Version 5.1 (20190820-222104)
-* Defines default PIDF parameters for the following motors:
-    * REV Core Hex Motor
-    * REV 20:1 HD Hex Motor
-    * REV 40:1 HD Hex Motor
-* Adds back button when running on a device without a system back button (such as a Control Hub)
-* Allows a REV Control Hub to update the firmware on a REV Expansion Hub via USB
-* Fixes [SkyStone issue #9](https://github.com/FIRST-Tech-Challenge/SkyStone/issues/9)
-* Fixes [ftc_app issue #715](https://github.com/ftctechnh/ftc_app/issues/715)
-* Prevents extra DS User clicks by filtering based on current state.
-* Prevents incorrect DS UI state changes when receiving new OpMode list from RC
-* Adds support for REV Color Sensor V3
-* Adds a manual-refresh DS Camera Stream for remotely viewing RC camera frames.
-    * To show the stream on the DS, initialize **but do not run** a stream-enabled opmode, select the Camera Stream option in the DS menu, and tap the image to refresh. This feature is automatically enabled when using Vuforia or TFOD—no additional RC configuration is required for typical use cases. To hide the stream, select the same menu item again.
-    * Note that gamepads are disabled and the selected opmode cannot be started while the stream is open as a safety precaution.
-    * To use custom streams, consult the API docs for `CameraStreamServer#setSource` and `CameraStreamSource`.
-* Adds many Star Wars sounds to RobotController resources.
-* Added Skystone Sounds Chooser Sample Program.
-* Switches out startup, connect chimes, and error/warning sounds for Star Wars sounds
-* Updates OnBot Java to use a WebSocket for communication with the robot
-    * The OnBot Java page no longer has to do a full refresh when a user switches from editing one file to another
-
-Known issues:
-* Camera Stream
-    * The Vuforia camera stream inherits the issues present in the phone preview (namely [ftc_app issue #574](https://github.com/ftctechnh/ftc_app/issues/574)). This problem does not affect the TFOD camera stream even though it receives frames from Vuforia.
-    * The orientation of the stream frames may not always match the phone preview. For now, these frames may be rotated manually via a custom `CameraStreamSource` if desired.
-* OnBotJava
-    * Browser back button may not always work correctly
-    * It's possible for a build to be queued, but not started. The OnBot Java build console will display a warning if this occurs.
-    * A user might not realize they are editing a different file if the user inadvertently switches from one file to another since this switch is now seamless. The name of the currently open file is displayed in the browser tab.
-
-## Version 5.0 (built on 19.06.14)
- * Support for the REV Robotics Control Hub.
- * Adds a Java preview pane to the Blocks editor.
- * Adds a new offline export feature to the Blocks editor.
- * Display Wi-Fi channel in Network circle on Driver Station.
- * Adds calibration for Logitech C270
- * Updates build tooling and target SDK.
- * Compliance with Google's permissions infrastructure (Required after build tooling update).
- * Keep Alives to mitigate the Motorola Wi-Fi scanning problem.  Telemetry substitute no longer necessary.
- * Improves Vuforia error reporting.
- * Fixes ftctechnh/ftc_app issues 621, 713.
- * Miscellaneous bug fixes and improvements.
-
-## Version 4.3 (built on 18.10.31)
- * Includes missing TensorFlow-related libraries and files.
-
-## Version 4.2 (built on 18.10.30)
- * Includes fix to avoid deadlock situation with WatchdogMonitor which could result in USB communication errors.
-     - Comm error appeared to require that user disconnect USB cable and restart the Robot Controller app to recover.
-     - robotControllerLog.txt would have error messages that included the words "E RobotCore: lynx xmit lock: #### abandoning lock:"
- * Includes fix to correctly list the parent module address for a REV Robotics Expansion Hub in a configuration (.xml) file.
-     - Bug in versions 4.0 and 4.1 would incorrect list the address module for a parent REV Robotics device as "1".
-     - If the parent module had a higher address value than the daisy-chained module, then this bug would prevent the Robot Controller from communicating with the downstream Expansion Hub.
- * Added requirement for ACCESS_COARSE_LOCATION to allow a Driver Station running Android Oreo to scan for Wi-Fi Direct devices.
- * Added google() repo to build.gradle because aapt2 must be downloaded from the google() repository beginning with version 3.2 of the Android Gradle Plugin.
-     - Important Note: Android Studio users will need to be connected to the Internet the first time build the ftc_app project.
-     - Internet connectivity is required for the first build so the appropriate files can be downloaded from the Google repository.
-     - Users should not need to be connected to the Internet for subsequent builds.
-     - This should also fix buid issue where Android Studio would complain that it "Could not find com.android.tools.lint:lint-gradle:26.1.4" (or similar).
- * Added support for REV Spark Mini motor controller as part of the configuration menu for a servo/PWM port on the REV Expansion Hub.
- * Provide examples for playing audio files in an OpMode.
- * Block Development Tool Changes
-     - Includes a fix for a problem with the Velocity blocks that were reported in the FTC Technology forum (Blocks Programming subforum).
-     - Change the "Save completed successfully." message to a white color so it will contrast with a green background.
-     - Fixed the "Download image" feature so it will work if there are text blocks in the OpMode.
- * Introduce support for Google's TensorFlow Lite technology for object detetion for 2018-2019 game.
-     - TensorFlow lite can recognize Gold Mineral and Silver Mineral from 2018-2019 game.
-     - Example Java and Block OpModes are included to show how to determine the relative position of the gold block (left, center, right).
-
-## Version 4.1 (released on 18.09.24)
-
-Changes include:
- * Fix to prevent crash when deprecated configuration annotations are used.
- * Change to allow FTC Robot Controller APK to be auto-updated using FIRST Global Control Hub update scripts.
- * Removed samples for non supported / non legal hardware.
- * Improvements to Telemetry.addData block with "text" socket.
- * Updated Blocks sample OpMode list to include Rover Ruckus Vuforia example.
- * Update SDK library version number.
-
-## Version 4.0 (released on 18.09.12)
-
-Changes include:
- * Initial support for UVC compatible cameras
-    - If UVC camera has a unique serial number, RC will detect and enumerate by serial number.
-    - If UVC camera lacks a unique serial number, RC will only support one camera of that type connected.
-    - Calibration settings for a few cameras are included (see TeamCode/src/main/res/xml/teamwebcamcalibrations.xml for details).
-    - User can upload calibration files from Program and Manage web interface.
-    - UVC cameras seem to draw a fair amount of electrical current from the USB bus.
-         + This does not appear to present any problems for the REV Robotics Control Hub.
-	 + This does seem to create stability problems when using some cameras with an Android phone-based Robot Controller.
-	 + FTC Tech Team is investigating options to mitigate this issue with the phone-based Robot Controllers.
-    - Updated sample Vuforia Navigation and VuMark OpModes to demonstrate how to use an internal phone-based camera and an external UVC webcam.
-
- * Support for improved motor control.
-    - REV Robotics Expansion Hub firmware 1.8 and greater will support a feed forward mechanism for closed loop motor control.
-    - FTC SDK has been modified to support PIDF coefficients (proportional, integral, derivative, and feed forward).
-    - FTC Blocks development tool modified to include PIDF programming blocks.
-    - Deprecated older PID-related methods and variables.
-    - REV's 1.8.x PIDF-related changes provide a more linear and accurate way to control a motor.
-
- * Wireless
-    - Added 5GHz support for wireless channel changing for those devices that support it.
-        + Tested with Moto G5 and E4 phones.
-	+ Also tested with other (currently non-approved) phones such as Samsung Galaxy S8.
-
-* Improved Expansion Hub firmware update support in Robot Controller app
-    - Changes to make the system more robust during the firmware update process (when performed through Robot Controller app).
-    - User no longer has to disconnect a downstream daisy-chained Expansion Hub when updating an Expansion Hub's firmware.
-        + If user is updating an Expansion Hub's firmware through a USB connection, he/she does not have to disconnect RS485 connection to other Expansion Hubs.
-	+ The user still must use a USB connection to update an Expansion Hub's firmware.
-	+ The user cannot update the Expansion Hub firmware for a downstream device that is daisy chained through an RS485 connection.
-    - If an Expansion Hub accidentally gets "bricked" the Robot Controller app is now more likely to recognize the Hub when it scans the USB bus.
-        + Robot Controller app should be able to detect an Expansion Hub, even if it accidentally was bricked in a previous update attempt.
-	+ Robot Controller app should be able to install the firmware onto the Hub, even if if accidentally was bricked in a previous update attempt.
-
- * Resiliency
-    - FTC software can detect and enable an FTDI reset feature that is available with REV Robotics v1.8 Expansion Hub firmware and greater.
-        + When enabled, the Expansion Hub can detect if it hasn't communicated with the Robot Controller over the FTDI (USB) connection.
-	+ If the Hub hasn't heard from the Robot Controller in a while, it will reset the FTDI connection.
-	+ This action helps system recover from some ESD-induced disruptions.
-    - Various fixes to improve reliability of FTC software.
-
- * Blocks
-    - Fixed errors with string and list indices in blocks export to java.
-    - Support for USB connected UVC webcams.
-    - Refactored optimized Blocks Vuforia code to support Rover Ruckus image targets.
-    - Added programming blocks to support PIDF (proportional, integral, derivative and feed forward) motor control.
-    - Added formatting options (under Telemetry and Miscellaneous categories) so user can set how many decimal places to display a numerical value.
-    - Support to play audio files (which are uploaded through Blocks web interface) on Driver Station in addition to the Robot Controller.
-    - Fixed bug with Download Image of Blocks feature.
-    - Support for REV Robotics Blinkin LED Controller.
-    - Support for REV Robotics 2m Distance Sensor.
-    - Added support for a REV Touch Sensor (no longer have to configure as a generic digital device).
-    - Added blocks for DcMotorEx methods.
-        + These are enhanced methods that you can use when supported by the motor controller hardware.
-	+ The REV Robotics Expansion Hub supports these enhanced methods.
-	+ Enhanced methods include methods to get/set motor velocity (in encoder pulses per second), get/set PIDF coefficients, etc..
-
- * Modest Improvements in Logging
-    - Decrease frequency of battery checker voltage statements.
-    - Removed non-FTC related log statements (wherever possible).
-    - Introduced a "Match Logging" feature.
-        + Under "Settings" a user can enable/disable this feature (it's disabled by default).
-	+ If enabled, user provides a "Match Number" through the Driver Station user interface (top of the screen).
-	    * The Match Number is used to create a log file specifically with log statements from that particular OpMode run.
-	    * Match log files are stored in /sdcard/FIRST/matlogs on the Robot Controller.
-	    * Once an OpMode run is complete, the Match Number is cleared.
-	    * This is a convenient way to create a separate match log with statements only related to a specific OpMode run.
-
- * New Devices
-    - Support for REV Robotics Blinkin LED Controller.
-    - Support for REV Robotics 2m Distance Sensor.
-    - Added configuration option for REV 20:1 HD Hex Motor.
-    - Added support for a REV Touch Sensor (no longer have to configure as a generic digital device).
-
- * Miscellaneous
-    - Fixed some errors in the definitions for acceleration and velocity in our javadoc documentation.
-    - Added ability to play audio files on Driver Station
-    - When user is configuring an Expansion Hub, the LED on the Expansion Hub will change blink pattern (purple-cyan)  to indicate which Hub is currently being configured.
-    - Renamed I2cSensorType to I2cDeviceType.
-    - Added an external sample OpMode that demonstrates localization using 2018-2019 (Rover Ruckus presented by QualComm) Vuforia targets.
-    - Added an external sample OpMode that demonstrates how to use the REV Robotics 2m Laser Distance Sensor.
-    - Added an external sample OpMode that demonstrates how to use the REV Robotics Blinkin LED Controller.
-    - Re-categorized external Java sample OpModes to "TeleOp" instead of "Autonomous".
-
-Known issues:
- * Initial support for UVC compatible cameras
-    - UVC cameras seem to draw significant amount of current from the USB bus.
-        + This does not appear to present any problems for the REV Robotics Control Hub.
-	+ This does seem to create stability problems when using some cameras with an Android phone-based Robot Controller.
-	+ FTC Tech Team is investigating options to mitigate this issue with the phone-based Robot Controllers.
-    - There might be a possible deadlock which causes the RC to become unresponsive when using a UVC webcam with a Nougat Android Robot Controller.
-
- * Wireless
-    - When user selects a wireless channel, this channel does not necessarily persist if the phone is power cycled.
-        + Tech Team is hoping to eventually address this issue in a future release.
-	+ Issue has been present since apps were introduced (i.e., it is not new with the v4.0 release).
-    - Wireless channel is not currently displayed for Wi-Fi Direct connections.
-
- * Miscellaneous
-    - The blink indication feature that shows which Expansion Hub is currently being configured does not work for a newly created configuration file.
-        + User has to first save a newly created configuration file and then close and re-edit the file in order for blink indicator to work.
-
-## Version 3.6 (built on 17.12.18)
-
-Changes include:
- * Blocks Changes
-     - Uses updated Google Blockly software to allow users to edit their OpModes on Apple iOS devices (including iPad and iPhone).
-     - Improvement in Blocks tool to handle corrupt OpMode files.
-     - Autonomous OpModes should no longer get switched back to tele-op after re-opening them to be edited.
-     - The system can now detect type mismatches during runtime and alert the user with a message on the Driver Station.
- * Updated javadoc documentation for setPower() method to reflect correct range of values (-1 to +1).
- * Modified VuforiaLocalizerImpl to allow for user rendering of frames
-     - Added a user-overrideable onRenderFrame() method which gets called by the class's renderFrame() method.
-
-## Version 3.5 (built on 17.10.30)
-
-Changes with version 3.5 include:
- * Introduced a fix to prevent random OpMode stops, which can occur after the Robot Controller app has been paused and then resumed (for example, when a user temporarily turns off the display of the Robot Controller phone, and then turns the screen back on).
- * Introduced a fix to prevent random OpMode stops, which were previously caused by random peer disconnect events on the Driver Station.
- * Fixes issue where log files would be closed on pause of the RC or DS, but not re-opened upon resume.
- * Fixes issue with battery handler (voltage) start/stop race.
- * Fixes issue where Android Studio generated OpModes would disappear from available list in certain situations.
- * Fixes problem where OnBot Java would not build on REV Robotics Control Hub.
- * Fixes problem where OnBot Java would not build if the date and time on the Robot Controller device was "rewound" (set to an earlier date/time).
- * Improved error message on OnBot Java that occurs when renaming a file fails.
- * Removed unneeded resources from android.jar binaries used by OnBot Java to reduce final size of Robot Controller app.
- * Added MR_ANALOG_TOUCH_SENSOR block to Blocks Programming Tool.
-
-## Version 3.4 (built on 17.09.06)
-
-Changes with version 3.4 include:
- * Added telemetry.update() statement for BlankLinearOpMode template.
- * Renamed sample Block OpModes to be more consistent with Java samples.
- * Added some additional sample Block OpModes.
- * Reworded OnBot Java readme slightly.
-
-## Version 3.3 (built on 17.09.04)
-
-This version of the software includes improves for the FTC Blocks Programming Tool and the OnBot Java Programming Tool.
-
-Changes with verion 3.3 include:
- * Android Studio ftc_app project has been updated to use Gradle Plugin 2.3.3.
- * Android Studio ftc_app project is already using gradle 3.5 distribution.
- * Robot Controller log has been renamed to /sdcard/RobotControllerLog.txt (note that this change was actually introduced w/ v3.2).
- * Improvements in I2C reliability.
- * Optimized I2C read for REV Expansion Hub, with v1.7 firmware or greater.
- * Updated all external/samples (available through OnBot and in Android project folder).
- * Vuforia
-    - Added support for VuMarks that will be used for the 2017-2018 season game.
- * Blocks
-    - Update to latest Google Blockly release.
-    - Sample OpModes can be selected as a template when creating new OpMode.
-    - Fixed bug where the blocks would disappear temporarily when mouse button is held down.
-    - Added blocks for Range.clip and Range.scale.
-    - User can now disable/enable Block OpModes.
-    - Fix to prevent occasional Blocks deadlock.
- * OnBot Java
-    - Significant improvements with autocomplete function for OnBot Java editor.
-    - Sample OpModes can be selected as a template when creating new OpMode.
-    - Fixes and changes to complete hardware setup feature.
-    - Updated (and more useful) onBot welcome message.
-
-Known issues:
- * Android Studio
-    - After updating to the new v3.3 Android Studio project folder, if you get error messages indicating "InvalidVirtualFileAccessException" then you might need to do a File->Invalidate Caches / Restart to clear the error.
- * OnBot Java
-    - Sometimes when you push the build button to build all OpModes, the RC returns an error message that the build failed.  If you press the build button a second time, the build typically suceeds.
-
-## Version 3.2 (built on 17.08.02)
-
-This version of the software introduces the "OnBot Java" Development Tool.  Similar to the FTC Blocks Development Tool, the FTC OnBot Java Development Tool allows a user to create, edit and build OpModes dynamically using only a Javascript-enabled web browser.
-
-The OnBot Java Development Tool is an integrated development environment (IDE) that is served up by the Robot Controller.  OpModes are created and edited using a Javascript-enabled browser (Google Chromse is recommended).  OpModes are saved on the Robot Controller Android device directly.
-
-The OnBot Java Development Tool provides a Java programming environment that does NOT need Android Studio.
-
-
-
-Changes with version 3.2 include:
- * Enhanced web-based development tools
-    - Introduction of OnBot Java Development Tool.
-    - Web-based programming and management features are "always on" (user no longer needs to put Robot Controller into programming mode).
-    - Web-based management interface (where user can change Robot Controller name and also easily download Robot Controller log file).
-    - OnBot Java, Blocks and Management features available from web based interface.
-
-* Blocks Programming Development Tool:
-    - Changed "LynxI2cColorRangeSensor" block to "REV Color/range sensor" block.
-    - Fixed tooltip for ColorSensor.isLightOn block.
-    Added blocks for ColorSensor.getNormalizedColors and LynxI2cColorRangeSensor.getNormalizedColors.
-
-* Added example OpModes for digital touch sensor and REV Robotics Color Distance sensor.
-* User selectable color themes.
-* Includes many minor enhancements and fixes (too numerous to list).
-
-Known issues:
-* Auto complete function is incomplete and does not support the following (for now):
-     - Access via *this* keyword
-     - Access via *super* keyword
-     - Members of the super cloass, not overridden by the class
-     - Any methods provided in the current class
-     - Inner classes
-     - Can't handle casted objects
-     - Any objects coming from an parenthetically enclosed expression
-
-## Version 3.10 (built on 17.05.09)
-
-This version of the software provides support for the REV Robotics Expansion Hub.  This version also includes improvements in the USB communication layer in an effort to enhance system resiliency.  If you were using a 2.x version of the software previously, updating to version 3.1 requires that you also update your Driver Station software in addition to updating the Robot Controller software.
-
-Also note that in version 3.10 software, the setMaxSpeed and getMaxSpeed methods are no longer available (not deprecated, they have been removed from the SDK). Also note that the new 3.x software incorporates motor profiles that a user can select as he/she configures the robot.
-
-Changes include:
- * Blocks changes
-    - Added VuforiaTrackableDefaultListener.getPose and Vuforia.trackPose blocks.
-    - Added optimized blocks support for Vuforia extended tracking.
-    - Added atan2 block to the math category.
-    - Added useCompetitionFieldTargetLocations parameter to Vuforia.initialize block.  If set to false, the target locations are placed at (0,0,0) with target orientation as specified in https://github.com/gearsincorg/FTCVuforiaDemo/blob/master/Robot_Navigation.java tutorial OpMode.
- * Incorporates additional improvements to USB comm layer to improve system resiliency (to recover from a greater number of communication disruptions).
-
-**************************************************************************************
-
-Additional Notes Regarding Version 3.00 (built on 17.04.13)
-
-In addition to the release changes listed below (see section labeled "Version 3.00 (built on 17.04.013)"), version 3.00 has the following important changes:
-
-1. Version 3.00 software uses a new version of the FTC Robocol (robot protocol).  If you upgrade to v3.0 on the Robot Controller and/or Android Studio side, you must also upgrade the Driver Station software to match the new Robocol.
-2. Version 3.00 software removes the setMaxSpeed and getMaxSpeed methods from the DcMotor class.  If you have an OpMode that formerly used these methods, you will need to remove the references/calls to these methods.  Instead, v3.0 provides the max speed information through the use of motor profiles that are selected by the user during robot configuration.
-3. Version 3.00 software currently does not have a mechanism to disable extra i2c sensors.  We hope to re-introduce this function with a release in the near future.
-
-**************************************************************************************
-
-## Version 3.00 (built on 17.04.13)
-
-*** Use this version of the software at YOUR OWN RISK!!! ***
-
-This software is being released as an "alpha" version.  Use this version at your own risk!
-
-This pre-release software contains SIGNIFICANT changes, including changes to the Wi-Fi Direct pairing mechanism, rewrites of the I2C sensor classes, changes to the USB/FTDI layer, and the introduction of support for the REV Robotics Expansion Hub and the REV Robotics color-range-light sensor.  These changes were implemented to improve the reliability and resiliency of the FTC control system.
-
-Please note, however, that version 3.00 is considered "alpha" code.  This code is being released so that the FIRST community will have an opportunity to test the new REV Expansion Hub electronics module when it becomes available in May.  The developers do not recommend using this code for critical applications (i.e., competition use).
-
-*** Use this version of the software at YOUR OWN RISK!!! ***
-
-Changes include:
- * Major rework of sensor-related infrastructure.  Includes rewriting sensor classes to implement synchronous I2C communication.
- * Fix to reset Autonomous timer back to 30 seconds.
- * Implementation of specific motor profiles for approved 12V motors (includes Tetrix, AndyMark, Matrix and REV models).
- * Modest improvements to enhance Wi-Fi P2P pairing.
- * Fixes telemetry log addition race.
- * Publishes all the sources (not just a select few).
- * Includes Block programming improvements
-    - Addition of optimized Vuforia blocks.
-    - Auto scrollbar to projects and sounds pages.
-    - Fixed blocks paste bug.
-    - Blocks execute after while-opModeIsActive loop (to allow for cleanup before exiting OpMode).
-    - Added gyro integratedZValue block.
-    - Fixes bug with projects page for Firefox browser.
-    - Added IsSpeaking block to AndroidTextToSpeech.
- * Implements support for the REV Robotics Expansion Hub
-    - Implements support for integral REV IMU (physically installed on I2C bus 0, uses same Bosch BNO055 9 axis absolute orientation sensor as Adafruit 9DOF abs orientation sensor).    - Implements support for REV color/range/light sensor.
-    - Provides support to update Expansion Hub firmware through FTC SDK.
-    - Detects REV firmware version and records in log file.
-    - Includes support for REV Control Hub (note that the REV Control Hub is not yet approved for FTC use).
-    - Implements FTC Blocks programming support for REV Expansion Hub and sensor hardware.
-    - Detects and alerts when I2C device disconnect.
-
-## Version 2.62 (built on 17.01.07)
-  * Added null pointer check before calling modeToByte() in finishModeSwitchIfNecessary method for ModernRoboticsUsbDcMotorController class.
-  * Changes to enhance Modern Robotics USB protocol robustness.
-
-## Version 2.61 (released on 16.12.19)
-  * Blocks Programming mode changes:
-     - Fix to correct issue when an exception was thrown because an OpticalDistanceSensor object appears twice in the hardware map (the second time as a LightSensor).
-
-## Version 2.6 (released on 16.12.16)
-  * Fixes for Gyro class:
-     - Improve (decrease) sensor refresh latency.
-     - fix isCalibrating issues.
-  * Blocks Programming mode changes:
-     - Blocks now ignores a device in the configuration xml if the name is empty. Other devices work in configuration work fine.
-
-## Version 2.5 (internal release on released on 16.12.13)
-  * Blocks Programming mode changes:
-     - Added blocks support for AdafruitBNO055IMU.
-     - Added Download OpMode button to FtcBocks.html.
-     - Added support for copying blocks in one OpMode and pasting them in an other OpMode. The clipboard content is stored on the phone, so the programming mode server must be running.
-     - Modified Utilities section of the toolbox.
-     - In Programming Mode, display information about the active connections.
-     - Fixed paste location when workspace has been scrolled.
-     - Added blocks support for the android Accelerometer.
-     - Fixed issue where Blocks Upload OpMode truncated name at first dot.
-     - Added blocks support for Android SoundPool.
-     - Added type safety to blocks for Acceleration.
-     - Added type safety to blocks for AdafruitBNO055IMU.Parameters.
-     - Added type safety to blocks for AnalogInput.
-     - Added type safety to blocks for AngularVelocity.
-     - Added type safety to blocks for Color.
-     - Added type safety to blocks for ColorSensor.
-     - Added type safety to blocks for CompassSensor.
-     - Added type safety to blocks for CRServo.
-     - Added type safety to blocks for DigitalChannel.
-     - Added type safety to blocks for ElapsedTime.
-     - Added type safety to blocks for Gamepad.
-     - Added type safety to blocks for GyroSensor.
-     - Added type safety to blocks for IrSeekerSensor.
-     - Added type safety to blocks for LED.
-     - Added type safety to blocks for LightSensor.
-     - Added type safety to blocks for LinearOpMode.
-     - Added type safety to blocks for MagneticFlux.
-     - Added type safety to blocks for MatrixF.
-     - Added type safety to blocks for MrI2cCompassSensor.
-     - Added type safety to blocks for MrI2cRangeSensor.
-     - Added type safety to blocks for OpticalDistanceSensor.
-     - Added type safety to blocks for Orientation.
-     - Added type safety to blocks for Position.
-     - Added type safety to blocks for Quaternion.
-     - Added type safety to blocks for Servo.
-     - Added type safety to blocks for ServoController.
-     - Added type safety to blocks for Telemetry.
-     - Added type safety to blocks for Temperature.
-     - Added type safety to blocks for TouchSensor.
-     - Added type safety to blocks for UltrasonicSensor.
-     - Added type safety to blocks for VectorF.
-     - Added type safety to blocks for Velocity.
-     - Added type safety to blocks for VoltageSensor.
-     - Added type safety to blocks for VuforiaLocalizer.Parameters.
-     - Added type safety to blocks for VuforiaTrackable.
-     - Added type safety to blocks for VuforiaTrackables.
-     - Added type safety to blocks for enums in AdafruitBNO055IMU.Parameters.
-     - Added type safety to blocks for AndroidAccelerometer, AndroidGyroscope, AndroidOrientation, and AndroidTextToSpeech.
-
-## Version 2.4 (released on 16.11.13)
-  * Fix to avoid crashing for nonexistent resources.
-  * Blocks Programming mode changes:
-     - Added blocks to support OpenGLMatrix, MatrixF, and VectorF.
-     - Added blocks to support AngleUnit, AxesOrder, AxesReference, CameraDirection, CameraMonitorFeedback, DistanceUnit, and TempUnit.
-     - Added blocks to support Acceleration.
-     - Added blocks to support LinearOpMode.getRuntime.
-     - Added blocks to support MagneticFlux and Position.
-     - Fixed typos.
-     - Made blocks for ElapsedTime more consistent with other objects.
-     - Added blocks to support Quaternion, Velocity, Orientation, AngularVelocity.
-     - Added blocks to support VuforiaTrackables, VuforiaTrackable, VuforiaLocalizer, VuforiaTrackableDefaultListener.
-     - Fixed a few blocks.
-     - Added type checking to new blocks.
-     - Updated to latest blockly.
-     - Added default variable blocks to navigation and matrix blocks.
-     - Fixed toolbox entry for openGLMatrix_rotation_withAxesArgs.
-     - When user downloads Blocks-generated OpMode, only the .blk file is downloaded.
-     - When user uploads Blocks-generated OpMode (.blk file), Javascript code is auto generated.
-     - Added DbgLog support.
-     - Added logging when a blocks file is read/written.
-     - Fixed bug to properly render blocks even if missing devices from configuration file.
-     - Added support for additional characters (not just alphanumeric) for the block file names (for download and upload).
-     - Added support for OpMode flavor (“Autonomous” or “TeleOp”) and group.
-  * Changes to Samples to prevent tutorial issues.
-  * Incorporated suggested changes from public pull 216 (“Replace .. paths”).
-  * Remove Servo Glitches when robot stopped.
-  * if user hits “Cancels” when editing a configuration file, clears the unsaved changes and reverts to original unmodified configuration.
-  * Added log info to help diagnose why the Robot Controller app was terminated (for example, by watch dog function).
-  * Added ability to transfer log from the controller.
-  * Fixed inconsistency for AngularVelocity
-  * Limit unbounded growth of data for telemetry.  If user does not call telemetry.update() for LinearOpMode in a timely manner, data added for telemetry might get lost if size limit is exceeded.
-
-## Version 2.35 (released on 16.10.06)
-  * Blockly programming mode - Removed unnecesary idle() call from blocks for new project.
-
-## Version 2.30 (released on 16.10.05)
-  * Blockly programming mode:
-     - Mechanism added to save Blockly OpModes from Programming Mode Server onto local device
-     - To avoid clutter, blocks are displayed in categorized folders
-     - Added support for DigitalChannel
-     - Added support for ModernRoboticsI2cCompassSensor
-     - Added support for ModernRoboticsI2cRangeSensor
-     - Added support for VoltageSensor
-     - Added support for AnalogInput
-     - Added support for AnalogOutput
-     - Fix for CompassSensor setMode block
-  * Vuforia
-     - Fix deadlock / make camera data available while Vuforia is running.
-     - Update to Vuforia 6.0.117 (recommended by Vuforia and Google to close security loophole).
-  * Fix for autonomous 30 second timer bug (where timer was in effect, even though it appeared to have timed out).
-  * opModeIsActive changes to allow cleanup after OpMode is stopped (with enforced 2 second safety timeout).
-  * Fix to avoid reading i2c twice.
-  * Updated sample OpModes.
-  * Improved logging and fixed intermittent freezing.
-  * Added digital I/O sample.
-  * Cleaned up device names in sample OpModes to be consistent with Pushbot guide.
-  * Fix to allow use of IrSeekerSensorV3.
-
-## Version 2.20 (released on 16.09.08)
-  * Support for Modern Robotics Compass Sensor.
-  * Support for Modern Robotics Range Sensor.
-  * Revise device names for Pushbot templates to match the names used in Pushbot guide.
-  * Fixed bug so that IrSeekerSensorV3 device is accessible as IrSeekerSensor in hardwareMap.
-  * Modified computer vision code to require an individual Vuforia license (per legal requirement from PTC).
-  * Minor fixes.
-  * Blockly enhancements:
-     - Support for Voltage Sensor.
-     - Support for Analog Input.
-     - Support for Analog Output.
-     - Support for Light Sensor.
-     - Support for Servo Controller.
-
-## Version 2.10 (released on 16.09.03)
- * Support for Adafruit IMU.
- * Improvements to ModernRoboticsI2cGyro class
-    - Block on reset of z axis.
-    - isCalibrating() returns true while gyro is calibration.
- * Updated sample gyro program.
- * Blockly enhancements
-    - support for android.graphics.Color.
-    - added support for ElapsedTime.
-    - improved look and legibility of blocks.
-    - support for compass sensor.
-    - support for ultrasonic sensor.
-    - support for IrSeeker.
-    - support for LED.
-    - support for color sensor.
-    - support for CRServo
-    - prompt user to configure robot before using programming mode.
- * Provides ability to disable audio cues.
- * various bug fixes and improvements.
-
-## Version 2.00 (released on 16.08.19)
- * This is the new release for the upcoming 2016-2017 FIRST Tech Challenge Season.
- * Channel change is enabled in the FTC Robot Controller app for Moto G 2nd and 3rd Gen phones.
- * Users can now use annotations to register/disable their OpModes.
- * Changes in the Android SDK, JDK and build tool requirements (minsdk=19, java 1.7, build tools 23.0.3).
- * Standardized units in analog input.
- * Cleaned up code for existing analog sensor classes.
- * setChannelMode and getChannelMode were REMOVED from the DcMotorController class.  This is important - we no longer set the motor modes through the motor controller.
- * setMode and getMode were added to the DcMotor class.
- * ContinuousRotationServo class has been added to the FTC SDK.
- * Range.clip() method has been overloaded so it can support this operation for int, short and byte integers.
- * Some changes have been made (new methods added) on how a user can access items from the hardware map.
- * Users can now set the zero power behavior for a DC motor so that the motor will brake or float when power is zero.
- * Prototype Blockly Programming Mode has been added to FTC Robot Controller.  Users can place the Robot Controller into this mode, and then use a device (such as a laptop) that has a Javascript enabled browser to write Blockly-based OpModes directly onto the Robot Controller.
- * Users can now configure the robot remotely through the FTC Driver Station app.
- * Android Studio project supports Android Studio 2.1.x and compile SDK Version 23 (Marshmallow).
- * Vuforia Computer Vision SDK integrated into FTC SDK.  Users can use sample vision targets to get localization information on a standard FTC field.
- * Project structure has been reorganized so that there is now a TeamCode package that users can use to place their local/custom OpModes into this package.
- * Inspection function has been integrated into the FTC Robot Controller and Driver Station Apps (Thanks Team HazMat… 9277 & 10650!).
- * Audio cues have been incorporated into FTC SDK.
- * Swap mechanism added to FTC Robot Controller configuration activity.  For example, if you have two motor controllers on a robot, and you misidentified them in your configuration file, you can use the Swap button to swap the devices within the configuration file (so you do not have to manually re-enter in the configuration info for the two devices).
- * Fix mechanism added to all user to replace an electronic module easily.  For example, suppose a servo controller dies on your robot. You replace the broken module with a new module, which has a different serial number from the original servo controller.  You can use the Fix button to automatically reconfigure your configuration file to use the serial number of the new module.
- * Improvements made to fix resiliency and responsiveness of the system.
- * For LinearOpMode the user now must for a telemetry.update() to update the telemetry data on the driver station.  This update() mechanism ensures that the driver station gets the updated data properly and at the same time.
- * The Auto Configure function of the Robot Controller is now template based.  If there is a commonly used robot configuration, a template can be created so that the Auto Configure mechanism can be used to quickly configure a robot of this type.
- * The logic to detect a runaway OpMode (both in the LinearOpMode and OpMode types) and to abort the run, then auto recover has been improved/implemented.
- * Fix has been incorporated so that Logitech F310 gamepad mappings will be correct for Marshmallow users.
-
-## Release 16.07.08
-
- * For the ftc_app project, the gradle files have been modified to support Android Studio 2.1.x.
-
-## Release 16.03.30
-
- * For the MIT App Inventor, the design blocks have new icons that better represent the function of each design component.
- * Some changes were made to the shutdown logic to ensure the robust shutdown of some of our USB services.
- * A change was made to LinearOpMode so as to allow a given instance to be executed more than once, which is required for the App Inventor.
- * Javadoc improved/updated.
-
-## Release 16.03.09
-
- * Changes made to make the FTC SDK synchronous (significant change!)
-    - waitOneFullHardwareCycle() and waitForNextHardwareCycle() are no longer needed and have been deprecated.
-    - runOpMode() (for a LinearOpMode) is now decoupled from the system's hardware read/write thread.
-    - loop() (for an OpMode) is now decoupled from the system's hardware read/write thread.
-    - Methods are synchronous.
-    - For example, if you call setMode(DcMotorController.RunMode.RESET_ENCODERS) for a motor, the encoder is guaranteed to be reset when the method call is complete.
-    - For legacy module (NXT compatible), user no longer has to toggle between read and write modes when reading from or writing to a legacy device.
- * Changes made to enhance reliability/robustness during ESD event.
- * Changes made to make code thread safe.
- * Debug keystore added so that user-generated robot controller APKs will all use the same signed key (to avoid conflicts if a team has multiple developer laptops for example).
- * Firmware version information for Modern Robotics modules are now logged.
- * Changes made to improve USB comm reliability and robustness.
- * Added support for voltage indicator for legacy (NXT-compatible) motor controllers.
- * Changes made to provide auto stop capabilities for OpModes.
-    - A LinearOpMode class will stop when the statements in runOpMode() are complete.  User does not have to push the stop button on the driver station.
-    - If an OpMode is stopped by the driver station, but there is a run away/uninterruptible thread persisting, the app will log an error message then force itself to crash to stop the runaway thread.
- * Driver Station UI modified to display lowest measured voltage below current voltage (12V battery).
- * Driver Station UI modified to have color background for current voltage (green=good, yellow=caution, red=danger, extremely low voltage).
- * javadoc improved (edits and additional classes).
- * Added app build time to About activity for driver station and robot controller apps.
- * Display local IP addresses on Driver Station About activity.
- * Added I2cDeviceSynchImpl.
- * Added I2cDeviceSync interface.
- * Added seconds() and milliseconds() to ElapsedTime for clarity.
- * Added getCallbackCount() to I2cDevice.
- * Added missing clearI2cPortActionFlag.
- * Added code to create log messages while waiting for LinearOpMode shutdown.
- * Fix so Wi-Fi Direct Config activity will no longer launch multiple times.
- * Added the ability to specify an alternate i2c address in software for the Modern Robotics gyro.
-
-## Release 16.02.09
-
- * Improved battery checker feature so that voltage values get refreshed regularly (every 250 msec) on Driver Station (DS) user interface.
- * Improved software so that Robot Controller (RC) is much more resilient and “self-healing” to USB disconnects:
-    - If user attempts to start/restart RC with one or more module missing, it will display a warning but still start up.
-    - When running an OpMode, if one or more modules gets disconnected, the RC & DS will display warnings,and robot will keep on working in spite of the missing module(s).
-    - If a disconnected module gets physically reconnected the RC will auto detect the module and the user will regain control of the recently connected module.
-    - Warning messages are more helpful (identifies the type of module that’s missing plus its USB serial number).
- * Code changes to fix the null gamepad reference when users try to reference the gamepads in the init() portion of their OpMode.
- * NXT light sensor output is now properly scaled.  Note that teams might have to readjust their light threshold values in their OpModes.
- * On DS user interface, gamepad icon for a driver will disappear if the matching gamepad is disconnected or if that gamepad gets designated as a different driver.
- * Robot Protocol (ROBOCOL) version number info is displayed in About screen on RC and DS apps.
- * Incorporated a display filter on pairing screen to filter out devices that don’t use the “<TEAM NUMBER>-“ format. This filter can be turned off to show all Wi-Fi Direct devices.
- * Updated text in License file.
- * Fixed formatting error in OpticalDistanceSensor.toString().
- * Fixed issue on with a blank (“”) device name that would disrupt Wi-Fi Direct Pairing.
- * Made a change so that the Wi-Fi info and battery info can be displayed more quickly on the DS upon connecting to RC.
- * Improved javadoc generation.
- * Modified code to make it easier to support language localization in the future.
-
-## Release 16.01.04
-
- * Updated compileSdkVersion for apps
- * Prevent Wi-Fi from entering power saving mode
- * removed unused import from driver station
- * Corrrected "Dead zone" joystick code.
- * LED.getDeviceName and .getConnectionInfo() return null
- * apps check for ROBOCOL_VERSION mismatch
- * Fix for Telemetry also has off-by-one errors in its data string sizing / short size limitations error
- * User telemetry output is sorted.
- * added formatting variants to DbgLog and RobotLog APIs
- * code modified to allow for a long list of OpMode names.
- * changes to improve thread safety of RobocolDatagramSocket
- * Fix for "missing hardware leaves robot controller disconnected from driver station" error
- * fix for "fast tapping of Init/Start causes problems" (toast is now only instantiated on UI thread).
- * added some log statements for thread life cycle.
- * moved gamepad reset logic inside of initActiveOpMode() for robustness
- * changes made to mitigate risk of race conditions on public methods.
- * changes to try and flag when Wi-Fi Direct name contains non-printable characters.
- * fix to correct race condition between .run() and .close() in ReadWriteRunnableStandard.
- * updated FTDI driver
- * made ReadWriteRunnableStanard interface public.
- * fixed off-by-one errors in Command constructor
- * moved specific hardware implmentations into their own package.
- * moved specific gamepad implemnatations to the hardware library.
- * changed LICENSE file to new BSD version.
- * fixed race condition when shutting down Modern Robotics USB devices.
- * methods in the ColorSensor classes have been synchronized.
- * corrected isBusy() status to reflect end of motion.
- * corrected "back" button keycode.
- * the notSupported() method of the GyroSensor class was changed to protected (it should not be public).
-
-## Release 15.11.04.001
-
- * Added Support for Modern Robotics Gyro.
-  - The GyroSensor class now supports the MR Gyro Sensor.
-  - Users can access heading data (about Z axis)
-  - Users can also access raw gyro data (X, Y, & Z axes).
-  - Example MRGyroTest.java OpMode included.
- * Improved error messages
-  - More descriptive error messages for exceptions in user code.
- * Updated DcMotor API
- * Enable read mode on new address in setI2cAddress
- * Fix so that driver station app resets the gamepads when switching OpModes.
- * USB-related code changes to make USB comm more responsive and to display more explicit error messages.
-  - Fix so that USB will recover properly if the USB bus returns garbage data.
-  - Fix USB initializtion race condition.
-  - Better error reporting during FTDI open.
-  - More explicit messages during USB failures.
-  - Fixed bug so that USB device is closed if event loop teardown method was not called.
- * Fixed timer UI issue
- * Fixed duplicate name UI bug (Legacy Module configuration).
- * Fixed race condition in EventLoopManager.
- * Fix to keep references stable when updating gamepad.
- * For legacy Matrix motor/servo controllers removed necessity of appending "Motor" and "Servo" to controller names.
- * Updated HT color sensor driver to use constants from ModernRoboticsUsbLegacyModule class.
- * Updated MR color sensor driver to use constants from ModernRoboticsUsbDeviceInterfaceModule class.
- * Correctly handle I2C Address change in all color sensors
- * Updated/cleaned up OpModes.
-  - Updated comments in LinearI2cAddressChange.java example OpMode.
-  - Replaced the calls to "setChannelMode" with "setMode" (to match the new of the DcMotor  method).
-  - Removed K9AutoTime.java OpMode.
-  - Added MRGyroTest.java OpMode (demonstrates how to use MR Gyro Sensor).
-  - Added MRRGBExample.java OpMode (demonstrates how to use MR Color Sensor).
-  - Added HTRGBExample.java OpMode (demonstrates how to use HT legacy color sensor).
-  - Added MatrixControllerDemo.java (demonstrates how to use legacy Matrix controller).
- * Updated javadoc documentation.
- * Updated release .apk files for Robot Controller and Driver Station apps.
-
-## Release 15.10.06.002
-
- * Added support for Legacy Matrix 9.6V motor/servo controller.
- * Cleaned up build.gradle file.
- * Minor UI and bug fixes for driver station and robot controller apps.
- * Throws error if Ultrasonic sensor (NXT) is not configured for legacy module port 4 or 5.
-
-
-## Release 15.08.03.001
-
- * New user interfaces for FTC Driver Station and FTC Robot Controller apps.
- * An init() method is added to the OpMode class.
-   - For this release, init() is triggered right before the start() method.
-   - Eventually, the init() method will be triggered when the user presses an "INIT" button on driver station.
-   - The init() and loop() methods are now required (i.e., need to be overridden in the user's OpMode).
-   - The start() and stop() methods are optional.
- * A new LinearOpMode class is introduced.
-   - Teams can use the LinearOpMode mode to create a linear (not event driven) program model.
-   - Teams can use blocking statements like Thread.sleep() within a linear OpMode.
- * The API for the Legacy Module and Core Device Interface Module have been updated.
-   - Support for encoders with the Legacy Module is now working.
- * The hardware loop has been updated for better performance.
+**Wiring Cables Used:**
+- **2-Position JST VH Connector** (motor power): Connects motor to Control Hub
+- **4-Position JST PH to JST XH Encoder Cable** (600mm): Connects encoder data from motor to Control Hub
+
+**Motor Port Assignments (Recommended):**
+- **Motor Port 0:** Left Front Drive Motor
+- **Motor Port 1:** Right Front Drive Motor  
+- **Motor Port 2:** Left Rear Drive Motor (if your robot uses them)
+- **Motor Port 3:** Arm Motor (50.9:1 ratio)
+
+**How to Connect a Motor:**
+
+1. **Power Connection (JST VH):**
+   - The motor has a 2-position JST VH connector at the end
+   - Match this to the white 2-position connector on the motor port cable
+   - The connection is keyed, so it only fits one way
+   - Push firmly until you hear/feel a click
+
+2. **Encoder Connection (JST XH):**
+   - The motor has a 4-position JST PH encoder connector
+   - Use an encoder cable to connect this to the 4-position JST XH connector on the motor port
+   - This sends position data back to the Control Hub
+   - Again, it's keyed and will only fit one way
+
+3. **Cable Management:**
+   - Use zip ties to secure cables along the robot frame
+   - Keep encoder cables away from moving parts
+   - Avoid sharp bends that could damage the wires
+
+⚠️ **Important:** Motor connectors are keyed and will only fit correctly. **Never force a connector** - if it doesn't slide in easily, check the alignment.
+
+### **3.4 Servo Wiring**
+
+The GoBuilda Starter Kit includes **4 servos total** (used for 3 mechanisms):
+- **2x Intake Servo** (Continuous rotation, "Speed" model) - one spins the intake wheel
+- **1x Wrist Servo** (Positional, "Torque" model) - rotates the wrist to different angles
+
+**Wiring Cables Used:**
+- **3-Position TJC8 Servo Extension Cable** (300mm or 600mm): Connects servo to Control Hub
+  - White connector on one end goes to the servo
+  - Black connector on the other end goes to the Control Hub servo port
+
+**Servo Port Assignments (Recommended):**
+- **Servo Port 0:** Intake Servo (continuous rotation)
+- **Servo Port 1:** Wrist Servo (positional)
+
+**How to Connect a Servo:**
+
+1. **Servo Connector:**
+   - Servos have a 3-position connector (white plastic block)
+   - Match this with the white end of the servo extension cable
+   - The red wire is power, black is ground, yellow/white is signal
+   - Keyed connectors will only fit correctly
+
+2. **Control Hub Connection:**
+   - Plug the black connector end into the servo port on the Control Hub
+   - The three wires connect to: Power (red), Ground (black), Signal (yellow/white)
+
+3. **Cable Management:**
+   - Keep servo cables organized and labeled with tape or markers
+   - Servos can generate heat, so avoid bundling cables too tightly
+   - Route cables away from moving mechanical parts
+
+🔌 **Connector Identification:**
+- **Servo connectors (TJC8):** 3-position, looks like small white/black plastic blocks
+- **Motor power (JST VH):** 2-position, white connector
+- **Encoder (JST XH):** 4-position, part of the motor port cable assembly
+
+### **3.5 Battery Wiring**
+
+Your robot uses a **12V NiMH Battery** (3000mAh, XT30 connector).
+
+**Battery Connector:**
+- The battery has an **XT30 connector** (two small gold pins)
+- Compatible with **JST VH converters** that come with the kit
+- Color coding: Red wire = Positive (+), Black wire = Negative (-)
+
+**How to Connect the Battery:**
+
+1. **Battery to Adapter:**
+   - Connect the battery's XT30 connector to the JST VH adapter (included in kit)
+   - This gives you standard JST VH connectors for Control Hub compatibility
+
+2. **Adapter to Control Hub:**
+   - Connect the adapter's JST VH connector to the power port on the Control Hub
+   - **Important:** The power port is located separately from motor/servo ports
+   - Red wire must connect to positive (+) terminal, black to negative (-)
+
+**Charging the Battery:**
+- Use the provided NiMH battery charger (included with kit)
+- Charge overnight before your first use
+- Check battery voltage regularly during competition season
+
+⚠️ **Critical Safety Notes:**
+- **Never disconnect the battery while the robot is powered on**
+- **Don't short the battery terminals** - this can cause damage or fire
+- **Disconnect the battery when not in use** to preserve charge and prevent safety issues
+- **Store battery in a cool, dry place**
+- **Never leave a charging battery unattended**
+
+### **3.6 Encoder Cable Routing**
+
+Encoder cables are critical for precise motor control. Proper routing prevents damage:
+
+**Best Practices:**
+- Run encoder cables separately from power cables when possible
+- Keep encoder cables away from high-current areas
+- Don't pinch or bend encoder cables sharply
+- Use protective conduit for cables running through tight spaces
+- Label each encoder cable with the motor it connects to
+
+**Why Encoders Matter:**
+- Encoders count motor rotations to determine exact position
+- Used for autonomous movement and precise arm positioning
+- Damaged encoder cables will cause the robot to malfunction
+
+### **3.7 Quick Wiring Checklist**
+
+Before moving on, verify:
+
+**Motors:**
+- [ ] Left drive motor connected to Motor Port 0
+- [ ] Right drive motor connected to Motor Port 1
+- [ ] Arm motor connected to Motor Port 3
+- [ ] All motor power connectors fully seated
+- [ ] All encoder cables fully connected
+
+**Servos:**
+- [ ] Intake servo connected to Servo Port 0
+- [ ] Wrist servo connected to Servo Port 1
+- [ ] All servo connectors fully seated
+- [ ] No servo cables pinched or twisted
+
+**Battery & Power:**
+- [ ] Battery connected to Control Hub power port
+- [ ] Power connection secure and correct polarity (red to +, black to -)
+- [ ] No exposed wires
+
+**Cable Management:**
+- [ ] All cables secured with zip ties
+- [ ] No cables blocking robot movement
+- [ ] Cables labeled where appropriate
+- [ ] No sharp bends or pinches
+
+**💡 Important:** Take note of which port numbers your motors and servos are connected to - you'll need this information for the configuration step!
+
+## **Step 4: Configuring the Driver Hub**
+
+### **4.1 Connect Driver Hub to Robot**
+1. **Power on the Driver Hub device** and ensure it's charged
+2. **Power on the robot** by connecting the battery to the Control Hub
+3. **Connect wirelessly**:
+   - On the Driver Hub, touch the settings (gear icon) or three dots (⋮) in the upper right corner
+   - Select **Settings** (you may need to scroll down)
+   - Tap **Pair With Robot Controller**
+   - Tap **WiFi Settings**
+   - Select your Control Hub's WiFi network (usually named something like "FTC-XXXX" where XXXX are numbers)
+   - Enter the password, "password", which is the default for the WiFi
+   - Wait for the connection status to show green
+
+**✅ Verification:** If connected successfully, you should see the robot's name displayed in red text on the WiFi Settings page.
+
+### **4.2 Configure Hardware and Motors**
+1. **Access Robot Controller**: On the Driver Hub, open the "FTC Robot Controller" app
+2. **Start Configuration**:
+   - Touch the three dots (⋮) in the upper right corner
+   - Select "Configure Robot"
+   - If no configuration exists, touch "New"
+   - Touch "Control Hub Portal"
+   - Touch "Control Hub"
+3. **Access Motors**: Touch "Motors" to access the motor configuration screen
+4. **Configure Drive Motors**:
+   - Touch the port number where your left drive motor is connected
+   - Select "GoBuilda 5203 Series Motor" from the list (this is the motor type used in the starter kit)
+   - Name it exactly `left_front_drive` (this must match the code)
+   - Touch "Done"
+   - Repeat for the right drive motor, naming it exactly `right_front_drive`
+5. **Configure Arm Motor**:
+   - Touch the port number where your arm motor is connected
+   - Select "GoBuilda 5203 Series Motor" from the list (this is the motor type used in the starter kit)
+   - Name it exactly `left_arm`
+   - Touch "Done"
+
+### **4.3 Configure Servos**
+
+1. **Access Servos**: Touch "Servos" to access the servo configuration screen
+2. **Configure Intake**:
+   - Touch the port number where your intake servo is connected
+   - Select "Continuous Rotation Servo" from the list
+   - Name it exactly `intake`
+   - Touch "Done"
+3. **Configure Wrist**:
+   - Touch the port number where your wrist servo is connected
+   - Select "Servo" from the list
+   - Name it exactly `wrist`
+   - Touch "Done"
+
+### **4.4 Save Configuration**
+1. **Save**: Touch "Save" to save your configuration and name your config (e.g., "GoBuilda Starter Kit")
+2. **Activate**: Make sure your new configuration is selected as the active configuration
+
+**⚠️ Critical:** In the future when you're coding, the device names in your configuration MUST exactly match the names in your code (this is preset in the given code):
+- Code: `hardwareMap.get(DcMotor.class, "left_front_drive")`
+- Configuration: Must have a motor named `left_front_drive`
+
+**💡 Battery Status:** The Driver Hub displays both the Driver Hub battery percentage (top of screen) and robot battery voltage (to the right). Green indicates a healthy battery (~12V), while yellow or red means the battery should be replaced.
+
+## **Step 5: Installing the Code on the Control Hub**
+
+### **5.1 Power and Connect the Robot**
+1. **Power on the robot** by connecting a charged battery to the Control Hub
+2. **Connect via USB cable**: 
+   - Plug USB-C end into the Control Hub on the robot
+   - Plug USB-A end into your laptop/computer
+   - If using a macbook, an adaptor is needed as this cable must go from USB-C to USB-A
+3. **Wait for connection**: The robot should appear as a connected device at the top of Android Studio
+   - Look for the device name in the device dropdown (usually shows as something like "Control Hub")
+
+NOTE FROM WILL: Probably should describe the device once it plugs in. It shows up as a file, but has a little phone icon. 
+NOTE TO WILL: this doesn't happen on my windows laptop so idk what u want me to say
+
+NOTE FROM WILL: Another weird discontinuity imo. 
+
+NOTE FROM WILL: Photos/gifs would work great here this is not intuitive.
+
+### **5.2 Deploy the Code**
+1. **Click the green "Run" button** in Android Studio
+   - This is typically a play icon (▶) but may appear as a replay icon (↻) depending on your Android Studio version
+2. **Wait for the build process** (should take approximately 15 seconds):
+   - First notification: "Build finished" 
+   - Second notification: "Install finished"
+   - ⚠️ **Important**: while the build notification may not always happen, you must wait for the install finished notification before proceeding
+   - If the build takes longer than 120 seconds, consider restarting the process
+3. **Handle connection issues** (if applicable):
+   - If the connection drops during installation, unplug the USB cable and plug it back in
+   - Retry the deployment process
+4. **Disconnect the USB cable** once installation is complete
+   - ⚠️ **Important**: Wait for "Install finished" message, not "Build finished" message, to unplug
+5. **Verify success**: If no error messages appeared, the code installed correctly!
+
+**💡 Troubleshooting**: If you get errors, verify that:
+- The Control Hub is powered on and connected
+- The USB cable is properly seated at both ends
+- You waited for both "Build finished" and "Install finished" notifications
+- If problems persist, restart Android Studio and try again
+
+## **Step 6: Test Drive**
+
+### **6.1 Initial Setup**
+1. **Ensure the robot is powered on** (battery connected and Control Hub LED is green)
+2. **Power on the Driver Hub device** and ensure it's charged
+3. **Open the FTC Driver Station app** (if not already open from earlier steps)
+4. **Connect to the robot**: The Driver Hub should automatically detect and connect to the Control Hub via WiFi - you should see the connection status change to green
+
+### **6.1b Controller Initialization**
+
+Before you can control the robot, the gamepad controllers need to be set up and initialized:
+
+1. **Plug in the controllers**:
+   - Connect the gamepad controller(s) to the Driver Hub using USB cables
+   - Most gamepads use USB-C or standard USB connections
+   - Wait a moment for the Driver Hub to recognize the controllers
+   - You should see the controller(s) appear in the Driver Station app
+
+2. **Initialize the controller(s)**:
+   - **For Player 1**: Press **START + A** on the gamepad simultaneously
+   - **For Player 2** (if using two controllers): Press **START + B** on the second gamepad
+   - You should see a confirmation on the Driver Hub screen when each controller is initialized
+   - Both controllers should now show "Ready" status
+
+⚠️ **Common Issue - Controller Not Responding:**
+If your controller is plugged in but not responding to input:
+1. **Unplug the controller** from the Driver Hub
+2. **Plug the controller back in** and initialize again (START + A or START + B)
+
+💡 **Tip**: If you're having persistent controller issues, make sure you're pressing START + A (or B) firmly and simultaneously - timing matters!
+
+### **6.2 Select and Run Your Program**
+1. **Select your TeleOp program**:
+   - On the left side of Driver Station, find two dropdown arrows
+   - **Left arrow**: Autonomous programs
+   - **Right arrow**: TeleOp programs
+   - Click the **right arrow** and select **"Blank_Slate_Code"**
+
+**📝 Note on Code Files:**
+- **Blank_Slate_Code**: This is the original, unaltered working code on the robot. Use this as your baseline reference.
+- **Code_Here**: This is the file you should use for editing and making changes. If your code breaks or you want a fresh start, you can copy everything from Blank_Slate_Code back into Code_Here to reset.
+
+2. **Initialize the program**: Press the **"INIT"** button
+3. **Start**: Press the **"▶ START"** button when ready
+
+⚠️ **Configuration Mismatch Troubleshooting**: If the robot doesn't respond to controls or motors don't spin:
+   - Go back to Step 4 (Configuring the Driver Hub) and double-check that your hardware names exactly match:
+     - Code names: `left_front_drive`, `right_front_drive`, `left_arm`, `intake`, `wrist`
+     - Configuration names: Must match EXACTLY (case-sensitive)
+   - If names don't match, the code won't be able to find the hardware, causing errors or no response
+
+### **6.3 Test Robot Controls**
+
+#### **Drive Controls (Joysticks)**
+- **Left joystick**: 
+  - **Up/Down**: Moves robot forward/backward
+  - **Left/Right**: No effect (tank drive style)
+- **Right joystick**:
+  - **Left/Right**: Rotates robot left/right
+  - **Up/Down**: No effect
+
+#### **Intake Controls (Face Buttons)**
+- **A button**: Turn intake to collection mode (spins inward)
+- **X button**: Turn intake off (stops spinning)
+- **B button**: Turn intake to deposit mode (spins outward)
+
+#### **Arm Positioning (D-Pad + Button)**
+- **Right Bumper**: Moves arm to collection position + activates intake + extends wrist
+- **Left Bumper**: Moves arm to clear barrier position
+- **Y button**: Moves arm to score sample in low basket position
+- **D-Pad Left**: Collapses arm into robot + stops intake + folds wrist in
+- **D-Pad Right**: Moves arm to score specimen position + folds wrist in
+- **D-Pad Up**: Moves arm to attach hanging hook position + stops intake + folds wrist in  
+- **D-Pad Down**: Moves arm to winch robot position + stops intake + folds wrist in
+
+#### **Fine Adjustment (Triggers)**
+- **Left/Right Triggers**: Make small adjustments to arm position
+  - **Right Trigger**: Raises arm slightly
+  - **Left Trigger**: Lowers arm slightly
+
+### **6.4 What to Observe**
+- **Smooth movement**: Robot should respond immediately to joystick inputs
+- **Telemetry data**: Watch the Driver Station screen for real-time data display
+- **Arm positions**: Arm should move to distinct positions when buttons are pressed
+- **Intake operation**: Listen for intake motor spinning when activated
+
+### **6.5 ⚠️ Important Safety Information**
+
+**Wrist Servo Initialization**: When the robot powers on, the wrist servo will snap into position automatically. Keep hands and fingers clear of the wrist servo area during startup to avoid pinching or contact.
+
+**General Robot Safety**:
+- **Moving parts**: The robot has continuously spinning intake motors and moving arm joints. Keep long hair, loose clothing, and fingers away from these moving parts
+- **Arm movement**: The arm can move quickly and has significant force. Never place your hands under or near the arm while it's operating
+- **Motor power**: Even at low power settings, motors can pinch fingers or snag clothing. Treat the robot with the same caution you'd give a drill press or power tool
+- **Battery safety**: Never touch the battery terminals or expose the battery to water or damage
+- **During testing**: Always have a clear area around the robot and keep people at a safe distance when testing
+
+# **Section 1: Telemetry**
+
+## **What is telemetry?**
+
+Telemetry is a system for collecting and transmitting data from a remote or inaccessible point to a receiving station for monitoring and analysis. In programming, telemetry refers to the automatic collection and transmission of data from software applications to help developers understand how their programs are performing.
+
+**In the real world**, telemetry is everywhere:
+- **Space missions**: NASA uses telemetry to monitor spacecraft health, track position, and receive scientific data from rovers on Mars
+- **Medical devices**: Heart monitors send patient data to nursing stations in real-time
+- **Automotive**: Modern cars continuously monitor engine performance, GPS location, and system diagnostics
+- **Web applications**: Companies like Google and Facebook collect usage statistics to improve user experience
+- **IoT devices**: Smart home devices send status updates and sensor readings to mobile apps
+
+**In FTC robotics**, telemetry serves as your window into what your robot is thinking and doing. It's your primary debugging tool and performance monitor, displaying real-time information on the Driver Station screen during matches and testing.
+
+## **Telemetry in the Code**
+
+There are three methods (actions) that we will be using within this guide on the telemetry class.
+
+**📚 New to programming?** Learn about [classes and methods](./programming-concepts.md#what-are-classes-and-methods) in the Programming Concepts guide.
+
+The first method is `telemetry.addLine("enter text here")`. This method displays a line of text on your Driver Station screen.
+
+```java
+telemetry.addLine("Robot Ready.");
+```
+
+💡 **New concept: Strings** - The text in quotes like `"Robot Ready."` is called a "string" in programming. It's just a way to represent text that the computer can understand and display.
+
+**📚 New to programming?** Learn more about [Strings and text in programming](./programming-concepts.md#what-are-strings) in the Programming Concepts guide.
+
+The second method is `telemetry.addData("label text", data)`. This method shows a label followed by some data (usually a number). The first piece of information you give it is text in quotes (a string), and the second piece is the actual data you want to display.
+
+```java
+telemetry.addData("armTarget: ", armMotor.getTargetPosition());
+```
+
+The `armMotor.getTargetPosition()` part asks the arm motor "what position are you trying to reach?" and gets back a number that changes as your robot runs!
+
+**📚 New to programming?** Learn about [variables and data types](./programming-concepts.md#what-are-variables-and-what-are-the-common-types) in the Programming Concepts guide.
+
+The third method is `telemetry.update()`. This method takes nothing in the parentheses, but it is vital to using telemetry. It sends whatever telemetry you have previously added to the Driver Station to be displayed. Without this method, the telemetry will not be visible.
+
+```java
+telemetry.update();
+```
+
+💡 **Why telemetry.update() is needed** - Think of telemetry like writing on a whiteboard. You can write multiple things (`addLine`, `addData`), but you need to hold up the whiteboard (`update`) for people to see what you wrote!
+
+Before moving on to adding our own telemetry, let's observe the telemetry currently in place.
+
+### What Does Telemetry Look Like?
+When you run your robot code, telemetry appears as text on your Driver Hub. It might display something like:
+```
+armTarget: 1500
+arm Encoder: 1487
+```
+This lets you see what your robot is thinking in real-time!
+
+### Observing Code
+
+Open up the file titled Code_Here.java, which you can find in TeamCode\src\main\java\org\firstinspires\ftc\teamcode .
+
+>
+> - The Code_Here file is for you to test out whatever code edits you want
+>
+> - The Blank_Slate_Code file is the original, unaltered code; if your code breaks, or you just want a fresh start, copy everything from this file into the Code_Here file!
+>
+
+**The first set of telemetry** in the file is found around lines 78 and 79 (you can press Ctrl+G to jump to a line number):
+```java
+telemetry.addLine("Robot Ready.");
+telemetry.update();
+```
+
+This first set of telemetry tells the user when the robot has finished initializing and is ready to start. The first line displays the text "Robot Ready." on screen, and the second line actually sends that text to your Driver Hub so you can see it.
+
+**The second set of telemetry** in the file is found around lines 159-161:
+```java
+telemetry.addData("armTarget: ", armMotor.getTargetPosition());
+telemetry.addData("arm Encoder: ", armMotor.getCurrentPosition());
+telemetry.update();
+```
+
+This second set of telemetry continuously shows the arm's position and its target position. The first two lines use the `.addData()` method to display numbers. Looking at the first line, it shows a label "armTarget: " followed by the position the arm is trying to reach. Together, these create a display that looks like this: `armTarget: 1234`
+
+There is also **one additional telemetry statement** around line 156:
+```java
+telemetry.addLine("MOTOR EXCEEDED CURRENT LIMIT!");
+```
+
+Here, this telemetry warns the user when something is going wrong. It's placed inside an if statement, so the warning only appears when the motor draws too much power.
+
+**📚 New to programming?** Learn about [If else statements](./programming-concepts.md#if-else-statements) in the Programming Concepts guide.
+
+## Try It Out! Adding Custom Telemetry
+
+Now that we've seen what telemetry can do, it's time to use it for ourselves!
+
+**1. Changing text**
+
+Go to line 78 of the Code_Here.java file, which should have the following code:
+```java
+telemetry.addLine("Robot Ready.");
+```
+
+*note: if the line numbers don't match up with the instructions, that means that you may have altered the lines some how. If that was intentional, no worries! Press ctrl + f to locate the line you were told to find.*
+
+Change the text from "Robot Ready." to "Initialized," then install the code onto the robot again and test it out.
+
+**2. Logging a specific variable**
+
+Go to line 85 of the Code_Here.java file, which should have the following code:
+```java
+forward = -gamepad1.left_stick_y;
+```
+
+On line 87 (the first empty line after the above code), use the telemetry.addData() method to show the user what the left_stick_y of the gamepad is returning
+
+Your line should look something like this:
+```java
+telemetry.addData("left_stick_y: ", forward);
+```
+
+Now, try to instead return the value of the variable called rotate! Install the code and look at how these variables change with the movement of the joysticks.
+
+**3. Looking at an actively changing variable**
+
+Go to line 90 and 97, which should be empty lines on either side of the following code:
+```java
+max = Math.max(Math.abs(leftPower), Math.abs(rightPower));
+if (max > 1.0)
+{
+    leftPower /= max;
+    rightPower /= max;
+}
+```
+
+On line 90, use telemetry to show the variable of leftPower, then do the same on line 97 (this should make it so that the above section of code is surrounded by these two lines).
+
+Install the code, move the joysticks, and see how this section of code is changing the leftPower variable!
+
+**4. Try out other variables!**
+
+Try logging the armPositionFudgeFactor variable, or the the constants calculated at the top of the class.
+
+A few things to keep in mind:
+- the telemetry.update() method must be called after whatever other telemetry methods are called! if it isn't called then the information will not be sent to the user
+- the code within the while (opModeIsActive()) loop will run constantly, so code within there should be used for anything that should be seen during the match
+
+**📚 New to programming?** Check out our detailed explanation of [while loops](./programming-concepts.md#what-are-while-loops) in the Programming Concepts guide.
+
+# **Section 2: The Drive Train**
+
+## **What is Arcade Drive?**
+
+The GoBuilda Starter Kit uses what's called "arcade drive" - a driving method that feels intuitive and is easy to learn. While it's sometimes called "tank drive" in FTC, it's actually different from true tank drive.
+
+**In the real world**, arcade drive is like driving a car with power steering:
+- **Video games**: Most racing games use arcade-style controls where one stick steers and another controls speed
+- **Construction equipment**: Many modern excavators and bulldozers use similar joystick controls
+- **Military vehicles**: Modern tanks actually use arcade-style controls rather than the old dual-lever system
+- **RC cars**: Most remote-controlled cars use this same control scheme
+
+**In our robot**, arcade drive combines forward/backward movement with rotation using simple math, making it perfect for beginners while still being powerful enough for competition.
+
+### What Does Arcade Drive Look Like?
+When you operate arcade drive, your robot will:
+```
+Left stick UP + Right stick NEUTRAL → Robot moves forward
+Left stick DOWN + Right stick NEUTRAL → Robot moves backward  
+Left stick NEUTRAL + Right stick RIGHT → Robot rotates clockwise
+Left stick UP + Right stick RIGHT → Robot moves forward while turning right
+```
+This gives you smooth, car-like movement that's intuitive to control!
+
+## **Drive Train in the Code**
+
+The drive system uses two motors that each control two wheels on one side of the robot. Let's explore how the code makes this work.
+
+### **What Does Drive Code Look Like?**
+When you run your robot code and look at the key drive sections, you'll see patterns like this:
+```java
+forward = -gamepad1.left_stick_y;    // Read joystick
+leftPower = forward + rotate;        // Calculate motor power
+leftDrive.setPower(leftPower);       // Tell motor what to do
+```
+This is your robot translating joystick movements into wheel movements!
+
+### **Step 1: Connecting to the Motors**
+
+First, the code connects to the physical motors on your robot:
+
+```java
+leftDrive  = hardwareMap.get(DcMotor.class, "left_front_drive");
+rightDrive = hardwareMap.get(DcMotor.class, "right_front_drive");
+```
+
+These lines create "remote controls" for your motors. The text `"left_front_drive"` and `"right_front_drive"` must exactly match what you named them in your Driver Hub configuration.
+
+💡 **New concept: Hardware Mapping** - This process of connecting code variables to physical devices is called "hardware mapping" in FTC. It's how your code knows which motor to control when you write `leftDrive.setPower()`.
+
+### **Step 2: Reading Joystick Input**
+
+The code reads your joystick movements and stores them in variables:
+
+```java
+forward = -gamepad1.left_stick_y;
+rotate  = gamepad1.right_stick_x;
+```
+
+💡 **New concept: Variables** - This is our first look at variables! Think of `forward` and `rotate` as boxes that hold numbers. The `=` sign means "put this value into the box." The joystick puts a number between -1 and +1 in each box.
+
+- `forward`: How much you want to move forward/backward (-1 to +1)
+- `rotate`: How much you want to turn left/right (-1 to +1)
+- The minus sign (`-`) flips the direction because joysticks naturally give opposite values for forward/backward movement (pushing up gives a negative number, but we want positive for "forward")
+
+### **Step 3: Calculating Motor Powers**
+
+Here's where the arcade drive magic happens:
+
+```java
+leftPower  = forward + rotate;
+rightPower = forward - rotate;
+```
+
+💡 **New concept: Math in programming** - The computer does math for us! When you push the joystick forward and right, it adds those numbers together to make the left wheel spin faster than the right wheel.
+
+**Why this math works:**
+- **Moving forward**: Both motors get the same positive power
+- **Turning right**: Left motor gets more power, right motor gets less (or negative)
+- **Moving forward while turning right**: Left motor gets extra power, right motor gets normal power
+
+**Example calculation:**
+```
+forward = 0.5 (joystick halfway forward)
+rotate = 0.3 (joystick slightly right)
+
+leftPower = 0.5 + 0.3 = 0.8 (left wheels spin faster)
+rightPower = 0.5 - 0.3 = 0.2 (right wheels spin slower)
+Result: Robot moves forward while turning right!
+```
+
+### **Step 4: Power Scaling (Keeping Correct Ratios)**
+
+Sometimes our math gives us powers greater than 1.0 or less than -1.0. Motors automatically cap these values to their -1 to 1 range, creating incorrect power ratios:
+
+```java
+max = Math.max(Math.abs(leftPower), Math.abs(rightPower));
+if (max > 1.0)
+{
+    leftPower /= max;
+    rightPower /= max;
+}
+```
+
+**What this does:**
+- Finds the largest power value
+- If it's over 1.0, scales both powers down proportionally
+- **Example**: Without scaling, powers of 1.5 and 0.5 would become 1.0 and 0.5 (wrong ratio!)
+- With scaling, they become 1.0 and 0.33 (preserving the correct 3:1 ratio)
+
+### **Step 5: Sending Power to Motors**
+
+Finally, the code tells the motors how fast to spin:
+
+```java
+leftDrive.setPower(leftPower);
+rightDrive.setPower(rightPower);
+```
+
+The `.setPower()` method takes a number from -1.0 to 1.0:
+- **1.0**: Full speed forward
+- **0.0**: Stopped
+- **-1.0**: Full speed backward
+
+### **Motor Settings**
+
+The code also configures how the motors behave:
+
+```java
+leftDrive.setDirection(DcMotor.Direction.FORWARD);
+rightDrive.setDirection(DcMotor.Direction.REVERSE);
+leftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+rightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+```
+
+**What these do:**
+- **`.setDirection()`**: Fixes motors that spin backward (very common in robotics)
+- **`.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE)`**: Makes motors actively stop instead of coasting
+
+## **Try It Out! Experimenting with Drive Controls**
+
+Now let's modify the drive code to better understand how it works!
+
+**1. Adding Drive Telemetry**
+
+Add these lines inside your `while (opModeIsActive())` loop, right after the power calculations:
+
+```java
+telemetry.addData("Forward", forward);
+telemetry.addData("Rotate", rotate);
+telemetry.addData("Left Power", leftPower);
+telemetry.addData("Right Power", rightPower);
+```
+
+Don't forget to make sure `telemetry.update()` is called at the end of the loop! Install the code and drive around while watching the Driver Hub screen. You'll see exactly how joystick movements translate to motor powers.
+
+**2. Experiment with Joystick Sensitivity**
+
+Try changing the drive equations to make the robot more or less sensitive:
+
+```java
+// More sensitive (smaller movements = bigger robot response)
+leftPower  = (forward + rotate) * 1.5;
+rightPower = (forward - rotate) * 1.5;
+
+// Less sensitive (good for precise movements)
+leftPower  = (forward + rotate) * 0.5;
+rightPower = (forward - rotate) * 0.5;
+```
+
+**3. Try Different Control Schemes**
+
+Replace the existing joystick reading with one of these alternatives to explore different ways of controlling your robot:
+
+**Single-stick driving (like a car):**
+```java
+forward = -gamepad1.right_stick_y;
+rotate  = gamepad1.right_stick_x;
+```
+This control scheme uses only the right joystick for all movement. Push the stick up/down to move forward/backward, and left/right to turn. This feels like driving a car or playing a racing video game - very intuitive for beginners! The left joystick becomes unused with this setup.
+
+**Button-based turning:**
+```java
+forward = -gamepad1.left_stick_y;
+if (gamepad1.dpad_right) {
+    rotate = 0.5;  // Turn right
+} else if (gamepad1.dpad_left) {
+    rotate = -0.5; // Turn left
+} else {
+    rotate = 0;    // Go straight
+}
+```
+This scheme uses the left joystick for forward/backward movement, but replaces joystick turning with digital buttons on the D-pad. When you press the right arrow on the D-pad, the robot turns right at a fixed speed (0.5 power). Press left arrow to turn left, or release both to go straight. This can be more precise for some drivers who prefer digital controls over analog sticks.
+
+**True tank drive:**
+```java
+// Skip the arcade drive math entirely and control each side directly
+leftPower = -gamepad1.left_stick_y;   // Left joystick controls left wheels
+rightPower = -gamepad1.right_stick_y; // Right joystick controls right wheels
+
+// Remove the arcade drive calculations and scaling - not needed for tank drive
+// leftPower  = forward + rotate;  // Comment out or delete
+// rightPower = forward - rotate;  // Comment out or delete
+```
+True tank drive gives each joystick direct control over one side of the robot. Push the left joystick forward to move the left wheels forward, right joystick for right wheels. To turn right, push the left joystick forward while pulling the right joystick back (or vice versa for left turns). This gives maximum control but requires more coordination from the driver. Note: You'll also want to remove or comment out the power scaling section since tank drive doesn't use the arcade math.
+
+**Why try different schemes?**
+- **Driver preference**: Some people find certain controls more comfortable
+- **Precision**: Button controls can be more precise for fine movements
+- **Accessibility**: Different schemes work better for drivers with different physical abilities
+- **Match strategy**: Some control schemes work better for specific game tasks
+
+**4. Understanding Motor Directions**
+
+If your robot drives backward when you expect forward, try changing:
+```java
+leftDrive.setDirection(DcMotor.Direction.REVERSE);  // or FORWARD
+rightDrive.setDirection(DcMotor.Direction.FORWARD); // or REVERSE
+```
+
+Test different combinations until the robot moves correctly!
+
+# **Section 3: The Arm**
+
+## **What is Arm Control?**
+
+The GoBuilda Starter Kit includes a sophisticated arm system that can pick up, move, and place game pieces with precision. The arm system combines motor-controlled positioning with servo-controlled mechanisms to create a versatile manipulation system.
+
+**In the real world**, robotic arm systems are everywhere:
+- **Manufacturing**: Industrial robots assemble cars, electronics, and machinery with incredible precision
+- **Medical devices**: Surgical robots assist doctors in delicate operations
+- **Space exploration**: Mars rovers use robotic arms to collect samples and operate scientific instruments
+- **Logistics**: Warehouse robots pick and place packages for automated fulfillment
+- **Food service**: Some restaurants use robotic arms for food preparation and serving
+
+**In FTC robotics**, arm control is essential for manipulating game pieces during both TeleOp and Autonomous modes. It's the key to scoring points and completing game-specific tasks.
+
+### What Does Arm Control Look Like?
+When you operate the arm system, your robot will respond to specific gamepad inputs:
+```
+Driver presses RIGHT BUMPER button
+→ Robot: Arm rotates to collection angle + wrist extends + intake activates
+→ Result: Robot is ready to pick up game pieces from the ground
+
+Driver presses Y button  
+→ Robot: Arm rotates to scoring angle + wrist positions for release + stops intake
+→ Result: Robot is positioned to score game pieces in the high goal
+```
+
+**Key point:** With just a single button press on your gamepad controller, the robot automatically coordinates multiple components (arm motor, wrist servo, and intake servo) to achieve complex positioning. This makes driving much easier since you don't have to manually control each component separately!
+
+This gives you precise, repeatable positioning for consistent game piece manipulation!
+
+## **Understanding the Arm System**
+
+Before we can control the arm effectively, we need to understand the different components and how they work together.
+
+### **What are the Arm Components?**
+
+The GoBuilda Starter Kit arm system consists of three main components:
+
+**1. Arm Motor (Rotational Joint)**
+- A motor that rotates the entire arm up and down
+- Uses encoders for precise angle positioning
+- Controlled with target positions rather than continuous power
+
+**2. Wrist Servo (Positioning Servo)**  
+- A servo that positions the wrist/end effector
+- Moves to specific angles between 0° and 180°
+- Used to orient the intake for different tasks
+
+**3. Intake Servo (Continuous Rotation Servo)**
+- A servo that spins continuously to collect or eject game pieces
+- Can spin forward, backward, or stop completely
+- Controlled with power values like a motor
+
+### **What Does Arm Data Look Like?**
+When you run your robot and check arm values, you might see:
+```
+Arm Target: 1,250 ticks (about 45 degrees up)
+Arm Current: 1,247 ticks (almost at target)
+Wrist Position: 0.5 (middle position)
+Intake Power: -1.0 (collecting at full speed)
+```
+Each value represents the current state of that arm component!
+
+### **Converting Between Angles and Encoder Ticks**
+
+The key to arm control is understanding how motor encoder ticks relate to arm angles. For the GoBuilda arm motor:
+
+**Arm Motor Calculation:**
+- **Motor**: GoBuilda 5203 Series with gearing
+- **Total gear ratio**: Complex chain and gear reduction
+- **Ticks per degree**: Approximately 19.7 ticks per degree of arm rotation
+
+**The math:**
+```
+ARM_TICKS_PER_DEGREE = 28 * 250047.0/4913.0 * 100.0/20.0 * 1/360.0
+This equals approximately 19.7 ticks per degree
+
+To move arm to 45 degrees:
+Required ticks = 45 degrees × 19.7 ticks/degree = 887 ticks
+```
+
+💡 **New concept: Servo positions** - Unlike motors that use encoder ticks, servos use position values from 0.0 to 1.0, where 0.0 is one extreme, 1.0 is the other extreme, and 0.5 is the middle position.
+
+## **Arm Control in the Code**
+
+Let's explore how the code controls each component of the arm system to create coordinated movement.
+
+### **What Does Arm Code Look Like?**
+When you run your robot code and look at the arm control sections, you'll see patterns like this:
+```java
+if (gamepad1.right_bumper) {
+    armPosition = ARM_COLLECT;              // Set arm angle
+    wrist.setPosition(WRIST_FOLDED_OUT);    // Position wrist  
+    intake.setPower(INTAKE_COLLECT);        // Start intake
+}
+```
+This is your robot coordinating multiple mechanisms with a single button press!
+
+### **Step 1: Connecting to the Arm Hardware**
+
+First, the code connects to the physical arm components:
+
+```java
+armMotor = hardwareMap.get(DcMotor.class, "left_arm");
+intake = hardwareMap.get(CRServo.class, "intake");
+wrist = hardwareMap.get(Servo.class, "wrist");
+```
+
+These lines create "remote controls" for your arm components. The text names must exactly match your Driver Hub configuration.
+
+💡 **Important distinction: Different hardware types** - Notice we use `DcMotor` for the arm (precise positioning), `CRServo` for the intake (continuous rotation), and `Servo` for the wrist (precise angles). Each hardware type has different capabilities and control methods, so choosing the right type for each component is crucial for proper robot control.
+
+### **Step 2: Setting Up Arm Constants**
+
+The code defines specific positions for different arm tasks:
+
+```java
+final double ARM_COLLAPSED_INTO_ROBOT  = 0;
+final double ARM_COLLECT               = 250 * ARM_TICKS_PER_DEGREE;
+final double ARM_CLEAR_BARRIER         = 230 * ARM_TICKS_PER_DEGREE;
+final double ARM_SCORE_SPECIMEN        = 160 * ARM_TICKS_PER_DEGREE;
+final double ARM_SCORE_SAMPLE_IN_LOW   = 160 * ARM_TICKS_PER_DEGREE;
+final double ARM_ATTACH_HANGING_HOOK   = 120 * ARM_TICKS_PER_DEGREE;
+final double ARM_WINCH_ROBOT           = 15  * ARM_TICKS_PER_DEGREE;
+```
+
+💡 **Why use named positions?** - Instead of remembering that "4930 ticks means collection position," we can write `ARM_COLLECT` and the computer knows exactly what we mean. This makes the code much easier to read and modify.
+
+**What each position does:**
+- **ARM_COLLAPSED_INTO_ROBOT**: Arm folded completely inside the robot's frame
+- **ARM_COLLECT**: Arm positioned to collect game pieces from the ground  
+- **ARM_CLEAR_BARRIER**: Arm high enough to drive over field barriers
+- **ARM_SCORE_SPECIMEN**: Arm positioned to hang specimens on the submersible
+- **ARM_SCORE_SAMPLE_IN_LOW**: Arm angled to score samples in the low basket
+- **ARM_ATTACH_HANGING_HOOK**: Arm positioned to attach the hanging hook
+- **ARM_WINCH_ROBOT**: Arm positioned for end-game hanging
+
+### **Step 3: Configuring the Arm Motor**
+
+The arm motor uses special settings for precise control:
+
+```java
+armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+armMotor.setTargetPosition(0);
+armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+```
+
+**What these do:**
+- **BRAKE**: Motor actively holds position when power is zero (prevents arm from falling)
+- **setTargetPosition(0)**: Initially target the starting position  
+- **RUN_TO_POSITION**: Motor automatically moves to target positions
+- **STOP_AND_RESET_ENCODER**: Set the current position as the zero reference point
+
+### **Step 4: Servo Control**
+
+The wrist and intake servos are controlled differently:
+
+```java
+// Wrist servo positions (0.0 to 1.0)
+final double WRIST_FOLDED_IN   = 0.8333;  // Wrist folded into robot
+final double WRIST_FOLDED_OUT  = 0.5;     // Wrist extended for collection
+
+// Intake servo powers (-1.0 to 1.0)  
+final double INTAKE_COLLECT    = -1.0;    // Full speed inward
+final double INTAKE_OFF        =  0.0;    // Stopped
+final double INTAKE_DEPOSIT    =  0.5;    // Half speed outward
+```
+
+💡 **New concept: Servo vs Motor control** - Servos use `.setPosition()` for angles and `.setPower()` for continuous rotation, while motors use `.setTargetPosition()` and `.setPower()` for precise positioning.
+
+### **Step 5: Coordinated Arm Control**
+
+The magic happens when multiple arm components work together:
+
+```java
+if (gamepad1.right_bumper) {
+    armPosition = ARM_COLLECT;
+    wrist.setPosition(WRIST_FOLDED_OUT);
+    intake.setPower(INTAKE_COLLECT);
+}
+```
+
+**What this accomplishes:**
+- **Sets arm angle** to collection position
+- **Extends wrist** to reach game pieces on the ground
+- **Starts intake** to pull in game pieces
+- **All with one button press!**
+
+### **Step 6: Fine Adjustment Control**
+
+The triggers provide manual fine-tuning:
+
+```java
+armPositionFudgeFactor = FUDGE_FACTOR * (gamepad1.right_trigger + (-gamepad1.left_trigger));
+armMotor.setTargetPosition((int) (armPosition + armPositionFudgeFactor));
+```
+
+💡 **New concept: Fine adjustment** - Sometimes preset positions aren't perfect for every situation. The triggers let drivers make small adjustments (+/- 15 degrees) to dial in the exact position needed.
+
+**📚 New to programming?** Learn about [math operations and trigger controls](./programming-concepts.md#what-are-gamepad-inputs) in the Programming Concepts guide.
+
+## **Try It Out! Experimenting with Arm Control**
+
+Now let's modify the arm code to better understand how each component works!
+
+**1. Adding Arm Telemetry**
+
+Add these lines inside your `while (opModeIsActive())` loop to monitor arm status:
+
+```java
+telemetry.addData("Arm Target", armMotor.getTargetPosition());
+telemetry.addData("Arm Current", armMotor.getCurrentPosition());
+telemetry.addData("Wrist Position", wrist.getPosition());
+telemetry.addData("Intake Power", intake.getPower());
+telemetry.addData("Arm at Target", !armMotor.isBusy());
+```
+
+Install the code and operate the arm while watching the Driver Hub screen. You'll see exactly how each component responds to your inputs!
+
+**2. Test Individual Components**
+
+Try controlling each arm component separately to understand their behavior:
+
+**Test the arm motor only:**
+```java
+if (gamepad1.dpad_up) {
+    armPosition = ARM_CLEAR_BARRIER;  // Just move the arm
+}
+else if (gamepad1.dpad_down) {
+    armPosition = ARM_COLLAPSED_INTO_ROBOT;  // Just move the arm
+}
+```
+
+**Test the wrist servo only:**
+```java
+if (gamepad1.x) {
+    wrist.setPosition(WRIST_FOLDED_OUT);  // Just move the wrist
+}
+else if (gamepad1.y) {
+    wrist.setPosition(WRIST_FOLDED_IN);   // Just move the wrist  
+}
+```
+
+**Test the intake servo only:**
+```java
+if (gamepad1.left_bumper) {
+    intake.setPower(INTAKE_COLLECT);      // Just run the intake
+}
+else if (gamepad1.right_bumper) {
+    intake.setPower(INTAKE_OFF);          // Just stop the intake
+}
+```
+
+**3. Create Custom Arm Positions**
+
+Try defining your own arm positions for specific tasks:
+
+```java
+// Add these with the other arm constants
+final double ARM_CUSTOM_LOW    = 100 * ARM_TICKS_PER_DEGREE;  // Custom low position
+final double ARM_CUSTOM_HIGH   = 200 * ARM_TICKS_PER_DEGREE;  // Custom high position
+
+// Add this in your control section
+if (gamepad1.left_stick_button) {
+    armPosition = ARM_CUSTOM_LOW;
+    wrist.setPosition(0.3);  // Custom wrist angle
+}
+else if (gamepad1.right_stick_button) {
+    armPosition = ARM_CUSTOM_HIGH;
+    wrist.setPosition(0.7);  // Different custom wrist angle
+}
+```
+
+**4. Experiment with Intake Speeds**
+
+Try different intake speeds for different tasks:
+
+```java
+if (gamepad1.a) {
+    intake.setPower(-0.5);    // Gentle collection
+}
+else if (gamepad1.b) {
+    intake.setPower(-1.0);    // Aggressive collection
+}
+else if (gamepad1.x) {
+    intake.setPower(0.3);     // Gentle ejection
+}
+else if (gamepad1.y) {
+    intake.setPower(1.0);     // Aggressive ejection
+}
+```
+
+**5. Understanding Arm Safety**
+
+The arm motor includes current limiting for safety:
+
+```java
+if (((DcMotorEx) armMotor).isOverCurrent()) {
+    telemetry.addLine("MOTOR EXCEEDED CURRENT LIMIT!");
+}
+```
+
+This protects the motor if the arm gets stuck or encounters unexpected resistance.
+
+**Why this matters:**
+- **Hardware protection**: Prevents motor damage from excessive load
+- **Competition reliability**: Avoids robot failures during matches
+- **Safety**: Stops dangerous situations if something goes wrong
+
+## **Understanding Coordinated Motion**
+
+One of the most powerful aspects of the arm system is how multiple components work together seamlessly. Let's examine how the preset positions create coordinated behaviors.
+
+### **Collection Sequence (Right Bumper)**
+```java
+if (gamepad1.right_bumper) {
+    armPosition = ARM_COLLECT;
+    wrist.setPosition(WRIST_FOLDED_OUT);
+    intake.setPower(INTAKE_COLLECT);
+}
+```
+
+**What happens:**
+1. **Arm rotates down** to collection angle (near the ground)
+2. **Wrist extends** to position intake over game pieces  
+3. **Intake starts spinning** to pull in game pieces
+4. **Driver can now drive** around to collect items
+
+### **Stowing Sequence (D-Pad Left)**
+```java
+else if (gamepad1.dpad_left) {
+    armPosition = ARM_COLLAPSED_INTO_ROBOT;
+    intake.setPower(INTAKE_OFF);
+    wrist.setPosition(WRIST_FOLDED_IN);
+}
+```
+
+**What happens:**
+1. **Arm folds completely** into the robot frame
+2. **Intake stops** to conserve power and avoid accidents
+3. **Wrist retracts** to fit within robot dimensions
+4. **Robot becomes compact** for driving and maneuvering
+
+### **Scoring Sequence (Y Button)**
+```java
+else if (gamepad1.y) {
+    armPosition = ARM_SCORE_SAMPLE_IN_LOW;
+}
+```
+
+**What happens:**
+1. **Arm rotates up** to the correct angle for the low basket
+2. **Wrist stays** in its current position (usually extended)
+3. **Intake can be activated** later to eject the game piece
+4. **Driver positions robot** and then activates intake to score
+
+💡 **Why coordinate multiple components?** - Real-world tasks require multiple actions happening together. Instead of making the driver control each component separately (which is slow and error-prone), coordinated sequences make complex operations simple and consistent.
+
+## **Understanding the Bigger Picture**
+
+Congratulations! You've learned the fundamentals of robotic arm control. Here's what you've accomplished:
+
+**Core Concepts Mastered:**
+- **Motor positioning**: Using encoders for precise arm angles
+- **Servo control**: Positioning wrists and controlling continuous rotation
+- **Coordinated motion**: Making multiple components work together
+- **Preset positions**: Creating reliable, repeatable arm configurations
+- **Fine adjustment**: Manual tweaking for perfect positioning
+
+**This opens the door to:**
+- **Autonomous arm control**: Moving the arm to precise positions without driver input
+- **Complex sequences**: Chaining multiple arm movements together
+- **Game-specific strategies**: Optimizing arm positions for scoring and collection
+- **Advanced control**: Learning about feedback systems and motion profiles
+
+**Next steps you could explore:**
+- **Autonomous arm sequences**: Move the arm to specific positions during autonomous
+- **Vision-guided control**: Use cameras to automatically position the arm over targets
+- **Multi-step operations**: Create sequences that combine driving and arm movement
+- **Advanced sensors**: Add limit switches or force sensors for more sophisticated control
+
+You now understand the same principles that power industrial robots, medical devices, and space exploration equipment!
+
+# **Section 4: Encoder Drive**
+
+## **What is Encoder Drive?**
+
+Encoder drive is a method of making your robot move precise distances automatically. Instead of just saying "drive forward for 2 seconds and hope for the best," encoder drive lets you say "drive forward exactly 12 inches" with remarkable accuracy.
+
+**In the real world**, encoder-based movement is everywhere:
+- **Elevators**: Know exactly which floor they're on and stop precisely at each level
+- **3D Printers**: Move the print head to exact positions to create detailed objects
+- **Factory robots**: Position parts with millimeter precision for assembly
+- **Self-driving cars**: Track exactly how far they've traveled for navigation
+- **Medical equipment**: MRI machines position patients with extreme accuracy
+
+**In FTC robotics**, encoder drive is essential for autonomous programs where your robot must complete tasks without human control. It's the foundation for precise, repeatable robot movement.
+
+### What Does Encoder Drive Look Like?
+When you use encoder drive, your robot will:
+```
+Command: "Drive forward 12 inches"
+Robot: Calculates that 12 inches = 1,000 encoder ticks
+Robot: Drives forward, counting ticks: 100... 500... 900... 1,000 - STOP!
+Result: Robot has moved exactly 12 inches forward
+```
+This gives you the precision needed for autonomous challenges!
+
+## **Understanding Encoders**
+
+Before we can make the robot drive precise distances, we need to understand what encoders are and how they work.
+
+### **What is an Encoder?**
+
+An encoder is like a digital odometer for your motors. Just like your car's odometer (the gauge that shows how many miles your car has driven) counts distance, an encoder counts how many times your motor shaft has rotated.
+
+**How encoders work:**
+- Inside each motor, there's a sensor that detects rotation
+- Every time the motor shaft turns a tiny amount, the encoder adds 1 to its count
+- These individual counts are called "ticks" or "counts"
+- By counting ticks, we can calculate exactly how far the robot has moved
+
+### **What Does Encoder Data Look Like?**
+When you run your robot and check encoder values, you might see:
+```
+Left Drive Encoder: 1,247 ticks
+Right Drive Encoder: 1,251 ticks
+Arm Encoder: 892 ticks
+```
+Each number represents how far that motor has rotated since the robot started!
+
+### **Converting Ticks to Distance**
+
+The key to encoder drive is converting between encoder ticks and real-world distances. For the GoBuilda motors in your starter kit:
+
+**Drive Motor Calculation:**
+- **Motor**: GoBuilda 5202 Series (312 RPM)
+- **Ticks per rotation**: 537.7 ticks
+- **Wheel diameter**: 96mm (about 3.78 inches)
+- **Wheel circumference**: 96mm × π = 301.6mm (about 11.87 inches)
+
+**The math:**
+```
+Distance per tick = Wheel circumference ÷ Ticks per rotation
+Distance per tick = 11.87 inches ÷ 537.7 ticks = 0.022 inches per tick
+
+To drive 12 inches:
+Required ticks = 12 inches ÷ 0.022 inches per tick = 545 ticks
+```
+
+💡 **New concept: Constants in programming** - We'll store these calculations as constants (fixed numbers) at the top of our code so we can reuse them easily.
+
+**📚 New to programming?** Learn about [constants and calculations](./programming-concepts.md#what-are-constants-and-calculations) in the Programming Concepts guide.
+
+## **Understanding Autonomous Mode**
+
+So far, we've only worked with TeleOp (Teleoperated) mode where a human driver controls the robot. Now we're going to learn about Autonomous mode, where the robot operates completely on its own.
+
+### **What is Autonomous Mode?**
+
+Autonomous mode is a 30-second period at the start of FTC matches where robots must complete tasks without any human input. Your robot follows a pre-programmed sequence of movements and actions.
+
+**In the real world**, autonomous systems are everywhere:
+- **Roomba vacuum cleaners**: Navigate and clean rooms without human control
+- **Autopilot systems**: Keep airplanes on course during long flights
+- **Manufacturing robots**: Assemble products following precise sequences
+- **Space missions**: Mars rovers operate autonomously due to communication delays with Earth
+- **Warehouse robots**: Amazon's robots move inventory without human guidance
+
+**In FTC competitions**, autonomous mode is crucial:
+- **30 seconds**: Your robot has half a minute to complete its programmed tasks
+- **No driver input**: Once you press START, you can only watch (though you can press STOP to end early if needed)
+- **High scoring**: Autonomous tasks often award more points than TeleOp
+- **Consistency**: A good autonomous program works the same way every time
+
+### **Autonomous vs TeleOp Programming**
+
+The code structure is different between the two modes:
+
+**TeleOp structure:**
+```java
+while (opModeIsActive()) {
+    // Read gamepad input
+    // Update motor powers based on joysticks
+    // This loop runs continuously during the match
+}
+```
+
+**Autonomous structure:**
+```java
+// Step 1: Drive forward 12 inches
+// Step 2: Turn left 90 degrees  
+// Step 3: Drive forward 6 inches
+// Step 4: Lower arm and score
+// Code runs once, then stops
+```
+
+💡 **Sequential vs Continuous** - TeleOp runs in a continuous loop responding to driver input, while Autonomous follows a step-by-step sequence that runs once.
+
+## **Encoder Drive in the Code**
+
+Let's build an autonomous program that drives the robot forward exactly 12 inches. We'll add this code to create a simple but effective autonomous program.
+
+### **Step 1: Setting Up Constants**
+
+First, we'll add the encoder calculations to our code. These go at the top with the other constants:
+
+```java
+// Encoder drive constants
+final double TICKS_PER_INCH = 537.7 / (3.78 * Math.PI);  // About 45.3 ticks per inch
+final double DRIVE_SPEED = 0.5;  // Motor power for autonomous driving
+```
+
+💡 **Why use constants?** - Instead of remembering that "45.3 ticks equals one inch," we can just write `TICKS_PER_INCH` and the computer remembers for us! Plus, if we need to adjust this value later, we only change it in one place and it updates everywhere in our code.
+
+### **Step 2: Creating Encoder Drive Methods**
+
+We'll create a special method (function) that handles driving specific distances:
+
+```java
+public void driveForward(double inches) {
+    // Calculate how many ticks we need to travel
+    int targetTicks = (int)(inches * TICKS_PER_INCH);
+    
+    // Reset encoder counts to zero
+    leftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    rightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    
+    // Set target positions
+    leftDrive.setTargetPosition(targetTicks);
+    rightDrive.setTargetPosition(targetTicks);
+    
+    // Switch to RUN_TO_POSITION mode
+    leftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    rightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    
+    // Start driving
+    leftDrive.setPower(DRIVE_SPEED);
+    rightDrive.setPower(DRIVE_SPEED);
+    
+    // Wait until we reach the target
+    while (opModeIsActive() && 
+           (leftDrive.isBusy() || rightDrive.isBusy())) {
+        
+        // Display progress
+        telemetry.addData("Target", targetTicks);
+        telemetry.addData("Left Position", leftDrive.getCurrentPosition());
+        telemetry.addData("Right Position", rightDrive.getCurrentPosition());
+        telemetry.update();
+    }
+    
+    // Stop driving
+    leftDrive.setPower(0);
+    rightDrive.setPower(0);
+}
+```
+
+**💡 Where does this method go in your code?**
+
+The `driveForward` method should be placed **inside your class but outside the `runOpMode()` method**. Here's the correct structure:
+
+```java
+@Autonomous(name="My First Autonomous", group="Robot")
+public class MyFirstAutonomous extends LinearOpMode {
+    
+    // Hardware declarations
+    public DcMotor leftDrive = null;
+    public DcMotor rightDrive = null;
+    
+    // Constants
+    final double TICKS_PER_INCH = 537.7 / (3.78 * Math.PI);
+    final double DRIVE_SPEED = 0.3;
+    
+    // PUT THE driveForward METHOD HERE
+    public void driveForward(double inches) {
+        // ... method code goes here
+    }
+    
+    @Override
+    public void runOpMode() {
+        // ... your autonomous program goes here
+    }
+}
+```
+
+**Key placement rules:**
+- **Inside the class** (between the opening `{` after the class name and the closing `}` at the end)
+- **Outside the runOpMode() method** (before the `@Override` line)
+- **After your hardware declarations and constants** (keeps your code organized)
+
+💡 **New concept: Custom methods** - This is our first time creating our own method! Think of `driveForward()` as a new command we're teaching the robot. Once we define it, we can use `driveForward(12)` to drive 12 inches anytime we want.
+
+**📚 New to programming?** Learn about [creating your own methods](./programming-concepts.md#how-do-i-create-my-own-methods) in the Programming Concepts guide.
+
+### **Step 3: Understanding Motor Modes**
+
+The code above uses special motor modes that make encoder drive possible:
+
+```java
+// STOP_AND_RESET_ENCODER: Sets the encoder count back to zero
+leftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+// RUN_TO_POSITION: Motor automatically drives to a target position
+leftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+// Set where we want the motor to go
+leftDrive.setTargetPosition(targetTicks);
+```
+
+**What these modes do:**
+- **STOP_AND_RESET_ENCODER**: Like pressing "trip reset" on your car's odometer - sets the count back to 0
+- **RUN_TO_POSITION**: Motor becomes smart - it automatically adjusts power to reach the target position
+- **setTargetPosition()**: Tells the motor "go to this encoder position"
+- **isBusy()**: Returns true if the motor is still moving toward its target
+
+### **Step 4: The Complete Autonomous Program**
+
+Here's how your autonomous program would look:
+
+```java
+@Override
+public void runOpMode() {
+    // Initialize hardware (same as TeleOp)
+    leftDrive  = hardwareMap.get(DcMotor.class, "left_front_drive");
+    rightDrive = hardwareMap.get(DcMotor.class, "right_front_drive");
+    
+    leftDrive.setDirection(DcMotor.Direction.FORWARD);
+    rightDrive.setDirection(DcMotor.Direction.REVERSE);
+    
+    leftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+    rightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+    
+    // Tell driver we're ready
+    telemetry.addLine("Autonomous Ready - Robot will drive 12 inches forward");
+    telemetry.update();
+    
+    waitForStart();
+    
+    // THE AUTONOMOUS SEQUENCE
+    if (opModeIsActive()) {
+        driveForward(12);  // Drive forward exactly 12 inches
+        
+        telemetry.addLine("Autonomous Complete!");
+        telemetry.update();
+    }
+}
+```
+
+💡 **Sequential execution** - Notice how different this is from TeleOp! There's no `while` loop. The robot executes each command once in order, then stops.
+
+## **Try It Out! Building Your First Autonomous**
+
+Now let's create and test your autonomous program!
+
+**1. Creating an Autonomous OpMode**
+
+Create a new file called `MyFirstAutonomous.java` in your TeamCode folder. Here's the basic structure:
+
+```java
+package org.firstinspires.ftc.teamcode;
+
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+
+@Autonomous(name="My First Autonomous", group="Robot")
+public class MyFirstAutonomous extends LinearOpMode {
+    
+    // Hardware
+    public DcMotor leftDrive   = null;
+    public DcMotor rightDrive  = null;
+    
+    // Constants
+    final double TICKS_PER_INCH = 537.7 / (3.78 * Math.PI);
+    final double DRIVE_SPEED = 0.3;  // Start with slow, safe speed
+    
+    // Your driveForward method goes here
+    // Your runOpMode method goes here
+}
+```
+
+**2. Test with Telemetry First**
+
+Before making the robot move, let's verify our encoder readings:
+
+```java
+// Add this to your autonomous program after waitForStart()
+while (opModeIsActive()) {
+    telemetry.addData("Left Encoder", leftDrive.getCurrentPosition());
+    telemetry.addData("Right Encoder", rightDrive.getCurrentPosition());
+    telemetry.addData("Push robot to see encoder changes", "");
+    telemetry.update();
+    sleep(100);  // Update 10 times per second
+}
+```
+
+**Install this code and manually push your robot around while watching the Driver Hub. You should see the encoder numbers change as the wheels rotate!**
+
+**3. Test Short Distances**
+
+Start with a very short distance to make sure everything works:
+
+```java
+driveForward(3);  // Just 3 inches to start
+```
+
+**4. Measure and Verify**
+
+Use a ruler or measuring tape to check if your robot actually moved 3 inches. If it's off, you might need to adjust your `TICKS_PER_INCH` constant.
+
+**5. Scale Up**
+
+Once 3 inches works correctly, try your 12-inch target:
+
+```java
+driveForward(12);  // Full 12 inches
+```
+
+**6. Add More Movements**
+
+Try creating a simple autonomous routine:
+
+```java
+if (opModeIsActive()) {
+    driveForward(12);    // Go forward 12 inches
+    sleep(1000);         // Wait 1 second
+    driveForward(-6);    // Back up 6 inches
+    
+    telemetry.addLine("Autonomous sequence complete!");
+    telemetry.update();
+}
+```
+
+💡 **New concept: sleep() method** - The `sleep(1000)` command tells the robot to pause and do nothing for a specified amount of time. The number in parentheses is in milliseconds, so `sleep(1000)` means "wait for 1,000 milliseconds" or "wait for 1 second." This is useful in autonomous programs when you want to add pauses between actions, like waiting for a mechanism to settle or creating a timed delay.
+
+⚠️ **Important safety note:** The `sleep()` command pauses ALL code execution, meaning your robot cannot respond to anything during the sleep period - not even emergency stops or safety checks. Use sleep sparingly and only for short periods in autonomous mode. Never use long sleep commands, and avoid sleep entirely in TeleOp programs where the driver needs continuous control.
+
+**Troubleshooting Tips:**
+- **Robot doesn't move**: Check that your motor directions are correct
+- **Wrong distance**: Adjust the `TICKS_PER_INCH` value up or down
+- **Veering left/right**: Your motors might have slightly different speeds, or your robot may have weight imbalances, wheel differences, or mechanical variations - this is completely normal for basic encoder drive and happens even with professional robots
+
+💡 **Why start slow?** - Using `DRIVE_SPEED = 0.3` gives you more control and makes it easier to see what's happening. You can increase speed once everything works correctly.
+
+**📚 New to programming?** Learn about [program flow and debugging](./programming-concepts.md#what-is-program-flow-and-debugging) in the Programming Concepts guide.
+
+## **Understanding the Bigger Picture**
+
+Congratulations! You've just learned the foundation of autonomous robot programming. Here's what you've accomplished:
+
+**Core Concepts Mastered:**
+- **Encoder counting**: Understanding how motors track their position
+- **Distance calculation**: Converting between real distances and encoder ticks  
+- **Motor modes**: Using RUN_TO_POSITION for automatic control
+- **Sequential programming**: Writing step-by-step autonomous routines
+- **Custom methods**: Creating reusable functions for common tasks
+
+**This opens the door to:**
+- **Complex autonomous routines**: Multi-step sequences with turns, arm movements, and scoring
+- **Competition autonomous**: Scoring points automatically during the first 30 seconds
+- **Precision control**: Exact positioning for delicate tasks
+- **Repeatable performance**: Your autonomous works the same way every time
+
+**Next steps you could explore:**
+- **Turning**: Use encoders to make precise turns
+- **Arm positioning**: Move your arm to exact angles using its encoder
+- **Sensor integration**: Combine encoder drive with color sensors, distance sensors, or cameras
+- **Advanced control**: Learn about PID controllers for even smoother movement
+
+You now have the fundamental building blocks that professional robotics teams use to create sophisticated autonomous programs!
+
+# **Section 5: Next Steps**
+
+Where do you go from here? It's not the Into The Deep season anymore, and you need to figure out what you're doing for the new season.
+
+There are two main options: you can either take what you've learned here and program a robot using what you've seen and experimented with, or you can spend more time learning about more complex systems.
+
+If you're looking for what to learn next, here are my recommendations:
+
+- Specific subsystems that your team will need for the current season, such as cameras or slides
+- Mecanum drive (if you're team is able to use one)
+- Pathfinding with RoadRunner or PedroPathing
+- The theory behind PIDs
+
+# **Resources**
+
+The Unofficial FIRST Tech Challenge Discord, which can be joined at [https://discord.gg/ftc](https://discord.gg/ftc); this server is filled with people willing to help with any questions you have.
+
+[Learn Java for FTC](https://raw.githubusercontent.com/alan412/LearnJavaForFTC/master/LearnJavaForFTC.pdf)
+
+[GM0](https://gm0.org/en/latest/index.html)
+
+FTC sample code, [https://github.com/FIRST-Tech-Challenge/FtcRobotController/tree/master/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples](https://github.com/FIRST-Tech-Challenge/FtcRobotController/tree/master/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples)
